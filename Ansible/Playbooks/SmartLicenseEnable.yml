@@ -1,0 +1,8 @@
+---
+- hosts: ios
+  tasks:
+  - name: "Configure throughput level"
+    ios_config:
+      provider: "{{cli}}"
+      lines:
+        - "platform hardware throughput level MB 1000"

@@ -425,7 +425,7 @@ resource "aws_network_interface" "az_a_csr_outside_e1" {
 	source_dest_check = false
 	attachment {
 		instance = "${aws_instance.az_a_csr_outside.id}"
-		device_index = 1
+		device_index = 2
 	}
 }
 
@@ -436,7 +436,7 @@ resource "aws_network_interface" "az_a_csr_outside_e2" {
 	source_dest_check = true
 	attachment {
 		instance = "${aws_instance.az_a_csr_outside.id}"
-		device_index = 2
+		device_index = 1
 	}
 }
 

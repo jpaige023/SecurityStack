@@ -1,0 +1,8 @@
+---
+- hosts: ios
+  tasks:
+  - name: "Disable Smart License"
+    ios_config:
+      provider: "{{cli}}"
+      lines:
+        - "no license smart enable"
