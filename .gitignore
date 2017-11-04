@@ -1,5 +1,6 @@
 # Created by .ignore support plugin (hsz.mobi)
+terraform.tfstate*
+terraform.tfvars*
 /TEMPLATES/Cloud/AWS/vpc_security_stack/terraform.tfvars
 /Settings/settings.json
-/Settings/keys/CSR_100
-/Settings/keys/CSR_200
+/Settings/keys/*

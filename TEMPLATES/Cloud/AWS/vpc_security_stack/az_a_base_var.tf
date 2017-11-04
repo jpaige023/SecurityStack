@@ -6,19 +6,11 @@ variable "aws_key_name" {}
 variable "aws_region" {
   type = "string"
   description = "The AWS Region"
-  default = "us-west-2"
 }
 
 variable "aws_az_a" {
   type = "string"
   description = "availability zone"
-  default = "us-west-2a"
-}
-
-variable "aws_az_c" {
-  type = "string"
-  description = "availability zone"
-  default = "us-west-2c"
 }
 
 variable "ami_csr1000v" {
@@ -101,7 +93,7 @@ variable "bastion_instance_type" {
 */
 variable "vpc_cidr" {
     description = "CIDR for the whole VPC"
-    default = "172.31.0.0/16"
+    default = "172.31.0.0/21"
 }
 
 variable "az_a_public" {
@@ -196,32 +188,4 @@ variable "az_a_f5_outside_e1" {
 
 variable "az_a_f5_outside_e2" {
     default = "172.31.3.4"
-}
-
-variable "az_a_asav_e0" {
-    default = "172.31.1.50"
-}
-
-variable "az_a_asav_e1" {
-    default = "172.31.3.10"
-}
-
-variable "az_a_asav_e2" {
-    default = "172.31.4.50"
-}
-
-variable "az_a_ftd_e0" {
-    default = "172.31.1.100"
-}
-
-variable "az_a_ftd_e1" {
-    default = "172.31.1.150"
-}
-
-variable "az_a_ftd_e2" {
-    default = "172.31.4.100"
-}
-
-variable "az_a_ftd_e3" {
-    default = "172.31.5.10"
 }
