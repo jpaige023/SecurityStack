@@ -2,17 +2,23 @@ from netaddr import *
 import simplejson as json
 
 def main():
-    """Note CIDR block must be a /21 or larger"""
+    """Needs input of CIDR block, region, availability, zone. Note CIDR block must be a /21 or larger"""
     cidr_block = "10.0.0.0/21"
     region = "us-west-2"
     availability_zone = "az_a"
-    name_prefix = region + "_" + availability_zone
+
     vdss_subnets = vdss_subnets_generation(cidr_block)
-    print(vdss_subnets)
+
     vdss_cidr_networkid_netmask = vpc_cidr_networkid_netmask_generation(cidr_block)
+
     vdss_ip_addresses = vdss_ip_address_generation(vdss_subnets)
+
     print(json.dumps(vdss_ip_addresses, indent=4))
     print(vdss_ip_addresses['ftd_general_31_e3'])
+
+    vdss_ip_addresses['region'] = region
+    vdss_ip_addresses['availability_zone'] = availability_zone
+
     with open('vdss_ip_addresses.auto.tfvars', 'w') as outfile:
         json.dump(vdss_ip_addresses, outfile, sort_keys = True, indent = 4,
                ensure_ascii = False)

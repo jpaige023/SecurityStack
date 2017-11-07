@@ -2,6 +2,7 @@ import simplejson as json
 import re
 
 def main():
+
     csr1000v_inside_ingress = ["[csr1000v_inside_ingress]\n"]
     csr1000v_inside_egress = ["[csr1000v_inside_egress]\n"]
     csr1000v_outside_ingress = ["[csr1000v_outside_ingress]\n"]
@@ -49,6 +50,7 @@ def main():
     master_list.extend(asav_general)
     master_list.append("\n")
     master_list.extend(ftd_general)
+
     print(master_list)
 
     f = open("hosts", "w")
