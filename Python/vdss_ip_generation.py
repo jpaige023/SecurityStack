@@ -16,11 +16,18 @@ def main():
     print(json.dumps(vdss_ip_addresses, indent=4))
     print(vdss_ip_addresses['ftd_general_31_e3'])
 
-    vdss_ip_addresses['region'] = region
-    vdss_ip_addresses['availability_zone'] = availability_zone
+    dictionary_tfvars = {}
+
+    dictionary_tfvars.update(vdss_ip_addresses)
+    dictionary_tfvars.update(vdss_subnets)
+
+    dictionary_tfvars['region'] = region
+    dictionary_tfvars['availability_zone'] = availability_zone
+    dictionary_tfvars['cidr_block'] = cidr_block
+
 
     with open('vdss_ip_addresses.auto.tfvars', 'w') as outfile:
-        json.dump(vdss_ip_addresses, outfile, sort_keys = True, indent = 4,
+        json.dump(dictionary_tfvars, outfile, sort_keys = True, indent = 4,
                ensure_ascii = False)
 
 

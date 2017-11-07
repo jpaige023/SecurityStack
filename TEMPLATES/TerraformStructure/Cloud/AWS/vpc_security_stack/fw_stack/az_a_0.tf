@@ -1,34 +1,34 @@
 /*
   Instances
 */
-resource "aws_instance" "az_a_asav_0" {
-    ami = "${lookup(var.ami_asav, var.aws_region)}"
-    availability_zone = "${var.aws_az_a}"
+resource "aws_instance" "asav_general_${var.device_number}" {
+    ami = "${lookup(var.ami_asav, var.region)}"
+    availability_zone = "${var.availability_zone}"
     instance_type = "${var.asav_instance_type}"
     key_name = "${var.aws_key_name}"
     vpc_security_group_ids = ["${aws_security_group.SG_All_Traffic.id}"]
-    subnet_id = "${aws_subnet.az_a_management.id}"
+    subnet_id = "${aws_subnet.subnet_management.id}"
     associate_public_ip_address = false
-	private_ip = "${var.az_a_asav_e0_0}"
+	private_ip = "${var.asav_general_${var.device_number}_e0}"
     source_dest_check = true
     tags {
-        Name = "az_a_asav_0"
+        Name = "asav_general_${var.device_number}"
     }
 }
 
-resource "aws_instance" "az_a_ftd_0" {
+resource "aws_instance" "ftd_general_${var.device_number}" {
     ami = "${lookup(var.ami_ftd, var.aws_region)}"
-    availability_zone = "${var.aws_az_a}"
+    availability_zone = "${var.availability_zone}"
     instance_type = "${var.ftd_instance_type}"
     key_name = "${var.aws_key_name}"
     vpc_security_group_ids = ["${aws_security_group.SG_All_Traffic.id}"]
-    subnet_id = "${aws_subnet.az_a_management.id}"
+    subnet_id = "${aws_subnet.subnet_management.id}"
     associate_public_ip_address = false
-	private_ip = "${var.az_a_ftd_e0_0}"
+	private_ip = "${var.ftd_general_${var.device_number}_e0}"
     source_dest_check = true
-    user_data = "${file("ftd.conf")}"
+#    user_data = "${file("ftd.conf")}"
     tags {
-        Name = "az_a_ftd_0"
+        Name = "ftd_general_${var.device_number}"
     }
 }
 
