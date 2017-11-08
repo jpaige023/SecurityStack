@@ -1,5 +1,5 @@
 resource "aws_vpc" "default" {
-    cidr_block = "${var.vpc_cidr}"
+    cidr_block = "${var.cidr_block}"
     enable_dns_hostnames = true
     tags {
         Name = "${var.vpc_security_stack}"
@@ -13,12 +13,12 @@ resource "aws_internet_gateway" "default" {
 /*
   Public Subnet
 */
-resource "aws_subnet" "az_a_public" {
+resource "aws_subnet" "subnet_public" {
     vpc_id = "${aws_vpc.default.id}"
-    cidr_block = "${var.az_a_public}"
-    availability_zone = "${var.aws_az_a}"
+    cidr_block = "${var.subnet_public}"
+    availability_zone = "${var.availability_zone}"
     tags {
-        Name = "az_a_public"
+        Name = "subnet_public"
     }
 }
 
@@ -33,11 +33,35 @@ resource "aws_route_table" "public" {
     }
 }
 
-resource "aws_route_table_association" "public_rt_az_a_public" {
-    subnet_id = "${aws_subnet.az_a_public.id}"
+resource "aws_route_table_association" "public_rt_public" {
+    subnet_id = "${aws_subnet.subnet_public.id}"
     route_table_id = "${aws_route_table.public.id}"
 }
 
+
+/*
+  Management Subnet
+*/
+resource "aws_subnet" "subnet_management" {
+    vpc_id = "${aws_vpc.default.id}"
+    cidr_block = "${var.cidr_block}"
+    availability_zone = "${var.availability_zone}"
+    tags {
+        Name = "subnet_management"
+    }
+}
+
+resource "aws_route_table" "management" {
+    vpc_id = "${aws_vpc.default.id}"
+    tags {
+        Name = "Management Subnet"
+    }
+}
+
+resource "aws_route_table_association" "private_rt_management" {
+    subnet_id = "${aws_subnet.subnet_management.id}"
+    route_table_id = "${aws_route_table.management.id}"
+}
 
 /*
   Private Subnets
@@ -49,87 +73,46 @@ resource "aws_route_table" "private" {
     }
 }
 
-resource "aws_subnet" "az_a_management" {
+resource "aws_subnet" "subnet_asav_ftd" {
     vpc_id = "${aws_vpc.default.id}"
-    cidr_block = "${var.az_a_management}"
-    availability_zone = "${var.aws_az_a}"
+    cidr_block = "${var.subnet_asav_ftd}"
+    availability_zone = "${var.availability_zone}"
     tags {
-        Name = "az_a_management"
-    }
-}
-
-resource "aws_route_table_association" "private_rt_az_a_management" {
-    subnet_id = "${aws_subnet.az_a_management.id}"
-    route_table_id = "${aws_route_table.private.id}"
-}
-
-resource "aws_subnet" "az_a_outside_csr_f5" {
-    vpc_id = "${aws_vpc.default.id}"
-    cidr_block = "${var.az_a_outside_csr_f5}"
-    availability_zone = "${var.aws_az_a}"
-    tags {
-        Name = "az_a_outside_csr_f5"
-    }
-}
-
-resource "aws_route_table_association" "private_rt_az_a_outside_csr_f5" {
-    subnet_id = "${aws_subnet.az_a_outside_csr_f5.id}"
-    route_table_id = "${aws_route_table.private.id}"
-}
-
-resource "aws_subnet" "az_a_outside_f5_asav" {
-    vpc_id = "${aws_vpc.default.id}"
-    cidr_block = "${var.az_a_outside_f5_asav}"
-    availability_zone = "${var.aws_az_a}"
-    tags {
-        Name = "az_a_outside_f5_asav"
-    }
-}
-
-resource "aws_route_table_association" "private_rt_az_a_outside_f5_asav" {
-    subnet_id = "${aws_subnet.az_a_outside_f5_asav.id}"
-    route_table_id = "${aws_route_table.private.id}"
-}
-
-resource "aws_subnet" "az_a_asav_ftd" {
-    vpc_id = "${aws_vpc.default.id}"
-    cidr_block = "${var.az_a_asav_ftd}"
-    availability_zone = "${var.aws_az_a}"
-    tags {
-        Name = "az_a_asav_ftd"
+        Name = "asav_ftd"
     }
 }
 
 resource "aws_route_table_association" "private_rt_az_a_asav_ftd" {
-    subnet_id = "${aws_subnet.az_a_asav_ftd.id}"
+    subnet_id = "${aws_subnet.subnet_asav_ftd.id}"
     route_table_id = "${aws_route_table.private.id}"
 }
 
-resource "aws_subnet" "az_a_inside_f5_ftd" {
+
+resource "aws_subnet" "subnet_inside_csr_fw" {
     vpc_id = "${aws_vpc.default.id}"
-    cidr_block = "${var.az_a_inside_f5_ftd}"
-    availability_zone = "${var.aws_az_a}"
+    cidr_block = "${var.subnet_inside_csr_fw}"
+    availability_zone = "${var.availability_zone}"
     tags {
-        Name = "az_a_inside_f5_ftd"
+        Name = "subnet_inside_csr_fw"
     }
 }
 
-resource "aws_route_table_association" "private_rt_az_a_inside_f5_ftd" {
-    subnet_id = "${aws_subnet.az_a_inside_f5_ftd.id}"
+resource "aws_route_table_association" "private_rt_subnet_inside_csr_fw" {
+    subnet_id = "${aws_subnet.subnet_inside_csr_fw.id}"
     route_table_id = "${aws_route_table.private.id}"
 }
 
-resource "aws_subnet" "az_a_inside_csr_f5" {
+resource "aws_subnet" "subnet_outside_csr_fw" {
     vpc_id = "${aws_vpc.default.id}"
-    cidr_block = "${var.az_a_inside_csr_f5}"
-    availability_zone = "${var.aws_az_a}"
+    cidr_block = "${var.subnet_outside_csr_fw}"
+    availability_zone = "${var.availability_zone}"
     tags {
-        Name = "az_a_inside_csr_f5"
+        Name = "subnet_outside_csr_fw"
     }
 }
 
-resource "aws_route_table_association" "private_rt_az_a_inside_csr_f5" {
-    subnet_id = "${aws_subnet.az_a_inside_csr_f5.id}"
+resource "aws_route_table_association" "private_rt_subnet_outside_csr_fw" {
+    subnet_id = "${aws_subnet.subnet_outside_csr_fw.id}"
     route_table_id = "${aws_route_table.private.id}"
 }
 
@@ -151,7 +134,7 @@ resource "aws_security_group" "SG_SSH_IPSEC" {
         from_port = 0
         to_port = 0
         protocol = "50"
-        cidr_blocks = ["${var.vpc_cidr}"]
+        cidr_blocks = ["${var.cidr_block}"]
     }
     ingress {
         from_port = 500
@@ -310,35 +293,6 @@ resource "aws_instance" "az_a_csr_outside" {
     }
 }
 
-resource "aws_instance" "az_a_f5_inside" {
-    ami = "${lookup(var.ami_f5, var.aws_region)}"
-    availability_zone = "${var.aws_az_a}"
-    instance_type = "${var.f5_instance_type}"
-    key_name = "${var.aws_key_name}"
-    vpc_security_group_ids = ["${aws_security_group.SG_All_Traffic.id}"]
-    subnet_id = "${aws_subnet.az_a_management.id}"
-    associate_public_ip_address = false
-	private_ip = "${var.az_a_f5_inside_e0}"
-    source_dest_check = true
-    tags {
-        Name = "az_a_f5_inside"
-    }
-}
-
-resource "aws_instance" "az_a_f5_outside" {
-    ami = "${lookup(var.ami_f5, var.aws_region)}"
-    availability_zone = "${var.aws_az_a}"
-    instance_type = "${var.f5_instance_type}"
-    key_name = "${var.aws_key_name}"
-    vpc_security_group_ids = ["${aws_security_group.SG_All_Traffic.id}"]
-    subnet_id = "${aws_subnet.az_a_management.id}"
-    associate_public_ip_address = false
-	private_ip = "${var.az_a_f5_outside_e0}"
-    source_dest_check = true
-    tags {
-        Name = "az_a_f5_outside"
-    }
-}
 
 
 /*
@@ -405,52 +359,3 @@ resource "aws_network_interface" "az_a_csr_outside_e2" {
 	}
 }
 
-/*
-  ENI az_a_f5_inside
-*/
-resource "aws_network_interface" "az_a_f5_inside_e1" {
-	subnet_id = "${aws_subnet.az_a_inside_csr_f5.id}"
-	private_ips = ["${var.az_a_f5_inside_e1}"]
-	security_groups = ["${aws_security_group.SG_All_Traffic.id}"]
-	source_dest_check = false
-	attachment {
-		instance = "${aws_instance.az_a_f5_inside.id}"
-		device_index = 1
-	}
-}
-
-resource "aws_network_interface" "az_a_f5_inside_e2" {
-	subnet_id = "${aws_subnet.az_a_inside_f5_ftd.id}"
-	private_ips = ["${var.az_a_f5_inside_e2}"]
-	security_groups = ["${aws_security_group.SG_All_Traffic.id}"]
-	source_dest_check = false
-	attachment {
-		instance = "${aws_instance.az_a_f5_inside.id}"
-		device_index = 2
-	}
-}
-
-/*
-  ENI az_a_f5_outside
-*/
-resource "aws_network_interface" "az_a_f5_outside_e1" {
-	subnet_id = "${aws_subnet.az_a_outside_csr_f5.id}"
-	private_ips = ["${var.az_a_f5_outside_e1}"]
-	security_groups = ["${aws_security_group.SG_All_Traffic.id}"]
-	source_dest_check = false
-	attachment {
-		instance = "${aws_instance.az_a_f5_outside.id}"
-		device_index = 1
-	}
-}
-
-resource "aws_network_interface" "az_a_f5_outside_e2" {
-	subnet_id = "${aws_subnet.az_a_outside_f5_asav.id}"
-	private_ips = ["${var.az_a_f5_outside_e2}"]
-	security_groups = ["${aws_security_group.SG_All_Traffic.id}"]
-	source_dest_check = false
-	attachment {
-		instance = "${aws_instance.az_a_f5_outside.id}"
-		device_index = 2
-	}
-}

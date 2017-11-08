@@ -3,12 +3,12 @@ variable "aws_secret_key" {}
 variable "aws_key_name" {}
 
 
-variable "aws_region" {
+variable "region" {
   type = "string"
   description = "The AWS Region"
 }
 
-variable "aws_az_a" {
+variable "availability_zone" {
   type = "string"
   description = "availability zone"
 }
@@ -20,16 +20,6 @@ variable "ami_csr1000v" {
     us-east-1 = "ami-bcbfb9c7"
     us-west-1 = "ami-99e5d0f9"
     us-west-2 = "ami-e4d43d9c"
-  }
-}
-
-variable "ami_f5" {
-  type = "map"
-  description = "F5 by region"
-  default = {
-    us-east-1 = "ami-4c76185a"
-    us-west-1 = "ami-e56d4b85"
-    us-west-2 = "ami-a4bc27c4"
   }
 }
 
@@ -71,10 +61,6 @@ variable "csr1000v_instance_type" {
 	default = "c4.large"
 }
 
-variable "f5_instance_type" {
-	default = "t2.medium"
-}
-
 variable "ftd_instance_type" {
 	default = "c3.xlarge"
 }
@@ -91,44 +77,28 @@ variable "bastion_instance_type" {
 /*
   VPC CIDR and Subnets
 */
-variable "vpc_cidr" {
+variable "cidr_block" {
     description = "CIDR for the whole VPC"
-    default = "172.31.0.0/21"
 }
 
-variable "az_a_public" {
-    description = "az_a_public"
-    default = "172.31.0.0/24"
+variable "subnet_public" {
+    description = "Public Subnet"
 }
 
-variable "az_a_management" {
-    description = "az_a_management"
-    default = "172.31.1.0/24"
+variable "subnet_management" {
+    description = "management subnet"
 }
 
-variable "az_a_outside_csr_f5" {
-    description = "az_a_outside_csr_f5"
-    default = "172.31.2.0/24"
+variable "subnet_outside_csr_fw" {
+    description = "outside csr fw"
 }
 
-variable "az_a_outside_f5_asav" {
-    description = "az_a_outside_f5_asav"
-    default = "172.31.3.0/24"
+variable "subnet_inside_csr_fw" {
+    description = "inside csr fw"
 }
 
-variable "az_a_asav_ftd" {
-    description = "az_a_asav_ftd"
-    default = "172.31.4.0/24"
-}
-
-variable "az_a_inside_f5_ftd" {
-    description = "az_a_inside_f5_ftd"
-    default = "172.31.5.0/24"
-}
-
-variable "az_a_inside_csr_f5" {
-    description = "az_a_inside_csr_f5"
-    default = "172.31.6.0/24"
+variable "subnet_asav_ftd" {
+    description = "asav fw"
 }
 
 /*
@@ -166,26 +136,3 @@ variable "az_a_csr_outside_e2" {
     default = "172.31.1.8"
 }
 
-variable "az_a_f5_inside_e0" {
-    default = "172.31.1.5"
-}
-
-variable "az_a_f5_inside_e1" {
-    default = "172.31.6.5"
-}
-
-variable "az_a_f5_inside_e2" {
-    default = "172.31.5.4"
-}
-
-variable "az_a_f5_outside_e0" {
-    default = "172.31.1.6"
-}
-
-variable "az_a_f5_outside_e1" {
-    default = "172.31.2.5"
-}
-
-variable "az_a_f5_outside_e2" {
-    default = "172.31.3.4"
-}
