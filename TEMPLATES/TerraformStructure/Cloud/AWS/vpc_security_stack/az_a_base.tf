@@ -226,8 +226,8 @@ resource "aws_security_group" "SG_All_Traffic" {
 /*
   EIPs
 */
-resource "aws_eip" "az_a_bastion_e0" {
-#    instance = "${aws_instance.az_a_bastion.id}"
+resource "aws_eip" "bastion_e0" {
+    instance = "${aws_instance.bastion.id}"
     network_interface = "${aws_instance.az_a_bastion.network_interface_id}"
     vpc = true
 }

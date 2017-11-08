@@ -105,34 +105,44 @@ variable "subnet_asav_ftd" {
   IP addresses
 */
 variable "az_a_bastion_e0" {
-    default = "172.31.0.50"
 }
 
 variable "az_a_bastion_e1" {
-    default = "172.31.1.4"
 }
 
-variable "az_a_csr_inside_e0" {
-    default = "172.31.0.10"
+variable "csr1000v_inside_egress_0_e0" {
 }
 
-variable "az_a_csr_inside_e1" {
-    default = "172.31.6.4"
+variable "csr1000v_inside_egress_0_e1" {
 }
 
-variable "az_a_csr_inside_e2" {
-    default = "172.31.1.7"
+variable "csr1000v_inside_egress_0_e2" {
 }
 
-variable "az_a_csr_outside_e0" {
-    default = "172.31.0.20"
+variable "csr1000v_inside_ingress_0_e0" {
 }
 
-variable "az_a_csr_outside_e1" {
-    default = "172.31.2.4"
+variable "csr1000v_inside_ingress_0_e1" {
 }
 
-variable "az_a_csr_outside_e2" {
-    default = "172.31.1.8"
+variable "csr1000v_inside_ingress_0_e2" {
+}
+
+variable "csr1000v_outside_egress_0_e0" {
+}
+
+variable "csr1000v_outside_egress_0_e1" {
+}
+
+variable "csr1000v_outside_egress_0_e2" {
+}
+
+variable "csr1000v_outside_ingress_0_e0" {
+}
+
+variable "csr1000v_outside_ingress_0_e1" {
+}
+
+variable "csr1000v_outside_ingress_0_e2" {
 }
 
