@@ -26,7 +26,7 @@ def main():
     dictionary_tfvars['cidr_block'] = cidr_block
 
 
-    with open('vdss_ip_addresses.auto.tfvars', 'w') as outfile:
+    with open('vdss_ip_addresses.auto.tfvars.json', 'w') as outfile:
         json.dump(dictionary_tfvars, outfile, sort_keys = True, indent = 4,
                ensure_ascii = False)
 
@@ -133,6 +133,19 @@ def vdss_ip_address_generation(vdss_subnets):
         vdss_addresses[e2] = tempaddress
 
         counter = counter + 1
+
+
+    # Generate bastion ips
+    counter = 0
+    e0 = 'bastion' + '_e0'
+    tempaddress = ip_public[counter + 15]
+    tempaddress = str(tempaddress)
+    vdss_addresses[e0] = tempaddress
+
+    e1 = 'bastion' + '_e1'
+    tempaddress = ip_management[counter + 15]
+    tempaddress = str(tempaddress)
+    vdss_addresses[e1] = tempaddress
 
     # Generate all asav addresses
     counter = 0
