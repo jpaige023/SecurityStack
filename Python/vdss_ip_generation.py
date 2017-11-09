@@ -4,8 +4,8 @@ import simplejson as json
 def main():
     """Needs input of CIDR block, region, availability, zone. Note CIDR block must be a /21 or larger"""
     cidr_block = "10.0.0.0/21"
-    region = "us-west-2"
-    availability_zone = "az_a"
+    region = "us-west-1"
+    availability_zone = "us-west-1a"
 
     vdss_subnets = vdss_subnets_generation(cidr_block)
 
@@ -45,29 +45,9 @@ def vdss_ip_address_generation(vdss_subnets):
     ip_asav_ftd = IPNetwork(vdss_subnets['subnet_asav_ftd'])
     ip_outside_csr_fw = IPNetwork(vdss_subnets['subnet_outside_csr_fw'])
     ip_inside_csr_fw = IPNetwork(vdss_subnets['subnet_inside_csr_fw'])
-    counter = 0
+
+
     vdss_addresses = {}
-    # Generate all csr1000v_inside_ingress addresses
-    while counter != 32:
-        strcounter = str(counter)
-
-        e0 = 'csr1000v_inside_ingress_' + strcounter + '_e0'
-        tempaddress = ip_public[counter + 32]
-        tempaddress = str(tempaddress)
-        vdss_addresses[e0] = tempaddress
-
-        e1 = 'csr1000v_inside_ingress_' + strcounter + '_e1'
-        tempaddress = ip_inside_csr_fw[counter + 32]
-        tempaddress = str(tempaddress)
-        vdss_addresses[e1] = tempaddress
-
-        e2 = 'csr1000v_inside_ingress_' + strcounter + "_e2"
-        tempaddress = ip_management[counter + 32]
-        tempaddress = str(tempaddress)
-        vdss_addresses[e2] = tempaddress
-
-        counter = counter + 1
-
     # Generate all csr1000v_inside_egress addresses
     counter = 0
     while counter != 6:
@@ -90,27 +70,17 @@ def vdss_ip_address_generation(vdss_subnets):
 
         counter = counter + 1
 
-    # Generate all csr1000v_outside_ingress addresses
+    # Generate bastion ips
     counter = 0
-    while counter != 32:
-        strcounter = str(counter)
+    e0 = 'bastion' + '_e0'
+    tempaddress = ip_public[counter + 15]
+    tempaddress = str(tempaddress)
+    vdss_addresses[e0] = tempaddress
 
-        e0 = 'csr1000v_outside_ingress_' + strcounter + '_e0'
-        tempaddress = ip_public[counter + 192]
-        tempaddress = str(tempaddress)
-        vdss_addresses[e0] = tempaddress
-
-        e1 = 'csr1000v_outside_ingress_' + strcounter + '_e1'
-        tempaddress = ip_outside_csr_fw[counter + 192]
-        tempaddress = str(tempaddress)
-        vdss_addresses[e1] = tempaddress
-
-        e2 = 'csr1000v_outside_ingress_' + strcounter + "_e2"
-        tempaddress = ip_management[counter + 192]
-        tempaddress = str(tempaddress)
-        vdss_addresses[e2] = tempaddress
-
-        counter = counter + 1
+    e1 = 'bastion' + '_e1'
+    tempaddress = ip_management[counter + 15]
+    tempaddress = str(tempaddress)
+    vdss_addresses[e1] = tempaddress
 
     # Generate all csr1000v_outside_egress addresses
     counter = 0
@@ -134,18 +104,39 @@ def vdss_ip_address_generation(vdss_subnets):
 
         counter = counter + 1
 
-
-    # Generate bastion ips
+    # Generate ansible_controller
     counter = 0
-    e0 = 'bastion' + '_e0'
-    tempaddress = ip_public[counter + 15]
+    e0 = 'controller' + '_e0'
+    tempaddress = ip_management[counter + 22]
     tempaddress = str(tempaddress)
     vdss_addresses[e0] = tempaddress
 
-    e1 = 'bastion' + '_e1'
-    tempaddress = ip_management[counter + 15]
+    e1 = 'controller' + '_e1'
+    tempaddress = ip_inside_csr_fw[counter + 22]
     tempaddress = str(tempaddress)
     vdss_addresses[e1] = tempaddress
+
+    # Generate all csr1000v_inside_ingress addresses
+    while counter != 32:
+        strcounter = str(counter)
+
+        e0 = 'csr1000v_inside_ingress_' + strcounter + '_e0'
+        tempaddress = ip_public[counter + 32]
+        tempaddress = str(tempaddress)
+        vdss_addresses[e0] = tempaddress
+
+        e1 = 'csr1000v_inside_ingress_' + strcounter + '_e1'
+        tempaddress = ip_inside_csr_fw[counter + 32]
+        tempaddress = str(tempaddress)
+        vdss_addresses[e1] = tempaddress
+
+        e2 = 'csr1000v_inside_ingress_' + strcounter + "_e2"
+        tempaddress = ip_management[counter + 32]
+        tempaddress = str(tempaddress)
+        vdss_addresses[e2] = tempaddress
+
+        counter = counter + 1
+
 
     # Generate all asav addresses
     counter = 0
@@ -193,6 +184,28 @@ def vdss_ip_address_generation(vdss_subnets):
         tempaddress = ip_asav_ftd[counter + 96]
         tempaddress = str(tempaddress)
         vdss_addresses[e3] = tempaddress
+
+        counter = counter + 1
+
+    # Generate all csr1000v_outside_ingress addresses
+    counter = 0
+    while counter != 32:
+        strcounter = str(counter)
+
+        e0 = 'csr1000v_outside_ingress_' + strcounter + '_e0'
+        tempaddress = ip_public[counter + 192]
+        tempaddress = str(tempaddress)
+        vdss_addresses[e0] = tempaddress
+
+        e1 = 'csr1000v_outside_ingress_' + strcounter + '_e1'
+        tempaddress = ip_outside_csr_fw[counter + 192]
+        tempaddress = str(tempaddress)
+        vdss_addresses[e1] = tempaddress
+
+        e2 = 'csr1000v_outside_ingress_' + strcounter + "_e2"
+        tempaddress = ip_management[counter + 192]
+        tempaddress = str(tempaddress)
+        vdss_addresses[e2] = tempaddress
 
         counter = counter + 1
 
