@@ -1,17 +1,5 @@
-variable "aws_key_name" {}
-variable "SG_All_Traffic" {}
-variable "SG_SSH" {}
-variable "bastion_e0" {}
-variable "bastion_e1" {}
-
-variable "region" {
-  type        = "string"
-  description = "The AWS Region"
-}
-
-variable "availability_zone" {
-  type        = "string"
-  description = "availability zone"
+variable "bastion_instance_type" {
+  default = "t2.micro"
 }
 
 variable "ami_bastion" {
@@ -25,18 +13,16 @@ variable "ami_bastion" {
   }
 }
 
-variable "bastion_instance_type" {
-  default = "t2.micro"
-}
+variable "region" {}
+variable "availability_zone" {}
+variable "aws_key_name" {}
 
-variable "cidr_block" {
-  description = "CIDR for the whole VPC"
-}
+variable "SG_All_Traffic" {}
+variable "SG_SSH" {}
 
-variable "subnet_public" {
-  description = "Public Subnet"
-}
+variable "cidr_block" {}
+variable "subnet_public" {}
+variable "subnet_management" {}
 
-variable "subnet_management" {
-  description = "management subnet"
-}
+variable "bastion_e0" {}
+variable "bastion_e1" {}

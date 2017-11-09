@@ -1,35 +1,3 @@
-variable "aws_key_name" {}
-variable "SG_All_Traffic" {}
-variable "SG_SSH" {}
-variable "asav_general_e0" {}
-variable "asav_general_e1" {}
-variable "asav_general_e2" {}
-variable "ftd_general_e0" {}
-variable "ftd_general_e1" {}
-variable "ftd_general_e2" {}
-variable "ftd_general_e3" {}
-
-
-variable "region" {
-  type        = "string"
-  description = "The AWS Region"
-}
-
-variable "availability_zone" {
-  type        = "string"
-  description = "availability zone"
-}
-
-variable "region" {
-  type        = "string"
-  description = "The AWS Region"
-}
-
-variable "availability_zone" {
-  type        = "string"
-  description = "availability zone"
-}
-
 variable "ami_ftd" {
   type        = "map"
   description = "FTD by region"
@@ -41,6 +9,9 @@ variable "ami_ftd" {
   }
 }
 
+variable "ftd_instance_type" {
+  default = "c3.xlarge"
+}
 variable "ami_asav" {
   type        = "map"
   description = "ASAv by region"
@@ -52,26 +23,26 @@ variable "ami_asav" {
   }
 }
 
-variable "ftd_instance_type" {
-  default = "c3.xlarge"
-}
-
 variable "asav_instance_type" {
   default = "c3.large"
 }
 
-variable "subnet_management" {
-  description = "management subnet"
-}
+variable "aws_key_name" {}
+variable "region" {}
+variable "availability_zone" {}
 
-variable "subnet_outside_csr_fw" {
-  description = "outside csr fw"
-}
+variable "SG_All_Traffic" {}
+variable "SG_SSH" {}
 
-variable "subnet_inside_csr_fw" {
-  description = "inside csr fw"
-}
+variable "subnet_management" {}
+variable "subnet_outside_csr_fw" {}
+variable "subnet_inside_csr_fw" {}
+variable "subnet_asav_ftd" {}
 
-variable "subnet_asav_ftd" {
-  description = "asav fw"
-}
+variable "asav_general_e0" {}
+variable "asav_general_e1" {}
+variable "asav_general_e2" {}
+variable "ftd_general_e0" {}
+variable "ftd_general_e1" {}
+variable "ftd_general_e2" {}
+variable "ftd_general_e3" {}

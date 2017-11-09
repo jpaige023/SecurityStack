@@ -35,7 +35,7 @@ resource "aws_instance" "ftd_general" {
 }
 
 /*
-  ENI az_a_asav_0
+  ENIs asav
 */
 resource "aws_network_interface" "asav_general_e1" {
   subnet_id         = "${var.subnet_outside_csr_fw}"
@@ -62,7 +62,7 @@ resource "aws_network_interface" "asav_general_e2" {
 }
 
 /*
-  ENI az_a_ftd
+  ENIs ftd
 */
 resource "aws_network_interface" "ftd_general_e1" {
   subnet_id         = "${var.subnet_management}"

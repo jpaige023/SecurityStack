@@ -71,13 +71,6 @@ resource "aws_route_table_association" "private_rt_management" {
 /*
   Private Subnets
 */
-resource "aws_route_table" "private" {
-  vpc_id = "${aws_vpc.default.id}"
-
-  tags {
-    Name = "Private Subnets"
-  }
-}
 
 resource "aws_subnet" "subnet_asav_ftd" {
   vpc_id            = "${aws_vpc.default.id}"
@@ -86,6 +79,14 @@ resource "aws_subnet" "subnet_asav_ftd" {
 
   tags {
     Name = "asav_ftd"
+  }
+}
+
+resource "aws_route_table" "private" {
+  vpc_id = "${aws_vpc.default.id}"
+
+  tags {
+    Name = "Private Subnets"
   }
 }
 

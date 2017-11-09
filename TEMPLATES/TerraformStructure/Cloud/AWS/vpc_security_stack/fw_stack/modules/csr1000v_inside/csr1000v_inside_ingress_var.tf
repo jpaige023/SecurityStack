@@ -1,22 +1,3 @@
-variable "csr1000v_inside_e0" {}
-
-variable "csr1000v_inside_e1" {}
-
-variable "csr1000v_inside_e2" {}
-variable "aws_key_name" {}
-variable "SG_All_Traffic" {}
-variable "SG_SSH_IPSEC" {}
-variable "region" {
-  type        = "string"
-  description = "The AWS Region"
-}
-
-variable "availability_zone" {
-  type        = "string"
-  description = "availability zone"
-}
-
-
 variable "ami_csr1000v" {
   type        = "map"
   description = "CSR1000v by region"
@@ -28,19 +9,21 @@ variable "ami_csr1000v" {
   }
 }
 
-
 variable "csr1000v_instance_type" {
   default = "c4.large"
 }
 
-variable "subnet_public" {
-  description = "Public Subnet"
-}
+variable "aws_key_name" {}
+variable "region" {}
+variable "availability_zone" {}
 
-variable "subnet_management" {
-  description = "management subnet"
-}
+variable "SG_All_Traffic" {}
+variable "SG_SSH_IPSEC" {}
 
-variable "subnet_inside_csr_fw" {
-  description = "inside csr fw"
-}
+variable "subnet_public" {}
+variable "subnet_management" {}
+variable "subnet_inside_csr_fw" {}
+
+variable "csr1000v_inside_e0" {}
+variable "csr1000v_inside_e1" {}
+variable "csr1000v_inside_e2" {}
