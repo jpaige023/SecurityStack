@@ -47,7 +47,7 @@ resource "aws_route_table_association" "public_rt_public" {
 */
 resource "aws_subnet" "subnet_management" {
   vpc_id            = "${aws_vpc.default.id}"
-  cidr_block        = "${var.cidr_block}"
+  cidr_block        = "${var.subnet_management}"
   availability_zone = "${var.availability_zone}"
 
   tags {
