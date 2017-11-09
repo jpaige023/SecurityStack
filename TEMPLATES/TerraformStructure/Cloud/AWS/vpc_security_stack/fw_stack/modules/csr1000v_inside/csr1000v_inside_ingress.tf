@@ -17,6 +17,7 @@ resource "aws_instance" "csr1000v_inside" {
   associate_public_ip_address = true
   private_ip                  = "${var.csr1000v_inside_e0}"
   source_dest_check           = true
+
   tags {
     Name = "csr1000v_inside"
   }
@@ -27,6 +28,7 @@ resource "aws_network_interface" "csr1000v_inside_e1" {
   private_ips       = ["${var.csr1000v_inside_e1}"]
   security_groups   = ["${var.SG_All_Traffic}"]
   source_dest_check = false
+
   attachment {
     instance     = "${aws_instance.csr1000v_inside.id}"
     device_index = 1
@@ -38,6 +40,7 @@ resource "aws_network_interface" "csr1000v_inside_e2" {
   private_ips       = ["${var.csr1000v_inside_e2}"]
   security_groups   = ["${var.SG_All_Traffic}"]
   source_dest_check = true
+
   attachment {
     instance     = "${aws_instance.csr1000v_inside.id}"
     device_index = 2

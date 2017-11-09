@@ -6,7 +6,6 @@ variable "ftd_general_0_e1" {}
 variable "ftd_general_0_e2" {}
 variable "ftd_general_0_e3" {}
 
-
 module "firewalls" {
   source                = "./modules/firewalls"
   region                = "${var.region}"

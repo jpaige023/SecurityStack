@@ -12,6 +12,7 @@ variable "ami_ftd" {
 variable "ftd_instance_type" {
   default = "c3.xlarge"
 }
+
 variable "ami_asav" {
   type        = "map"
   description = "ASAv by region"
