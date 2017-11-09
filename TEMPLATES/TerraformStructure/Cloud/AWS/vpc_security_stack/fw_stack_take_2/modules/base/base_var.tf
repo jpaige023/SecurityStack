@@ -19,42 +19,12 @@ variable "ami_csr1000v" {
   }
 }
 
-variable "ami_ftd" {
-  type        = "map"
-  description = "FTD by region"
-
-  default = {
-    us-east-1 = "ami-7ff93e69"
-    us-west-1 = "ami-f7015d97"
-    us-west-2 = "ami-afd550cf"
-  }
-}
-
-variable "ami_asav" {
-  type        = "map"
-  description = "ASAv by region"
-
-  default = {
-    us-east-1 = "ami-b5e0ada2"
-    us-west-1 = "ami-2d79304d"
-    us-west-2 = "ami-8e60b9ee"
-  }
-}
-
 variable "vpc_security_stack" {
   default = "VPCSecurityStack"
 }
 
 variable "csr1000v_instance_type" {
   default = "c4.large"
-}
-
-variable "ftd_instance_type" {
-  default = "c3.xlarge"
-}
-
-variable "asav_instance_type" {
-  default = "c3.large"
 }
 
 /*

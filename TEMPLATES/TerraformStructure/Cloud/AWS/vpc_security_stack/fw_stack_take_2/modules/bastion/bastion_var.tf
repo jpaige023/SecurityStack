@@ -1,14 +1,7 @@
-/*
-  IP addresses
-*/
-
 variable "aws_key_name" {}
-
 variable "SG_All_Traffic" {}
 variable "SG_SSH" {}
-
 variable "bastion_e0" {}
-
 variable "bastion_e1" {}
 
 variable "region" {
