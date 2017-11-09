@@ -10,7 +10,8 @@ resource "aws_instance" "controller" {
   source_dest_check           = true
 
   tags {
-    Name = "controller"
+    Name = "${var.name}"
+    VPC  = "${var.region}_${var.availability_zone}_security_stack"
   }
 }
 

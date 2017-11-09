@@ -7,7 +7,7 @@ variable "ftd_general_0_e2" {}
 variable "ftd_general_0_e3" {}
 
 module "firewalls" {
-  source                = "modules\/firewalls"
+  source                = "./modules/firewalls"
   region                = "${var.region}"
   subnet_asav_ftd       = "${module.base.subnet_asav_ftd}"
   subnet_management     = "${module.base.subnet_management}"
@@ -24,4 +24,6 @@ module "firewalls" {
   ftd_general_e1        = "${var.ftd_general_0_e1}"
   ftd_general_e2        = "${var.ftd_general_0_e2}"
   ftd_general_e3        = "${var.ftd_general_0_e3}"
+  ftd_name              = "vdss_ftd_XXXXX"
+  asav_name             = "vdss_asav_XXXXX"
 }

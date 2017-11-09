@@ -19,7 +19,8 @@ resource "aws_instance" "csr1000v_inside" {
   source_dest_check           = true
 
   tags {
-    Name = "csr1000v_inside"
+    Name = "${var.name}"
+    VPC  = "${var.region}_${var.availability_zone}_security_stack"
   }
 }
 

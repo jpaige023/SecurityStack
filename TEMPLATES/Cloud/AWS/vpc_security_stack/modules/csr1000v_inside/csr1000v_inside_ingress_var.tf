@@ -16,6 +16,7 @@ variable "csr1000v_instance_type" {
 variable "aws_key_name" {}
 variable "region" {}
 variable "availability_zone" {}
+variable "name" {}
 
 variable "SG_All_Traffic" {}
 variable "SG_SSH_IPSEC" {}

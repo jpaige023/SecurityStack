@@ -16,13 +16,11 @@ resource "aws_instance" "bastion" {
   source_dest_check           = true
 
   tags {
-    Name = "bastion"
+    Name = "${var.name}"
+    VPC  = "${var.region}_${var.availability_zone}_security_stack"
   }
 }
 
-/*
-  ENI az_a_bastion
-*/
 resource "aws_network_interface" "bastion_e1" {
   subnet_id         = "${var.subnet_management}"
   private_ips       = ["${var.bastion_e1}"]

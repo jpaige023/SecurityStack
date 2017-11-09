@@ -3,12 +3,18 @@ resource "aws_vpc" "default" {
   enable_dns_hostnames = true
 
   tags {
-    Name = "${var.region}security_stack"
+    Name = "${var.region}_${var.availability_zone}_security_stack"
+    VPC  = "${var.region}_${var.availability_zone}_security_stack"
   }
 }
 
 resource "aws_internet_gateway" "default" {
   vpc_id = "${aws_vpc.default.id}"
+
+  tags {
+    Name = "${var.region}_${var.availability_zone}_security_stack"
+    VPC  = "${var.region}_${var.availability_zone}_security_stack"
+  }
 }
 
 /*
@@ -21,6 +27,7 @@ resource "aws_subnet" "subnet_public" {
 
   tags {
     Name = "subnet_public"
+    VPC  = "${var.region}_${var.availability_zone}_security_stack"
   }
 }
 
@@ -34,6 +41,7 @@ resource "aws_route_table" "public" {
 
   tags {
     Name = "Public Subnets"
+    VPC  = "${var.region}_${var.availability_zone}_security_stack"
   }
 }
 
@@ -52,6 +60,7 @@ resource "aws_subnet" "subnet_management" {
 
   tags {
     Name = "subnet_management"
+    VPC  = "${var.region}_${var.availability_zone}_security_stack"
   }
 }
 
@@ -60,6 +69,7 @@ resource "aws_route_table" "management" {
 
   tags {
     Name = "Management Subnet"
+    VPC  = "${var.region}_${var.availability_zone}_security_stack"
   }
 }
 
@@ -79,6 +89,7 @@ resource "aws_subnet" "subnet_asav_ftd" {
 
   tags {
     Name = "asav_ftd"
+    VPC  = "${var.region}_${var.availability_zone}_security_stack"
   }
 }
 
@@ -87,6 +98,7 @@ resource "aws_route_table" "private" {
 
   tags {
     Name = "Private Subnets"
+    VPC  = "${var.region}_${var.availability_zone}_security_stack"
   }
 }
 
@@ -102,6 +114,7 @@ resource "aws_subnet" "subnet_inside_csr_fw" {
 
   tags {
     Name = "subnet_inside_csr_fw"
+    VPC  = "${var.region}_${var.availability_zone}_security_stack"
   }
 }
 
@@ -117,6 +130,7 @@ resource "aws_subnet" "subnet_outside_csr_fw" {
 
   tags {
     Name = "subnet_outside_csr_fw"
+    VPC  = "${var.region}_${var.availability_zone}_security_stack"
   }
 }
 
@@ -178,6 +192,7 @@ resource "aws_security_group" "SG_SSH_IPSEC" {
 
   tags {
     Name = "SG_SSH_IPSEC"
+    VPC  = "${var.region}_${var.availability_zone}_security_stack"
   }
 }
 
@@ -210,6 +225,7 @@ resource "aws_security_group" "SG_SSH" {
 
   tags {
     Name = "SG_SSH"
+    VPC  = "${var.region}_${var.availability_zone}_security_stack"
   }
 }
 
@@ -235,5 +251,6 @@ resource "aws_security_group" "SG_All_Traffic" {
 
   tags {
     Name = "SG_All_Traffic"
+    VPC  = "${var.region}_${var.availability_zone}_security_stack"
   }
 }

@@ -31,6 +31,8 @@ variable "asav_instance_type" {
 variable "aws_key_name" {}
 variable "region" {}
 variable "availability_zone" {}
+variable "asav_name" {}
+variable "ftd_name" {}
 
 variable "SG_All_Traffic" {}
 variable "SG_SSH" {}

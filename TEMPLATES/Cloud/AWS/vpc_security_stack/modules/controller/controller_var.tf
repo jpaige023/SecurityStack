@@ -16,6 +16,7 @@ variable "ami_controller" {
 variable "region" {}
 variable "availability_zone" {}
 variable "aws_key_name" {}
+variable "name" {}
 
 variable "SG_All_Traffic" {}
 variable "SG_SSH" {}

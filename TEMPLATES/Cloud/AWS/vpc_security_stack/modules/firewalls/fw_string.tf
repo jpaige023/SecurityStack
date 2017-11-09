@@ -13,7 +13,8 @@ resource "aws_instance" "asav_general" {
   source_dest_check           = true
 
   tags {
-    Name = "asav_general"
+    Name = "${var.asav_name}"
+    VPC  = "${var.region}_${var.availability_zone}_security_stack"
   }
 }
 
@@ -30,7 +31,8 @@ resource "aws_instance" "ftd_general" {
 
   #    user_data = "${file("ftd.conf")}"
   tags {
-    Name = "ftd_general"
+    Name = "${var.ftd_name}"
+    VPC  = "${var.region}_${var.availability_zone}_security_stack"
   }
 }
 
