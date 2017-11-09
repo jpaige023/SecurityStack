@@ -77,7 +77,7 @@ resource "aws_network_interface" "ftd_general_e1" {
 }
 
 resource "aws_network_interface" "ftd_general_e2" {
-  subnet_id         = "${var.subnet_asav_ftd}"
+  subnet_id         = "${var.subnet_inside_csr_fw}"
   private_ips       = ["${var.ftd_general_e2}"]
   security_groups   = ["${var.SG_All_Traffic}"]
   source_dest_check = false
@@ -89,7 +89,7 @@ resource "aws_network_interface" "ftd_general_e2" {
 }
 
 resource "aws_network_interface" "ftd_general_e3" {
-  subnet_id         = "${var.subnet_inside_csr_fw}"
+  subnet_id         = "${var.subnet_asav_ftd}"
   private_ips       = ["${var.ftd_general_e3}"]
   security_groups   = ["${var.SG_All_Traffic}"]
   source_dest_check = false
