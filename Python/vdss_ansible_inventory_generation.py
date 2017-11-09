@@ -10,7 +10,7 @@ def main():
     asav_general = ["[asav_general]\n"]
     ftd_general = ["[ftd_general]\n"]
     master_list = []
-    with open('vdss_ip_addresses.auto.tfvars') as json_data:
+    with open('vdss_ip_addresses.auto.tfvars.json') as json_data:
         vdss_ip_addresses = json.load(json_data)
     for key, value in vdss_ip_addresses.items():
         if re.search(r"^csr1000v_inside_ingress", key):

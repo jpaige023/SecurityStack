@@ -8,23 +8,8 @@ variable "availability_zone" {
   description = "availability zone"
 }
 
-variable "ami_csr1000v" {
-  type        = "map"
-  description = "CSR1000v by region"
-
-  default = {
-    us-east-1 = "ami-bcbfb9c7"
-    us-west-1 = "ami-99e5d0f9"
-    us-west-2 = "ami-e4d43d9c"
-  }
-}
-
 variable "vpc_security_stack" {
   default = "VPCSecurityStack"
-}
-
-variable "csr1000v_instance_type" {
-  default = "c4.large"
 }
 
 /*

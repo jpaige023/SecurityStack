@@ -9,6 +9,17 @@ variable "ftd_general_e1" {}
 variable "ftd_general_e2" {}
 variable "ftd_general_e3" {}
 
+
+variable "region" {
+  type        = "string"
+  description = "The AWS Region"
+}
+
+variable "availability_zone" {
+  type        = "string"
+  description = "availability zone"
+}
+
 variable "region" {
   type        = "string"
   description = "The AWS Region"
