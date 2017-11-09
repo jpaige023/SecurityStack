@@ -2,7 +2,7 @@ variable "controller_e0" {}
 variable "controller_e1" {}
 
 module "controller" {
-  source               = "./modules/controller"
+  source               = "modules\/controller"
   controller_e0        = "${var.controller_e0}"
   controller_e1        = "${var.controller_e1}"
   cidr_block           = "${var.cidr_block}"

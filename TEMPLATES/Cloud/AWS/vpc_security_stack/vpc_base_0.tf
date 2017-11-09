@@ -11,7 +11,7 @@ variable "subnet_asav_ftd" {}
 variable "availability_zone" {}
 
 module "base" {
-  source                = "./modules/base"
+  source                = "modules\/base"
   cidr_block            = "${var.cidr_block}"
   region                = "${var.region}"
   subnet_public         = "${var.subnet_public}"

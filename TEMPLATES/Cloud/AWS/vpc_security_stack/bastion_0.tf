@@ -2,7 +2,7 @@ variable "bastion_e0" {}
 variable "bastion_e1" {}
 
 module "bastion" {
-  source            = "./modules/bastion"
+  source            = "modules\/bastion"
   bastion_e0        = "${var.bastion_e0}"
   bastion_e1        = "${var.bastion_e1}"
   cidr_block        = "${var.cidr_block}"

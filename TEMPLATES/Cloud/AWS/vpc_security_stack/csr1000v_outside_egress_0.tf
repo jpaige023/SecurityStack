@@ -3,7 +3,7 @@ variable "csr1000v_outside_egress_0_e1" {}
 variable "csr1000v_outside_egress_0_e2" {}
 
 module "csr1000v_outside_egress" {
-  source                = "./modules/csr1000v_outside"
+  source                = "modules\/csr1000v_outside"
   region                = "${var.region}"
   subnet_public         = "${module.base.subnet_public}"
   subnet_management     = "${module.base.subnet_management}"
