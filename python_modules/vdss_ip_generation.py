@@ -1,11 +1,11 @@
 from netaddr import *
 import simplejson as json
 
-def main():
+def main(cidr_block, region, availability_zone):
     """Needs input of CIDR block, region, availability, zone. Note CIDR block must be a /21 or larger"""
-    cidr_block = "10.0.0.0/21"
-    region = "us-west-1"
-    availability_zone = "us-west-1a"
+#    cidr_block = "10.0.0.0/21"
+#    region = "us-west-1"
+#    availability_zone = "us-west-1a"
 
     vdss_subnets = vdss_subnets_generation(cidr_block)
 
