@@ -11,6 +11,11 @@ def main():
     cloud_provider = "aws"
     region = "us-west-1"
     availability_zone = "us-west-1a"
+    device_number_csr1000v_inside_ingress_count = 5
+    device_number_csr1000v_inside_egress_count = 1
+    device_number_csr1000v_outside_ingress_count = 1
+    device_number_csr1000v_outside_egress_count = 1
+    device_number_firewalls_count = 1
 
     settings_dictionary = load_settings()
     vpc_number = vpc_number_get()
@@ -35,50 +40,69 @@ def main():
         shell=True)
 
     # csr1000v inside ingress
-    device_number_csr1000v_inside_ingress = "0"
-    replacements = {'XXXXX': device_number_csr1000v_inside_ingress}
-    with open("TEMPLATES/Cloud/{}/vpc_security_stack/csr1000v_inside_ingress_0.tf".format(cloud_provider.upper())) as infile, open(
-            "VPCs/{}/csr1000v_inside_ingress_{}.tf".format(vpc_number, device_number_csr1000v_inside_ingress), 'w') as outfile:
-        for line in infile:
-            for src, target in replacements.iteritems():
-                line = line.replace(src, target)
-            outfile.write(line)
+    device_number_csr1000v_inside_ingress_counter = 0
+    while device_number_csr1000v_inside_ingress_counter != device_number_csr1000v_inside_ingress_count:
+        device_number_csr1000v_inside_ingress = str(device_number_csr1000v_inside_ingress_counter)
+        replacements = {'XXXXX': device_number_csr1000v_inside_ingress}
+        with open("TEMPLATES/Cloud/{}/vpc_security_stack/csr1000v_inside_ingress_0.tf".format(cloud_provider.upper())) as infile, open(
+                "VPCs/{}/csr1000v_inside_ingress_{}.tf".format(vpc_number, device_number_csr1000v_inside_ingress), 'w') as outfile:
+            for line in infile:
+                for src, target in replacements.iteritems():
+                    line = line.replace(src, target)
+                outfile.write(line)
+        device_number_csr1000v_inside_ingress_counter = device_number_csr1000v_inside_ingress_counter + 1
+
     # csr1000v inside egress
-    device_number_csr1000v_inside_egress = "0"
-    replacements = {'XXXXX': device_number_csr1000v_inside_egress}
-    with open("TEMPLATES/Cloud/{}/vpc_security_stack/csr1000v_inside_egress_0.tf".format(cloud_provider.upper())) as infile, open(
-            "VPCs/{}/csr1000v_inside_egress_{}.tf".format(vpc_number, device_number_csr1000v_inside_egress), 'w') as outfile:
-        for line in infile:
-            for src, target in replacements.iteritems():
-                line = line.replace(src, target)
-            outfile.write(line)
+    device_number_csr1000v_inside_egress_counter = 0
+    while device_number_csr1000v_inside_egress_counter != device_number_csr1000v_inside_egress_count:
+        device_number_csr1000v_inside_egress = str(device_number_csr1000v_inside_egress_counter)
+        replacements = {'XXXXX': device_number_csr1000v_inside_egress}
+        with open("TEMPLATES/Cloud/{}/vpc_security_stack/csr1000v_inside_egress_0.tf".format(cloud_provider.upper())) as infile, open(
+                "VPCs/{}/csr1000v_inside_egress_{}.tf".format(vpc_number, device_number_csr1000v_inside_egress), 'w') as outfile:
+            for line in infile:
+                for src, target in replacements.iteritems():
+                    line = line.replace(src, target)
+                outfile.write(line)
+        device_number_csr1000v_inside_egress_counter = device_number_csr1000v_inside_egress_counter + 1
+
     # csr1000v outside ingress
-    device_number_csr1000v_outside_ingress = "0"
-    replacements = {'XXXXX': device_number_csr1000v_outside_ingress}
-    with open("TEMPLATES/Cloud/{}/vpc_security_stack/csr1000v_outside_ingress_0.tf".format(cloud_provider.upper())) as infile, open(
-            "VPCs/{}/csr1000v_outside_ingress_{}.tf".format(vpc_number, device_number_csr1000v_outside_ingress), 'w') as outfile:
-        for line in infile:
-            for src, target in replacements.iteritems():
-                line = line.replace(src, target)
-            outfile.write(line)
+    device_number_csr1000v_outside_ingress_counter = 0
+    while device_number_csr1000v_outside_ingress_counter != device_number_csr1000v_outside_ingress_count:
+        device_number_csr1000v_outside_ingress = str(device_number_csr1000v_outside_ingress_counter)
+        replacements = {'XXXXX': device_number_csr1000v_outside_ingress}
+        with open("TEMPLATES/Cloud/{}/vpc_security_stack/csr1000v_outside_ingress_0.tf".format(cloud_provider.upper())) as infile, open(
+                "VPCs/{}/csr1000v_outside_ingress_{}.tf".format(vpc_number, device_number_csr1000v_outside_ingress), 'w') as outfile:
+            for line in infile:
+                for src, target in replacements.iteritems():
+                    line = line.replace(src, target)
+                outfile.write(line)
+        device_number_csr1000v_outside_ingress_counter = device_number_csr1000v_outside_ingress_counter + 1
+
     # csr1000v outside egress
-    device_number_csr1000v_outside_egress = "0"
-    replacements = {'XXXXX': device_number_csr1000v_outside_egress}
-    with open("TEMPLATES/Cloud/{}/vpc_security_stack/csr1000v_outside_egress_0.tf".format(cloud_provider.upper())) as infile, open(
-            "VPCs/{}/csr1000v_outside_egress_{}.tf".format(vpc_number, device_number_csr1000v_outside_egress), 'w') as outfile:
-        for line in infile:
-            for src, target in replacements.iteritems():
-                line = line.replace(src, target)
-            outfile.write(line)
+    device_number_csr1000v_outside_egress_counter = 0
+    while device_number_csr1000v_outside_egress_counter != device_number_csr1000v_outside_egress_count:
+        device_number_csr1000v_outside_egress = str(device_number_csr1000v_outside_egress_counter)
+        replacements = {'XXXXX': device_number_csr1000v_outside_egress}
+        with open("TEMPLATES/Cloud/{}/vpc_security_stack/csr1000v_outside_egress_0.tf".format(cloud_provider.upper())) as infile, open(
+                "VPCs/{}/csr1000v_outside_egress_{}.tf".format(vpc_number, device_number_csr1000v_outside_egress), 'w') as outfile:
+            for line in infile:
+                for src, target in replacements.iteritems():
+                    line = line.replace(src, target)
+                outfile.write(line)
+        device_number_csr1000v_outside_egress_counter = device_number_csr1000v_outside_egress_counter + 1
+
     # firewalls
-    device_number_firewalls = "0"
-    replacements = {'XXXXX': device_number_firewalls}
-    with open("TEMPLATES/Cloud/{}/vpc_security_stack/firewalls_0.tf".format(cloud_provider.upper())) as infile, open(
-            "VPCs/{}/firewalls_{}.tf".format(vpc_number, device_number_firewalls), 'w') as outfile:
-        for line in infile:
-            for src, target in replacements.iteritems():
-                line = line.replace(src, target)
-            outfile.write(line)
+    device_number_firewalls_counter = 0
+    while device_number_firewalls_counter != device_number_firewalls_count:
+        device_number_firewalls = str(device_number_firewalls_counter)
+        replacements = {'XXXXX': device_number_firewalls}
+        with open("TEMPLATES/Cloud/{}/vpc_security_stack/firewalls_0.tf".format(cloud_provider.upper())) as infile, open(
+                "VPCs/{}/firewalls_{}.tf".format(vpc_number, device_number_firewalls), 'w') as outfile:
+            for line in infile:
+                for src, target in replacements.iteritems():
+                    line = line.replace(src, target)
+                outfile.write(line)
+    device_number_firewalls_counter = device_number_firewalls_counter + 1
 
 
 def load_settings():
