@@ -3,6 +3,42 @@ from netaddr import *
 from copy import deepcopy
 
 
+def main(cidr_block, user_subnet_masks, region, availability_zone, vpc_number, vpc_template):
+#    import simplejson as json
+#    from netaddr import *
+#    from copy import deepcopy
+#    cidr_block = "10.0.0.0/21"
+#    user_subnet_masks = 28
+#    region = "us-west-1"
+#    availability_zone = "us-west-1a"
+#    vpc_number = 100
+#    vpc_template = 'dev'
+
+    dictionary_tfvars = {}
+    if vpc_template == "dev":
+        dictionary_tfvars = address_generation_dev(cidr_block, user_subnet_masks)
+    elif vpc_template == "standard":
+        dictionary_tfvars = address_generation_standard(cidr_block, user_subnet_masks)
+    else:
+        dictionary_tfvars = address_generation_high_availability(cidr_block, user_subnet_masks)
+
+    dictionary_tfvars['region'] = region
+    dictionary_tfvars['availability_zone'] = availability_zone
+    dictionary_tfvars['cidr_block'] = cidr_block
+
+    dmvpn_addresses = address_generation_DMVPN(vpc_number)
+    dictionary_tfvars.update(dmvpn_addresses)
+
+    print(json.dumps(dictionary_tfvars, indent=4))
+
+    with open('VPCs/{}/dmvpn_ip_addresses.auto.tfvars.json'.format(vpc_number), 'w') as outfile:
+        json.dump(dictionary_tfvars, outfile, sort_keys=True, indent=4,
+                  ensure_ascii=False)
+
+
+
+
+
 def address_generation_DMVPN(vpc_number):
     """Generates DMVPN tunnel address based on VPC number provided
 First two octects are 10.254 12 bits for VPC number 4 bits for hosts
@@ -13,6 +49,7 @@ Returns
 :tunnel_address str ip address
 :tunnel_b_address str ip address
     """
+    dmvpn_addresses = {}
     vpc_number_int = int(vpc_number)
     conversion = bin(vpc_number_int)
     conversion_striped = conversion.lstrip('0b')
@@ -40,9 +77,11 @@ Returns
     octet_fourth_b = str(octet_fourth_b)
 
     tunnel_address = '10.254.' + octet_third + '.' + octet_fourth
+    dmvpn_addresses['tunnel_address'] = tunnel_address
     tunnel_b_address = '10.254.' + octet_third_b + '.' + octet_fourth_b
+    dmvpn_addresses['tunnel_b_address'] = tunnel_b_address
 
-    return tunnel_address, tunnel_b_address
+    return dmvpn_addresses
 
 
 def address_generation_dev(cidr_block, user_subnet_masks):
@@ -88,7 +127,7 @@ def address_generation_dev(cidr_block, user_subnet_masks):
     return ip_addresses_dictionary
 
 
-def address_generation_az_single(cidr_block, user_subnet_masks):
+def address_generation_standard(cidr_block, user_subnet_masks):
 #    from netaddr import *
 #    cidr_block = "10.0.0.0/24"
 #    user_subnet_masks = 28
@@ -156,7 +195,7 @@ def address_generation_az_single(cidr_block, user_subnet_masks):
 
 
 
-def address_generation_az_double(cidr_block, user_subnet_masks):
+def address_generation_high_availability(cidr_block, user_subnet_masks):
 #    from netaddr import *
 #    cidr_block = "10.0.0.0/24"
 #    user_subnet_masks = 28
@@ -328,3 +367,8 @@ def vpc_cidr_candidate_availability_check(network_new_candidate, vpc_address_spa
     else:
         result = ['available']
     return result
+
+
+
+if __name__ == "__main__":
+   main()

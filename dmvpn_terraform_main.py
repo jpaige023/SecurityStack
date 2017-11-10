@@ -5,6 +5,7 @@ from subprocess import Popen, PIPE
 import python_modules.vdss_ip_generation
 import python_modules.terraform
 import os
+import python_modules.dmvpn_ip_generation
 
 
 def main():
@@ -12,21 +13,25 @@ def main():
     cloud_provider = "aws"
     region = "us-west-1"
     availability_zone = "us-west-1a"
-    device_number_csr1000v_inside_ingress_count = 1
-    device_number_csr1000v_inside_egress_count = 1
-    device_number_csr1000v_outside_ingress_count = 1
-    device_number_csr1000v_outside_egress_count = 1
-    device_number_firewalls_count = 1
+    # vpc_template = dev, standard, high_availability
+    vpc_template = 'high_availability'
+    user_subnet_masks = 28
+#    vpc_number = 100
 
     settings_dictionary = load_settings()
     vpc_number = vpc_number_get()
     subprocess.call(["mkdir", "VPCs/{}".format(vpc_number)])
     python_modules.terraform.terraform_tfvars_createfile(cloud_provider, vpc_number, settings_dictionary, region)
-    python_modules.vdss_ip_generation.main(cidr_block, region, availability_zone, vpc_number)
-    python_modules.terraform.vdss_create_definition_files(vpc_number)
-    #    python_modules.terraform.init_terraform(vpc_number)
-    #    python_modules.terraform.apply_terraform(vpc_number)
 
+    python_modules.dmvpn_ip_generation.main(cidr_block, user_subnet_masks, region, availability_zone, vpc_number, vpc_template)
+
+
+
+
+
+#    python_modules.terraform.vdss_create_definition_files(vpc_number)
+#    python_modules.terraform.init_terraform(vpc_number)
+#    python_modules.terraform.apply_terraform(vpc_number)
 
 def load_settings():
     with open("Settings/settings.json") as settings_json_data:
