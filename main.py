@@ -6,6 +6,7 @@ import python_modules.vdss_ip_generation
 import python_modules.terraform
 import os
 
+
 def main():
     cidr_block = "10.0.0.0/21"
     cloud_provider = "aws"
@@ -23,7 +24,8 @@ def main():
     python_modules.terraform.terraform_tfvars_createfile(cloud_provider, vpc_number, settings_dictionary, region)
     python_modules.vdss_ip_generation.main(cidr_block, region, availability_zone, vpc_number)
     python_modules.terraform.vdss_create_definition_files(vpc_number)
-
+#    python_modules.terraform.init_terraform(vpc_number)
+#    python_modules.terraform.apply_terraform(vpc_number)
 
 def load_settings():
     with open("Settings/settings.json") as settings_json_data:

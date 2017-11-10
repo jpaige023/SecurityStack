@@ -1,4 +1,34 @@
 import subprocess
+from subprocess import Popen, PIPE
+import shlex
+
+
+def init_terraform(vpc_number):
+    exitcode = 1
+    while exitcode != 0:
+        print "\n\nInitializing Terraform Provider"
+        cmd = "terraform init"
+        args = shlex.split(cmd)
+        proc = Popen(args, stdout=PIPE, stderr=PIPE, cwd="VPCs/{}".format(vpc_number))
+        out, err = proc.communicate()
+        print out
+        print err
+        exitcode = proc.returncode
+    return
+
+
+def apply_terraform(vpc_number):
+    exitcode = 1
+    while exitcode != 0:
+        print "\n\nApplying Terraform cloud Definition. This can take a few minutes..."
+        cmd = "terraform apply -auto-approve=true"
+        args = shlex.split(cmd)
+        proc = Popen(args, stdout=PIPE, stderr=PIPE, cwd="VPCs/{}".format(vpc_number))
+        out, err = proc.communicate()
+        print out
+        print err
+        exitcode = proc.returncode
+    return
 
 
 def terraform_tfvars_createfile(cloud_provider, vpc_number, settings_dictionary, cloud_provider_region=None):
