@@ -1,3 +1,6 @@
+import subprocess
+
+
 def terraform_tfvars_createfile(cloud_provider, vpc_number, settings_dictionary, cloud_provider_region=None):
     if cloud_provider == 'aws':
         aws_access_key = settings_dictionary['keys']['cloud'][cloud_provider][cloud_provider_region]['aws_access_key']
@@ -27,3 +30,90 @@ def terraform_tfvars_createfile(cloud_provider, vpc_number, settings_dictionary,
         for line in azure_tfvars_template:
             g.write(line)
         g.close()
+
+
+def vdss_create_definition_files(vpc_number, cloud_provider='aws', device_number_csr1000v_inside_ingress_count=1,
+                                     device_number_csr1000v_inside_egress_count=1,
+                                     device_number_csr1000v_outside_ingress_count=1,
+                                     device_number_csr1000v_outside_egress_count=1, device_number_firewalls_count=1):
+    # copy terraform modules
+    subprocess.call(
+        "cp -a TEMPLATES/Cloud/{}/vpc_security_stack/modules VPCs/{}".format(cloud_provider.upper(), vpc_number),
+        shell=True)
+    subprocess.call(
+        "cp TEMPLATES/Cloud/{}/vpc_security_stack/aws.tf VPCs/{}".format(cloud_provider.upper(), vpc_number),
+        shell=True)
+    subprocess.call(
+        "cp TEMPLATES/Cloud/{}/vpc_security_stack/vpc_base_0.tf VPCs/{}".format(cloud_provider.upper(), vpc_number),
+        shell=True)
+    subprocess.call(
+        "cp TEMPLATES/Cloud/{}/vpc_security_stack/bastion_0.tf VPCs/{}".format(cloud_provider.upper(), vpc_number),
+        shell=True)
+    subprocess.call(
+        "cp TEMPLATES/Cloud/{}/vpc_security_stack/controller_0.tf VPCs/{}".format(cloud_provider.upper(), vpc_number),
+        shell=True)
+
+    # csr1000v inside ingress
+    device_number_csr1000v_inside_ingress_counter = 0
+    while device_number_csr1000v_inside_ingress_counter != device_number_csr1000v_inside_ingress_count:
+        device_number_csr1000v_inside_ingress = str(device_number_csr1000v_inside_ingress_counter)
+        replacements = {'XXXXX': device_number_csr1000v_inside_ingress}
+        with open("TEMPLATES/Cloud/{}/vpc_security_stack/csr1000v_inside_ingress_0.tf".format(cloud_provider.upper())) as infile, open(
+                "VPCs/{}/csr1000v_inside_ingress_{}.tf".format(vpc_number, device_number_csr1000v_inside_ingress), 'w') as outfile:
+            for line in infile:
+                for src, target in replacements.iteritems():
+                    line = line.replace(src, target)
+                outfile.write(line)
+        device_number_csr1000v_inside_ingress_counter = device_number_csr1000v_inside_ingress_counter + 1
+
+    # csr1000v inside egress
+    device_number_csr1000v_inside_egress_counter = 0
+    while device_number_csr1000v_inside_egress_counter != device_number_csr1000v_inside_egress_count:
+        device_number_csr1000v_inside_egress = str(device_number_csr1000v_inside_egress_counter)
+        replacements = {'XXXXX': device_number_csr1000v_inside_egress}
+        with open("TEMPLATES/Cloud/{}/vpc_security_stack/csr1000v_inside_egress_0.tf".format(cloud_provider.upper())) as infile, open(
+                "VPCs/{}/csr1000v_inside_egress_{}.tf".format(vpc_number, device_number_csr1000v_inside_egress), 'w') as outfile:
+            for line in infile:
+                for src, target in replacements.iteritems():
+                    line = line.replace(src, target)
+                outfile.write(line)
+        device_number_csr1000v_inside_egress_counter = device_number_csr1000v_inside_egress_counter + 1
+
+    # csr1000v outside ingress
+    device_number_csr1000v_outside_ingress_counter = 0
+    while device_number_csr1000v_outside_ingress_counter != device_number_csr1000v_outside_ingress_count:
+        device_number_csr1000v_outside_ingress = str(device_number_csr1000v_outside_ingress_counter)
+        replacements = {'XXXXX': device_number_csr1000v_outside_ingress}
+        with open("TEMPLATES/Cloud/{}/vpc_security_stack/csr1000v_outside_ingress_0.tf".format(cloud_provider.upper())) as infile, open(
+                "VPCs/{}/csr1000v_outside_ingress_{}.tf".format(vpc_number, device_number_csr1000v_outside_ingress), 'w') as outfile:
+            for line in infile:
+                for src, target in replacements.iteritems():
+                    line = line.replace(src, target)
+                outfile.write(line)
+        device_number_csr1000v_outside_ingress_counter = device_number_csr1000v_outside_ingress_counter + 1
+
+    # csr1000v outside egress
+    device_number_csr1000v_outside_egress_counter = 0
+    while device_number_csr1000v_outside_egress_counter != device_number_csr1000v_outside_egress_count:
+        device_number_csr1000v_outside_egress = str(device_number_csr1000v_outside_egress_counter)
+        replacements = {'XXXXX': device_number_csr1000v_outside_egress}
+        with open("TEMPLATES/Cloud/{}/vpc_security_stack/csr1000v_outside_egress_0.tf".format(cloud_provider.upper())) as infile, open(
+                "VPCs/{}/csr1000v_outside_egress_{}.tf".format(vpc_number, device_number_csr1000v_outside_egress), 'w') as outfile:
+            for line in infile:
+                for src, target in replacements.iteritems():
+                    line = line.replace(src, target)
+                outfile.write(line)
+        device_number_csr1000v_outside_egress_counter = device_number_csr1000v_outside_egress_counter + 1
+
+    # firewalls
+    device_number_firewalls_counter = 0
+    while device_number_firewalls_counter != device_number_firewalls_count:
+        device_number_firewalls = str(device_number_firewalls_counter)
+        replacements = {'XXXXX': device_number_firewalls}
+        with open("TEMPLATES/Cloud/{}/vpc_security_stack/firewalls_0.tf".format(cloud_provider.upper())) as infile, open(
+                "VPCs/{}/firewalls_{}.tf".format(vpc_number, device_number_firewalls), 'w') as outfile:
+            for line in infile:
+                for src, target in replacements.iteritems():
+                    line = line.replace(src, target)
+                outfile.write(line)
+        device_number_firewalls_counter = device_number_firewalls_counter + 1
