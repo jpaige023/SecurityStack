@@ -75,17 +75,17 @@ resource "aws_instance" "CSR1000vB" {
 
 resource "aws_eip" "CSR1000vB" {
   network_interface = "${aws_instance.CSR1000vB.network_interface_id}"
-  vpc      = true
+  vpc               = true
 }
 
 resource "aws_network_interface" "G2B" {
-	subnet_id = "${aws_subnet.high_availability_zone_ha-private.id}"
-	private_ips = ["${var.G2_static_private_ipB}"]
-	security_groups = ["${aws_security_group.SG_G2_CSR1000v.id}"]
-	source_dest_check = false
-	attachment {
-		instance = "${aws_instance.CSR1000vB.id}"
-		device_index = 1
-	}
-}
+  subnet_id         = "${aws_subnet.high_availability_zone_ha-private.id}"
+  private_ips       = ["${var.G2_static_private_ipB}"]
+  security_groups   = ["${aws_security_group.SG_G2_CSR1000v.id}"]
+  source_dest_check = false
 
+  attachment {
+    instance     = "${aws_instance.CSR1000vB.id}"
+    device_index = 1
+  }
+}

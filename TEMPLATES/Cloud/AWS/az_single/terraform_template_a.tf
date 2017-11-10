@@ -71,10 +71,10 @@ resource "aws_subnet" "high_availability_zone-private_users" {
 resource "aws_route_table" "cloud_provider_region-private" {
   vpc_id = "${aws_vpc.default.id}"
 
-  #    route {
-  #        cidr_block = "0.0.0.0/0"
-  #        network_interface_id = "${aws_network_interface.G2A.id}"
-  #    }
+  route {
+    cidr_block           = "0.0.0.0/0"
+    network_interface_id = "${aws_network_interface.G2A.id}"
+  }
 
   tags {
     Name = "Private Subnets"
@@ -191,17 +191,17 @@ resource "aws_instance" "CSR1000vA" {
 
 resource "aws_eip" "CSR1000vA" {
   network_interface = "${aws_instance.CSR1000vA.network_interface_id}"
-  vpc      = true
+  vpc               = true
 }
 
-#resource "aws_network_interface" "G2A" {
-#	subnet_id = "${aws_subnet.high_availability_zone-private.id}"
-#	private_ips = ["${var.G2_static_private_ipA}"]
-#	security_groups = ["${aws_security_group.SG_G2_CSR1000v.id}"]
-#	source_dest_check = false
-#	attachment {
-#		instance = "${aws_instance.CSR1000vA.id}"
-#		device_index = 1
-#	}
-#}
+resource "aws_network_interface" "G2A" {
+  subnet_id         = "${aws_subnet.high_availability_zone-private.id}"
+  private_ips       = ["${var.G2_static_private_ipA}"]
+  security_groups   = ["${aws_security_group.SG_G2_CSR1000v.id}"]
+  source_dest_check = false
 
+  attachment {
+    instance     = "${aws_instance.CSR1000vA.id}"
+    device_index = 1
+  }
+}

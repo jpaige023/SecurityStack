@@ -174,7 +174,7 @@ resource "aws_instance" "CSR1000vA" {
 
 resource "aws_eip" "CSR1000vA" {
   network_interface = "${aws_instance.CSR1000vA.network_interface_id}"
-  vpc      = true
+  vpc               = true
 }
 
 resource "aws_network_interface" "G2A" {
