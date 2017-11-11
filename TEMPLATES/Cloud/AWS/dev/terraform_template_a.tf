@@ -1,9 +1,9 @@
 resource "aws_vpc" "default" {
-  cidr_block           = "${var.vpc_cidr}"
+  cidr_block           = "${var.cidr_block}"
   enable_dns_hostnames = true
 
   tags {
-    Name = "${var.vpc_NAME}"
+    Name = "${var.vpc_number}"
   }
 }
 
@@ -14,11 +14,11 @@ resource "aws_internet_gateway" "default" {
 /*
   Public Subnet
 */
-resource "aws_subnet" "high_availability_zone-public" {
+resource "aws_subnet" "availability_zone-public" {
   vpc_id = "${aws_vpc.default.id}"
 
-  cidr_block        = "${var.public_subnetA_cidr}"
-  availability_zone = "high_availability_zone"
+  cidr_block        = "${var.router_a_subnet_g1}"
+  availability_zone = "${var.availability_zone}"
 
   tags {
     Name = "Public SubnetA"
@@ -38,19 +38,19 @@ resource "aws_route_table" "cloud_provider_region-public" {
   }
 }
 
-resource "aws_route_table_association" "high_availability_zone-public" {
-  subnet_id      = "${aws_subnet.high_availability_zone-public.id}"
+resource "aws_route_table_association" "availability_zone-public" {
+  subnet_id      = "${aws_subnet.availability_zone-public.id}"
   route_table_id = "${aws_route_table.cloud_provider_region-public.id}"
 }
 
 /*
   Private Subnet
 */
-resource "aws_subnet" "high_availability_zone-private" {
+resource "aws_subnet" "availability_zone-private" {
   vpc_id = "${aws_vpc.default.id}"
 
-  cidr_block        = "${var.private_subnetA_cidr}"
-  availability_zone = "high_availability_zone"
+  cidr_block        = "${var.router_a_subnet_g2}"
+  availability_zone = "${var.availability_zone}"
 
   tags {
     Name = "Private SubnetA"
@@ -70,8 +70,8 @@ resource "aws_route_table" "cloud_provider_region-private" {
   }
 }
 
-resource "aws_route_table_association" "high_availability_zone-private" {
-  subnet_id      = "${aws_subnet.high_availability_zone-private.id}"
+resource "aws_route_table_association" "availability_zone-private" {
+  subnet_id      = "${aws_subnet.availability_zone-private.id}"
   route_table_id = "${aws_route_table.cloud_provider_region-private.id}"
 }
 
@@ -93,7 +93,7 @@ resource "aws_security_group" "SG_G1_CSR1000v" {
     from_port   = 0
     to_port     = 0
     protocol    = "50"
-    cidr_blocks = ["${var.vpc_cidr}"]
+    cidr_blocks = ["${var.cidr_block}"]
   }
 
   ingress {
@@ -157,18 +157,18 @@ resource "aws_security_group" "SG_G2_CSR1000v" {
 }
 
 resource "aws_instance" "CSR1000vA" {
-  ami                         = "image_id"
-  availability_zone           = "high_availability_zone"
-  instance_type               = "${var.CSR1000v_instance_type}"
+  ami                         = "${lookup(var.ami_csr1000v, var.region)}"
+  availability_zone           = "${var.availability_zone}"
+  instance_type               = "${var.csr1000v_instance_type}"
   key_name                    = "${var.aws_key_name}"
   vpc_security_group_ids      = ["${aws_security_group.SG_G1_CSR1000v.id}"]
-  subnet_id                   = "${aws_subnet.high_availability_zone-public.id}"
+  subnet_id                   = "${aws_subnet.availability_zone-public.id}"
   associate_public_ip_address = true
-  private_ip                  = "${var.G1_static_private_ipA}"
+  private_ip                  = "${var.router_a_address_g1}"
   source_dest_check           = false
 
   tags {
-    Name = "${var.G1_static_private_ipA}"
+    Name = "${var.router_a_address_g1}"
   }
 }
 
@@ -178,8 +178,8 @@ resource "aws_eip" "CSR1000vA" {
 }
 
 resource "aws_network_interface" "G2A" {
-  subnet_id         = "${aws_subnet.high_availability_zone-private.id}"
-  private_ips       = ["${var.G2_static_private_ipA}"]
+  subnet_id         = "${aws_subnet.availability_zone-private.id}"
+  private_ips       = ["${var.router_a_address_g2}"]
   security_groups   = ["${aws_security_group.SG_G2_CSR1000v.id}"]
   source_dest_check = false
 

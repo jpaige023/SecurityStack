@@ -2,37 +2,48 @@ variable "aws_access_key" {}
 variable "aws_secret_key" {}
 variable "aws_key_name" {}
 
-variable "aws_region" {
-  default = "cloud_provider_region"
+variable "ami_csr1000v" {
+  type        = "map"
+  description = "CSR1000v by region"
+
+  default = {
+    us-east-1 = "ami-bcbfb9c7"
+    us-west-1 = "ami-99e5d0f9"
+    us-west-2 = "ami-e4d43d9c"
+  }
 }
 
-variable "vpc_NAME" {
-  default = "VPC_XXX"
+variable "region" {
+#  default = "${var.region}
 }
 
-variable "CSR1000v_instance_type" {
-  default = "cloud_instance_size"
+variable "availability_zone" {
 }
 
-variable "vpc_cidr" {
-  description = "CIDR for the whole VPC"
-  default     = "cidr_block"
+variable "vpc_number" {
+#  default = "${var.vpc_number}"
 }
 
-variable "public_subnetA_cidr" {
-  description = "CIDR for the Public Subnet"
-  default     = "router_a_subnet_g1"
+variable "csr1000v_instance_type" {
+#  default = "${var.csr1000v_instance_type}"
 }
 
-variable "G1_static_private_ipA" {
-  default = "router_a_address_g1"
+variable "cidr_block" {
+#  default = "${var.cidr_block}"
 }
 
-variable "private_subnetA_cidr" {
-  description = "CIDR for the Private Subnet"
-  default     = "router_a_subnet_g2"
+variable "router_a_subnet_g1" {
+#  default = "${router_a_subnet_g1}"
 }
 
-variable "G2_static_private_ipA" {
-  default = "router_a_address_g2"
+variable "router_a_address_g1" {
+#  default = "${router_a_address_g1}"
+}
+
+variable "router_a_subnet_g2" {
+#  default = "${router_a_subnet_g2}"
+}
+
+variable "router_a_address_g2" {
+#  default = "${router_a_address_g2}"
 }

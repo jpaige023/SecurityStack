@@ -3,7 +3,7 @@ from netaddr import *
 from copy import deepcopy
 
 
-def main(cidr_block, user_subnet_masks, region, availability_zone, vpc_number, vpc_template):
+def main(cidr_block, user_subnet_masks, region, csr1000v_instance_type, availability_zone, vpc_number, vpc_template):
 #    import simplejson as json
 #    from netaddr import *
 #    from copy import deepcopy
@@ -25,6 +25,8 @@ def main(cidr_block, user_subnet_masks, region, availability_zone, vpc_number, v
     dictionary_tfvars['region'] = region
     dictionary_tfvars['availability_zone'] = availability_zone
     dictionary_tfvars['cidr_block'] = cidr_block
+    dictionary_tfvars['csr1000v_instance_type'] = csr1000v_instance_type
+    dictionary_tfvars['vpc_number'] = vpc_number
 
     dmvpn_addresses = address_generation_DMVPN(vpc_number)
     dictionary_tfvars.update(dmvpn_addresses)
