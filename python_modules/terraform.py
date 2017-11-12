@@ -82,6 +82,9 @@ def vdss_create_definition_files(vpc_number, cloud_provider='aws', device_number
     subprocess.call(
         "cp TEMPLATES/Cloud/{}/vpc_security_stack/controller_0.tf VPCs/{}".format(cloud_provider.upper(), vpc_number),
         shell=True)
+    subprocess.call(
+        "cp TEMPLATES/Cloud/{}/vpc_security_stack/fmc_0.tf VPCs/{}".format(cloud_provider.upper(), vpc_number),
+        shell=True)
 
     # csr1000v inside ingress
     device_number_csr1000v_inside_ingress_counter = 0

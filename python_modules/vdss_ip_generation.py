@@ -70,6 +70,14 @@ def vdss_ip_address_generation(vdss_subnets):
 
         counter = counter + 1
 
+
+    # Generate FMC ip
+    counter = 0
+    e0 = 'fmc' + '_e0'
+    tempaddress = ip_management[counter + 14]
+    tempaddress = str(tempaddress)
+    vdss_addresses[e0] = tempaddress
+
     # Generate bastion ips
     counter = 0
     e0 = 'bastion' + '_e0'
