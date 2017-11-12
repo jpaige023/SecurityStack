@@ -153,6 +153,3 @@ def dmvpn_create_definition_files(vpc_template, vpc_number, cloud_provider):
     subprocess.call(
         "cp TEMPLATES/Cloud/{}/{}/* VPCs/{}".format(cloud_provider.upper(), vpc_template, vpc_number),
         shell=True)
-    subprocess.call(
-        "cp TEMPLATES/Cloud/{}/{}/aws.tf VPCs/{}".format(cloud_provider.upper(), vpc_template, vpc_number),
-        shell=True)

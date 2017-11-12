@@ -1,7 +1,3 @@
-variable "aws_access_key" {}
-variable "aws_secret_key" {}
-variable "aws_key_name" {}
-
 variable "ami_csr1000v" {
   type        = "map"
   description = "CSR1000v by region"
@@ -13,37 +9,17 @@ variable "ami_csr1000v" {
   }
 }
 
-variable "region" {
-#  default = "${var.region}
-}
+variable "csr1000v_instance_type" {}
 
-variable "availability_zone" {
-}
+variable "aws_access_key" {}
+variable "aws_secret_key" {}
+variable "aws_key_name" {}
+variable "region" {}
+variable "availability_zone" {}
+variable "vpc_number" {}
+variable "cidr_block" {}
 
-variable "vpc_number" {
-#  default = "${var.vpc_number}"
-}
-
-variable "csr1000v_instance_type" {
-#  default = "${var.csr1000v_instance_type}"
-}
-
-variable "cidr_block" {
-#  default = "${var.cidr_block}"
-}
-
-variable "router_a_subnet_g1" {
-#  default = "${router_a_subnet_g1}"
-}
-
-variable "router_a_address_g1" {
-#  default = "${router_a_address_g1}"
-}
-
-variable "router_a_subnet_g2" {
-#  default = "${router_a_subnet_g2}"
-}
-
-variable "router_a_address_g2" {
-#  default = "${router_a_address_g2}"
-}
+variable "router_a_subnet_g1" {}
+variable "router_a_address_g1" {}
+variable "router_a_subnet_g2" {}
+variable "router_a_address_g2" {}
