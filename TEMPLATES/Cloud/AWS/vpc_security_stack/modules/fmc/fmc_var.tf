@@ -24,4 +24,3 @@ variable "cidr_block" {}
 variable "subnet_management" {}
 
 variable "fmc_e0" {}
-

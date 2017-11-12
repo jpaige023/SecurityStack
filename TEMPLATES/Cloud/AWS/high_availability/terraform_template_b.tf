@@ -58,7 +58,7 @@ resource "aws_route_table_association" "high_availability_zone_ha-private_users"
 
 resource "aws_instance" "CSR1000vB" {
   ami                         = "${lookup(var.ami_csr1000v, var.region)}"
-  availability_zone = "${var.availability_zone_ha}"
+  availability_zone           = "${var.availability_zone_ha}"
   instance_type               = "${var.csr1000v_instance_type}"
   key_name                    = "${var.aws_key_name}"
   vpc_security_group_ids      = ["${aws_security_group.SG_G1_CSR1000v.id}"]

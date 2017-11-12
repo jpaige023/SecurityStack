@@ -57,7 +57,6 @@ resource "aws_subnet" "availability_zone-private" {
   }
 }
 
-
 resource "aws_subnet" "high_availability_zone-private_users" {
   vpc_id = "${aws_vpc.default.id}"
 

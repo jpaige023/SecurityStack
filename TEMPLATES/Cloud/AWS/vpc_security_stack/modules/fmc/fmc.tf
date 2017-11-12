@@ -14,4 +14,3 @@ resource "aws_instance" "fmc" {
     VPC  = "${var.region}_${var.availability_zone}_security_stack"
   }
 }
-

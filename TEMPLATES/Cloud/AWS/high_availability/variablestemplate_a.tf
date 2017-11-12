@@ -27,7 +27,6 @@ variable "router_a_address_g1" {}
 variable "router_a_subnet_g2" {}
 variable "router_a_address_g2" {}
 
-
 variable "router_b_subnet_g1" {}
 variable "router_b_address_g1" {}
 variable "router_b_subnet_g2" {}
@@ -38,7 +37,3 @@ variable "users_subnet_b" {}
 variable "IAM_Role" {
   default = "ChangeRouteRole"
 }
-
-
-
-
