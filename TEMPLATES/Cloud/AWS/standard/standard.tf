@@ -185,7 +185,9 @@ resource "aws_instance" "CSR1000vA" {
   iam_instance_profile        = "${var.IAM_Role}"
 
   tags {
-    Name = "${var.router_a_address_g1}"
+    Name         = "${var.router_a_address_g1}"
+    DMVPN_Role   = "${var.dmvpn_role}"
+    DMVPN_Tunnel = "${var.dmvpn_tunnel}"
   }
 }
 
