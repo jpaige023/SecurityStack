@@ -14,6 +14,7 @@ variable "csr1000v_instance_type" {}
 variable "aws_access_key" {}
 variable "aws_secret_key" {}
 variable "aws_key_name" {}
+
 variable "region" {}
 variable "availability_zone" {}
 variable "vpc_number" {}
@@ -29,3 +30,6 @@ variable "users_subnet_a" {}
 variable "IAM_Role" {
   default = "ChangeRouteRole"
 }
+
+variable "dmvpn_role" {}
+variable "dmvpn_tunnel" {}

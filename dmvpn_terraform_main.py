@@ -15,7 +15,7 @@ def main():
     availability_zone = "us-west-1a"
     availability_zone_ha = "us-west-1c"
     # vpc_template = dev, standard, high_availability
-    vpc_template = 'dev'
+    vpc_template = 'standard'
     user_subnet_masks = 27
 #    vpc_number = 100
     csr1000v_instance_type = "c4.large"
