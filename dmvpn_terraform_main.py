@@ -15,17 +15,21 @@ def main():
     availability_zone = "us-west-1a"
     availability_zone_ha = "us-west-1c"
     # vpc_template = dev, standard, high_availability
-    vpc_template = 'high_availability'
-    user_subnet_masks = 28
+    vpc_template = 'dev'
+    user_subnet_masks = 27
 #    vpc_number = 100
     csr1000v_instance_type = "c4.large"
-
     settings_dictionary = load_settings()
+    # can be spoke "a" or "b" for HA
+    dmvpn_role = "spoke_a"
+    dmvpn_tunnel = "1"
+    licenseidtoken = settings_dictionary['smart_license']['licenseidtoken']
+    email = settings_dictionary['smart_license']['email']
     vpc_number = vpc_number_get()
     subprocess.call(["mkdir", "VPCs/{}".format(vpc_number)])
     python_modules.terraform.terraform_tfvars_createfile(cloud_provider, vpc_number, settings_dictionary, region)
 
-    python_modules.dmvpn_ip_generation.main(cidr_block, user_subnet_masks, region, csr1000v_instance_type, availability_zone, vpc_number, vpc_template, availability_zone_ha)
+    python_modules.dmvpn_ip_generation.main(cidr_block, user_subnet_masks, region, csr1000v_instance_type, availability_zone, vpc_number, vpc_template, availability_zone_ha, licenseidtoken, email, dmvpn_role, dmvpn_tunnel)
     python_modules.terraform.dmvpn_create_definition_files(vpc_template, vpc_number, cloud_provider)
 
 #    python_modules.terraform.init_terraform(vpc_number)

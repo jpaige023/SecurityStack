@@ -14,7 +14,7 @@ resource "aws_internet_gateway" "default" {
 /*
   Public Subnet
 */
-resource "aws_subnet" "availability_zone-public" {
+resource "aws_subnet" "router_a_subnet_g1" {
   vpc_id = "${aws_vpc.default.id}"
 
   cidr_block        = "${var.router_a_subnet_g1}"
@@ -25,7 +25,7 @@ resource "aws_subnet" "availability_zone-public" {
   }
 }
 
-resource "aws_route_table" "cloud_provider_region-public" {
+resource "aws_route_table" "public" {
   vpc_id = "${aws_vpc.default.id}"
 
   route {
@@ -38,15 +38,15 @@ resource "aws_route_table" "cloud_provider_region-public" {
   }
 }
 
-resource "aws_route_table_association" "availability_zone-public" {
-  subnet_id      = "${aws_subnet.availability_zone-public.id}"
-  route_table_id = "${aws_route_table.cloud_provider_region-public.id}"
+resource "aws_route_table_association" "router_a_subnet_g1" {
+  subnet_id      = "${aws_subnet.router_a_subnet_g1.id}"
+  route_table_id = "${aws_route_table.public.id}"
 }
 
 /*
   Private Subnet
 */
-resource "aws_subnet" "availability_zone-private" {
+resource "aws_subnet" "router_a_subnet_g2" {
   vpc_id = "${aws_vpc.default.id}"
 
   cidr_block        = "${var.router_a_subnet_g2}"
@@ -57,7 +57,7 @@ resource "aws_subnet" "availability_zone-private" {
   }
 }
 
-resource "aws_route_table" "cloud_provider_region-private" {
+resource "aws_route_table" "rt_private" {
   vpc_id = "${aws_vpc.default.id}"
 
   route {
@@ -70,15 +70,15 @@ resource "aws_route_table" "cloud_provider_region-private" {
   }
 }
 
-resource "aws_route_table_association" "availability_zone-private" {
-  subnet_id      = "${aws_subnet.availability_zone-private.id}"
-  route_table_id = "${aws_route_table.cloud_provider_region-private.id}"
+resource "aws_route_table_association" "router_a_subnet_g2" {
+  subnet_id      = "${aws_subnet.router_a_subnet_g2.id}"
+  route_table_id = "${aws_route_table.rt_private.id}"
 }
 
 /*
   CSR1000v Instance
 */
-resource "aws_security_group" "SG_G1_CSR1000v" {
+resource "aws_security_group" "SG_SSH_IPSEC" {
   name        = "SG_G1_CSR1000v"
   description = "Allow Traffic into the CSR1000v"
 
@@ -131,7 +131,7 @@ resource "aws_security_group" "SG_G1_CSR1000v" {
   }
 }
 
-resource "aws_security_group" "SG_G2_CSR1000v" {
+resource "aws_security_group" "SG_All_Traffic" {
   name        = "SG_G2_CSR1000v"
   description = "Allow Traffic into the G2 CSR1000v"
 
@@ -161,14 +161,16 @@ resource "aws_instance" "CSR1000vA" {
   availability_zone           = "${var.availability_zone}"
   instance_type               = "${var.csr1000v_instance_type}"
   key_name                    = "${var.aws_key_name}"
-  vpc_security_group_ids      = ["${aws_security_group.SG_G1_CSR1000v.id}"]
-  subnet_id                   = "${aws_subnet.availability_zone-public.id}"
+  vpc_security_group_ids      = ["${aws_security_group.SG_SSH_IPSEC.id}"]
+  subnet_id                   = "${aws_subnet.router_a_subnet_g1.id}"
   associate_public_ip_address = true
   private_ip                  = "${var.router_a_address_g1}"
   source_dest_check           = false
 
   tags {
     Name = "${var.router_a_address_g1}"
+    DMVPN_Role = "${var.dmvpn_role}"
+    DMVPN_Tunnel = "${var.dmvpn_tunnel}"
   }
 }
 
@@ -178,9 +180,9 @@ resource "aws_eip" "CSR1000vA" {
 }
 
 resource "aws_network_interface" "G2A" {
-  subnet_id         = "${aws_subnet.availability_zone-private.id}"
+  subnet_id         = "${aws_subnet.router_a_subnet_g2.id}"
   private_ips       = ["${var.router_a_address_g2}"]
-  security_groups   = ["${aws_security_group.SG_G2_CSR1000v.id}"]
+  security_groups   = ["${aws_security_group.SG_All_Traffic.id}"]
   source_dest_check = false
 
   attachment {

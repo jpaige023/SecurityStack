@@ -1,7 +1,7 @@
 from netaddr import *
 import simplejson as json
 
-def main(cidr_block, region, availability_zone, vpc_number):
+def main(cidr_block, region, availability_zone, vpc_number, licenseidtoken, email, dmvpn_role, dmvpn_tunnel):
     """Needs input of CIDR block, region, availability, zone. Note CIDR block must be a /21 or larger"""
 #    cidr_block = "10.0.0.0/21"
 #    region = "us-west-1"
@@ -24,7 +24,10 @@ def main(cidr_block, region, availability_zone, vpc_number):
     dictionary_tfvars['region'] = region
     dictionary_tfvars['availability_zone'] = availability_zone
     dictionary_tfvars['cidr_block'] = cidr_block
-
+    dictionary_tfvars['licenseidtoken'] = licenseidtoken
+    dictionary_tfvars['email'] = email
+    dictionary_tfvars['dmvpn_role'] = dmvpn_tunnel
+    dictionary_tfvars['dmvpn_tunnel'] = dmvpn_tunnel
 
     with open('VPCs/{}/vdss_ip_addresses.auto.tfvars.json'.format(vpc_number), 'w') as outfile:
         json.dump(dictionary_tfvars, outfile, sort_keys = True, indent = 4,

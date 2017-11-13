@@ -1,0 +1,15 @@
+---
+- hosts: ios
+  tasks:
+  - name: "Configure AWS Provider Redundancy"
+    ios_config:
+      provider: "{{cli}}"
+      parents:
+        - "redundancy"
+        - "cloud provider aws 1"
+      lines:
+        - "bfd peer 172.17.1.2"
+        - "route-table {{private_Route_Table}}"
+        - "cidr ip 0.0.0.0/0"
+        - "eni {{RouterA_ENI}}"
+        - "region {{cloud_region}}"

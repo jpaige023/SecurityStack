@@ -1,0 +1,8 @@
+---
+- hosts: ios
+  tasks:
+  - name: "Test Show Running Configuration"
+    ios_command:
+      provider: "{{cli}}"
+      commands: show running-config
+

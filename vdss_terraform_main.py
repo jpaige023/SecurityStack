@@ -17,12 +17,17 @@ def main():
     device_number_csr1000v_outside_ingress_count = 1
     device_number_csr1000v_outside_egress_count = 1
     device_number_firewalls_count = 1
+    dmvpn_role = "spoke_a"
+    dmvpn_tunnel = "1"
 
     settings_dictionary = load_settings()
+    licenseidtoken = settings_dictionary['smart_license']['idtoken']
+    email = settings_dictionary['smart_license']['email']
+
     vpc_number = vpc_number_get()
     subprocess.call(["mkdir", "VPCs/{}".format(vpc_number)])
     python_modules.terraform.terraform_tfvars_createfile(cloud_provider, vpc_number, settings_dictionary, region)
-    python_modules.vdss_ip_generation.main(cidr_block, region, availability_zone, vpc_number)
+    python_modules.vdss_ip_generation.main(cidr_block, region, availability_zone, vpc_number, licenseidtoken, email, dmvpn_role, dmvpn_tunnel)
     python_modules.terraform.vdss_create_definition_files(vpc_number)
     #    python_modules.terraform.init_terraform(vpc_number)
     #    python_modules.terraform.apply_terraform(vpc_number)

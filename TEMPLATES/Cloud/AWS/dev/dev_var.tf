@@ -14,6 +14,7 @@ variable "csr1000v_instance_type" {}
 variable "aws_access_key" {}
 variable "aws_secret_key" {}
 variable "aws_key_name" {}
+
 variable "region" {}
 variable "availability_zone" {}
 variable "vpc_number" {}
@@ -23,3 +24,6 @@ variable "router_a_subnet_g1" {}
 variable "router_a_address_g1" {}
 variable "router_a_subnet_g2" {}
 variable "router_a_address_g2" {}
+
+variable "dmvpn_role" {}
+variable "dmvpn_tunnel" {}

@@ -1,0 +1,8 @@
+---
+- hosts: ios
+  tasks:
+  - name: "Run EEM Script(NOTE - This will Report as Failed as VRF assignment will temporarily cause loss of IP connectivity)"
+    ios_command:
+      provider: "{{cli}}"
+      commands: event manager run fvrf
+

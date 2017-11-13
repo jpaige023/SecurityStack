@@ -1,0 +1,19 @@
+{
+    "availability_zone": "us-west-1a",
+    "availability_zone_ha": "us-west-1c",
+    "cidr_block": "10.0.0.0/21",
+    "cidr_block_netmask": "255.255.248.0",
+    "cidr_block_network_ID": "10.0.0.0",
+    "csr1000v_instance_type": "c4.large",
+    "region": "us-west-1",
+    "router_a_address_g1": "10.0.0.4",
+    "router_a_address_g2": "10.0.0.20",
+    "router_a_addressg1NH": "10.0.0.1",
+    "router_a_addressg2NH": "10.0.0.17",
+    "router_a_subnet_g1": "10.0.0.0/28",
+    "router_a_subnet_g2": "10.0.0.16/28",
+    "router_a_subnet_mask_g2": "255.255.255.240",
+    "tunnel_address": "10.254.0.17",
+    "tunnel_b_address": "10.254.0.18",
+    "vpc_number": "1"
+}
