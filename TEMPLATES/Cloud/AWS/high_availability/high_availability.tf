@@ -39,7 +39,7 @@ resource "aws_route_table" "public" {
 }
 
 resource "aws_route_table_association" "router_a_subnet_g1c" {
-   subnet_id      = "${aws_subnet.router_a_subnet_g1.id}"
+  subnet_id      = "${aws_subnet.router_a_subnet_g1.id}"
   route_table_id = "${aws_route_table.public.id}"
 }
 
@@ -202,6 +202,99 @@ resource "aws_network_interface" "G2A" {
 
   attachment {
     instance     = "${aws_instance.CSR1000vA.id}"
+    device_index = 1
+  }
+}
+
+###############################
+/*
+  Public Subnet
+*/
+resource "aws_subnet" "router_b_subnet_g1" {
+  vpc_id = "${aws_vpc.default.id}"
+
+  cidr_block        = "${var.router_b_subnet_g1}"
+  availability_zone = "${var.availability_zone_ha}"
+
+  tags {
+    Name = "Public SubnetB"
+  }
+}
+
+resource "aws_route_table_association" "rt-public_b" {
+  subnet_id      = "${aws_subnet.router_b_subnet_g1.id}"
+  route_table_id = "${aws_route_table.public.id}"
+}
+
+/*
+  Private Subnet
+*/
+resource "aws_subnet" "router_b_subnet_g2" {
+  vpc_id = "${aws_vpc.default.id}"
+
+  cidr_block        = "${var.router_b_subnet_g2}"
+  availability_zone = "${var.availability_zone_ha}"
+
+  tags {
+    Name = "Private SubnetB"
+  }
+}
+
+resource "aws_subnet" "users_subnet_b" {
+  vpc_id = "${aws_vpc.default.id}"
+
+  cidr_block        = "${var.users_subnet_b}"
+  availability_zone = "${var.availability_zone_ha}"
+
+  tags {
+    Name = "Private SubnetB_users"
+  }
+}
+
+resource "aws_route_table_association" "rt_private_b" {
+  subnet_id      = "${aws_subnet.router_b_subnet_g2.id}"
+  route_table_id = "${aws_route_table.rt_private.id}"
+}
+
+resource "aws_route_table_association" "rt_users_subnet_b" {
+  subnet_id      = "${aws_subnet.users_subnet_b.id}"
+  route_table_id = "${aws_route_table.rt_private.id}"
+}
+
+/*
+  CSR1000v Instance
+*/
+
+resource "aws_instance" "CSR1000vB" {
+  ami                         = "${lookup(var.ami_csr1000v, var.region)}"
+  availability_zone           = "${var.availability_zone_ha}"
+  instance_type               = "${var.csr1000v_instance_type}"
+  key_name                    = "${var.aws_key_name}"
+  vpc_security_group_ids      = ["${aws_security_group.SG_SSH_IPSEC.id}"]
+  subnet_id                   = "${aws_subnet.router_b_subnet_g1.id}"
+  associate_public_ip_address = true
+  private_ip                  = "${var.router_b_address_g1}"
+  source_dest_check           = false
+  iam_instance_profile        = "${var.IAM_Role}"
+
+  tags {
+    Name = "${var.router_b_address_g1}"
+  }
+}
+
+resource "aws_eip" "CSR1000vB" {
+  network_interface = "${aws_instance.CSR1000vB.network_interface_id}"
+  vpc               = true
+}
+
+resource "aws_network_interface" "G2B" {
+  subnet_id         = "${aws_subnet.router_b_subnet_g2.id}"
+  private_ips       = ["${var.router_b_address_g2}"]
+  security_groups   = ["${aws_security_group.SG_All_Traffic.id}"]
+  source_dest_check = false
+
+  attachment {
+    instance     = "${aws_instance.CSR1000vB.id}"
     device_index = 1
   }
 }

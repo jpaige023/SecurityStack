@@ -168,8 +168,8 @@ resource "aws_instance" "CSR1000vA" {
   source_dest_check           = false
 
   tags {
-    Name = "${var.router_a_address_g1}"
-    DMVPN_Role = "${var.dmvpn_role}"
+    Name         = "${var.router_a_address_g1}"
+    DMVPN_Role   = "${var.dmvpn_role}"
     DMVPN_Tunnel = "${var.dmvpn_tunnel}"
   }
 }

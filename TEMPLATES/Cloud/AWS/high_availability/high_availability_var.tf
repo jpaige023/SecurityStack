@@ -17,6 +17,7 @@ variable "aws_key_name" {}
 
 variable "region" {}
 variable "availability_zone" {}
+variable "availability_zone_ha" {}
 variable "vpc_number" {}
 variable "cidr_block" {}
 
@@ -25,7 +26,13 @@ variable "router_a_address_g1" {}
 variable "router_a_subnet_g2" {}
 variable "router_a_address_g2" {}
 
+variable "router_b_subnet_g1" {}
+variable "router_b_address_g1" {}
+variable "router_b_subnet_g2" {}
+variable "router_b_address_g2" {}
+
 variable "users_subnet_a" {}
+variable "users_subnet_b" {}
 
 variable "IAM_Role" {
   default = "ChangeRouteRole"
