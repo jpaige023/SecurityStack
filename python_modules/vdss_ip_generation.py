@@ -1,7 +1,7 @@
 from netaddr import *
 import simplejson as json
 
-def main(cidr_block, region, availability_zone, vpc_number, licenseidtoken, email, dmvpn_role, dmvpn_tunnel):
+def main(cidr_block, region, availability_zone, vpc_number, licenseidtoken, email, dmvpn_tunnel):
     """Needs input of CIDR block, region, availability, zone. Note CIDR block must be a /21 or larger"""
 #    cidr_block = "10.0.0.0/21"
 #    region = "us-west-1"

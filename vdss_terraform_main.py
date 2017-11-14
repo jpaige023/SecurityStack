@@ -27,7 +27,7 @@ def main():
     vpc_number = vpc_number_get()
     subprocess.call(["mkdir", "VPCs/{}".format(vpc_number)])
     python_modules.terraform.terraform_tfvars_createfile(cloud_provider, vpc_number, settings_dictionary, region)
-    python_modules.vdss_ip_generation.main(cidr_block, region, availability_zone, vpc_number, licenseidtoken, email, dmvpn_role, dmvpn_tunnel)
+    python_modules.vdss_ip_generation.main(cidr_block, region, availability_zone, vpc_number, licenseidtoken, email, dmvpn_tunnel)
     python_modules.terraform.vdss_create_definition_files(vpc_number)
     #    python_modules.terraform.init_terraform(vpc_number)
     #    python_modules.terraform.apply_terraform(vpc_number)

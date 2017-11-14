@@ -25,5 +25,4 @@ variable "router_a_address_g1" {}
 variable "router_a_subnet_g2" {}
 variable "router_a_address_g2" {}
 
-variable "dmvpn_role" {}
 variable "dmvpn_tunnel" {}

@@ -38,5 +38,4 @@ variable "IAM_Role" {
   default = "ChangeRouteRole"
 }
 
-variable "dmvpn_role" {}
 variable "dmvpn_tunnel" {}

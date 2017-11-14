@@ -186,7 +186,7 @@ resource "aws_instance" "CSR1000vA" {
 
   tags {
     Name         = "${var.router_a_address_g1}"
-    DMVPN_Role   = "${var.dmvpn_role}"
+    DMVPN_Role   = "spoke_a"
     DMVPN_Tunnel = "${var.dmvpn_tunnel}"
   }
 }
@@ -280,7 +280,7 @@ resource "aws_instance" "CSR1000vB" {
 
   tags {
     Name         = "${var.router_b_address_g1}"
-    DMVPN_Role   = "${var.dmvpn_role}"
+    DMVPN_Role   = "spoke_b"
     DMVPN_Tunnel = "${var.dmvpn_tunnel}"
   }
 }
