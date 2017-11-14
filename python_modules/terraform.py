@@ -151,8 +151,9 @@ def vdss_create_definition_files(vpc_number, cloud_provider='aws', device_number
                 outfile.write(line)
         device_number_firewalls_counter = device_number_firewalls_counter + 1
 
-def dmvpn_create_definition_files(vpc_template, vpc_number, cloud_provider):
+def dmvpn_create_definition_files(vpc_template, vpc_number, cloud_provider, dmvpn_role):
     # copy terraform modules
     subprocess.call(
-        "cp TEMPLATES/Cloud/{}/{}/* VPCs/{}".format(cloud_provider.upper(), vpc_template, vpc_number),
+        "cp TEMPLATES/Cloud/{}/{}/{}/* VPCs/{}".format(cloud_provider.upper(), dmvpn_role, vpc_template, vpc_number),
         shell=True)
+

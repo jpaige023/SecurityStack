@@ -19,8 +19,8 @@ def main():
     user_subnet_masks = 27
 #    vpc_number = 100
     csr1000v_instance_type = "c4.large"
-    dmvpn_role = "spoke"
     dmvpn_tunnel = "1"
+    dmvpn_role = "dmvpn_spoke"
 
     settings_dictionary = load_settings()
     licenseidtoken = settings_dictionary['smart_license']['licenseidtoken']
@@ -30,7 +30,7 @@ def main():
 
     python_modules.terraform.terraform_tfvars_createfile(cloud_provider, vpc_number, settings_dictionary, region)
     python_modules.dmvpn_ip_generation.main(cidr_block, user_subnet_masks, region, csr1000v_instance_type, availability_zone, vpc_number, vpc_template, availability_zone_ha, licenseidtoken, email, dmvpn_tunnel)
-    python_modules.terraform.dmvpn_create_definition_files(vpc_template, vpc_number, cloud_provider)
+    python_modules.terraform.dmvpn_create_definition_files(vpc_template, vpc_number, cloud_provider, dmvpn_role)
     python_modules.terraform.init_terraform(vpc_number)
     python_modules.terraform.apply_terraform(vpc_number)
 
