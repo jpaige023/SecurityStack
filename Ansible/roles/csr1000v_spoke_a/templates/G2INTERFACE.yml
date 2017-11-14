@@ -7,14 +7,11 @@
       parents:
         - "interface GigabitEthernet2"
       lines:
-        - "ip address {{G2.IP}} {{G2SM.IP}}"
-        - "ip access-group cloudWhiteListPolicy in"
-        - "ip access-group cloudWhiteListPolicy out"
         - "no shutdown"
   - name: "Remove now moot due to VRF default static route"
     ios_config:
       provider: "{{cli}}"
       lines:
-        - "no ip route 0.0.0.0 0.0.0.0 GigabitEthernet1 {{EEM_ROUTE_NH.IP}}"
+        - "no ip route 0.0.0.0 0.0.0.0 GigabitEthernet1 {{router_a_addressg1NH}}"
 
 

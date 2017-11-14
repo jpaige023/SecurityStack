@@ -3,7 +3,7 @@ from netaddr import *
 from copy import deepcopy
 
 
-def main(cidr_block, user_subnet_masks, region, csr1000v_instance_type, availability_zone, vpc_number, vpc_template, availability_zone_ha, licenseidtoken, email, dmvpn_tunnel):
+def main(cidr_block, user_subnet_masks, region, csr1000v_instance_type, availability_zone, vpc_number, vpc_template, availability_zone_ha, licenseidtoken, email, dmvpn_tunnel, dmvpn_key):
 #    import simplejson as json
 #    from netaddr import *
 #    from copy import deepcopy
@@ -30,8 +30,8 @@ def main(cidr_block, user_subnet_masks, region, csr1000v_instance_type, availabi
     dictionary_tfvars['availability_zone_ha'] = availability_zone_ha
     dictionary_tfvars['licenseidtoken'] = licenseidtoken
     dictionary_tfvars['email'] = email
-    dictionary_tfvars['dmvpn_role'] = dmvpn_role
     dictionary_tfvars['dmvpn_tunnel'] = dmvpn_tunnel
+    dictionary_tfvars['dmvpn_key'] = dmvpn_key
 
     dmvpn_addresses = address_generation_DMVPN(vpc_number)
     dictionary_tfvars.update(dmvpn_addresses)

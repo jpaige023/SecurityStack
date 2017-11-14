@@ -25,14 +25,20 @@ def main():
     settings_dictionary = load_settings()
     licenseidtoken = settings_dictionary['smart_license']['licenseidtoken']
     email = settings_dictionary['smart_license']['email']
+    dmvpn_key = settings_dictionary['keys']['dmvpn'][dmvpn_tunnel]
     vpc_number = vpc_number_get()
     subprocess.call(["mkdir", "VPCs/{}".format(vpc_number)])
 
     python_modules.terraform.terraform_tfvars_createfile(cloud_provider, vpc_number, settings_dictionary, region)
-    python_modules.dmvpn_ip_generation.main(cidr_block, user_subnet_masks, region, csr1000v_instance_type, availability_zone, vpc_number, vpc_template, availability_zone_ha, licenseidtoken, email, dmvpn_tunnel)
+    python_modules.dmvpn_ip_generation.main(cidr_block, user_subnet_masks, region, csr1000v_instance_type, availability_zone, vpc_number, vpc_template, availability_zone_ha, licenseidtoken, email, dmvpn_tunnel, dmvpn_key)
     python_modules.terraform.dmvpn_create_definition_files(vpc_template, vpc_number, cloud_provider, dmvpn_role)
     python_modules.terraform.init_terraform(vpc_number)
     python_modules.terraform.apply_terraform(vpc_number)
+
+    #get EIP from tfstate
+    #get RTB from tfstate
+    #get ENI from tfstate
+    #add RTB and ENI to tfvars.json and save in host_vars as {{host}}.json
 
 
 
