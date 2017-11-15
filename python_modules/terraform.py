@@ -4,6 +4,13 @@ import shlex
 
 
 def init_terraform(vpc_number):
+    # import subprocess
+    # import os
+    # from subprocess import Popen, PIPE
+    # import shlex
+    # import sys
+    # vpc_number = "17"
+
     exitcode = 1
     while exitcode != 0:
         print "\n\nInitializing Terraform Provider"

@@ -1,12 +1,10 @@
 import simplejson as json
 import os
-import re
 import subprocess
-from subprocess import Popen, PIPE
 import python_modules.vdss_ip_generation
 import python_modules.terraform
 import python_modules.dmvpn_ip_generation
-import shlex
+
 
 def main():
     cidr_block = "10.0.0.0/21"
@@ -17,11 +15,13 @@ def main():
     # vpc_template = dev, standard, high_availability
     vpc_template = 'high_availability'
     user_subnet_masks = 27
-#    vpc_number = 100
     csr1000v_instance_type = "c4.large"
     dmvpn_tunnel = "1"
     dmvpn_role = "dmvpn_spoke"
-
+    path_var = os.environ["PATH"]
+    path_var_plus = path_var + ":" + "/home/vagrant"
+    os.environ["PATH"] = path_var_plus
+    print(os.environ["PATH"])
 
     settings_dictionary = load_settings()
     licenseidtoken = settings_dictionary['smart_license']['licenseidtoken']
