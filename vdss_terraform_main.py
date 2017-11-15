@@ -21,7 +21,7 @@ def main():
     dmvpn_tunnel = "1"
 
     settings_dictionary = load_settings()
-    licenseidtoken = settings_dictionary['smart_license']['idtoken']
+    licenseidtoken = settings_dictionary['smart_license']['licenseidtoken']
     email = settings_dictionary['smart_license']['email']
     dmvpn_key = settings_dictionary['keys']['dmvpn'][dmvpn_tunnel]
 
