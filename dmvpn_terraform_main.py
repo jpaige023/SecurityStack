@@ -4,6 +4,8 @@ import subprocess
 import python_modules.vdss_ip_generation
 import python_modules.terraform
 import python_modules.dmvpn_ip_generation
+import python_modules.ansible_hosts
+import python_modules.dmvpn_hub_create
 
 
 def main():
@@ -14,11 +16,12 @@ def main():
     availability_zone = "us-west-1a"
     availability_zone_ha = "us-west-1c"
     # vpc_template = dev, standard, high_availability
-    vpc_template = 'high_availability'
+    vpc_template = 'dev'
     user_subnet_masks = 27
     csr1000v_instance_type = "c4.large"
     dmvpn_tunnel = "1"
-    dmvpn_role = "dmvpn_spoke"
+    # dmvpn_role = "dmvpn_spoke"
+    dmvpn_role = "dmvpn_hub"
 
     # For Pycharm change PATH to find Terraform
     path_var = os.environ["PATH"]
@@ -44,20 +47,13 @@ def main():
     python_modules.terraform.init_terraform(vpc_number)
     python_modules.terraform.apply_terraform(vpc_number)
 
-    # Create Anisble host_vars files
-    python_modules.ansible_hosts.main(cloud_provider, region, vpc_template, vpc_number, dictionary_tfvars)
+    # Create Ansible host_vars files
+    tfstate_dictionary = python_modules.ansible_hosts.main(cloud_provider, vpc_template, vpc_number, dictionary_tfvars)
 
+    # If create hub site
+    if dmvpn_role == "dmvpn_hub":
+        python_modules.dmvpn_hub_create.main(tfstate_dictionary)
 
-# tfstate_dictionary = {'eni_a_var': 'eni-6fec2f44', 'route_table_var': 'rtb-3d05a45b', 'ip_b': None, 'eni_b_var': 'eni-98fdd194', 'ip_a': '54.71.148.172'}
-# for key in tfstate_dictionary:
-#     if tfstate_dictionary[key]:
-#         print tfstate_dictionary[key]
-#
-#         print tfstate_dictionary["ip_a"]
-# if tfstate_dictionary["ip_b"]:
-#     print tfstate_dictionary["ip_b"]
-
-    #add RTB and ENI to tfvars.json and save in host_vars as {{host}}.json
 
 
 

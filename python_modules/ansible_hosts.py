@@ -1,9 +1,8 @@
 import simplejson as json
 
-def main(cloud_provider, region, vpc_template, vpc_number, dictionary_tfvars):
+def main(cloud_provider, vpc_template, vpc_number, dictionary_tfvars):
 #def main():
     # cloud_provider = "aws"
-    # region = "us-west-2"
     # vpc_template = "high_availability"
     # vpc_number = "12"
 
@@ -15,7 +14,7 @@ def main(cloud_provider, region, vpc_template, vpc_number, dictionary_tfvars):
             tfstate_dictionary["ip_a"] = d["modules"][0]["resources"]["aws_eip.CSR1000vA"]["primary"]["attributes"]["public_ip"]
             if vpc_template == "high_availability":
                 tfstate_dictionary["ip_b"] = d["modules"][0]["resources"]["aws_eip.CSR1000vB"]["primary"]["attributes"]["public_ip"]
-                tfstate_dictionary["route_table_var"] = d["modules"][0]["resources"]["aws_route_table.{}-private".format(region)]["primary"]["id"]
+                tfstate_dictionary["route_table_var"] = d["modules"][0]["resources"]["aws_route_table.rt_private"]["primary"]["id"]
                 tfstate_dictionary["eni_a_var"] = d["modules"][0]["resources"]["aws_network_interface.G2A"]["primary"]["id"]
                 tfstate_dictionary["eni_b_var"] = d["modules"][0]["resources"]["aws_network_interface.G2B"]["primary"]["id"]
 
@@ -36,6 +35,7 @@ def main(cloud_provider, region, vpc_template, vpc_number, dictionary_tfvars):
             json.dump(tfstate_dictionary, outfile, sort_keys=True, indent=4,
                       ensure_ascii=False)
 
+    return tfstate_dictionary
 
 if __name__ == "__main__":
    main()
