@@ -35,9 +35,9 @@ interface Tunnel{{dmvpn_tunnel}}
  ip mtu 1400
  ip pim sparse-mode
  ip nhrp network-id 100
- ip nhrp nhs 10.254.2.1 nbma 52.40.21.159 multicast
- ip nhrp nhs 10.254.2.2 nbma 52.40.115.65 multicast
- ip nhrp nhs 10.254.1.2 nbma 34.226.68.69 multicast
+{% for address in dmvpn_addresses[dmvpn_tunnel] %}
+ ip nhrp nhs {{address.private}} nbma {{address.public}} multicast
+{% endfor %}
  ip nhrp redirect
  ip tcp adjust-mss 1360
  tunnel source GigabitEthernet1
@@ -45,19 +45,16 @@ interface Tunnel{{dmvpn_tunnel}}
  tunnel key 1
  tunnel vrf internet-vrf
  tunnel protection ipsec profile ipsec-prof
-!
 
 interface GigabitEthernet1
- vrf forwarding internet-vrf
  ip address {{router_a_address_g1}} 255.255.255.240
  negotiation auto
-!
+
 interface GigabitEthernet2
  ip address {{router_a_address_g2}} {{router_a_subnet_mask_g2}}
  ip access-group cloudWhiteListPolicy in
  ip access-group cloudWhiteListPolicy out
  negotiation auto
-
 
 router bgp 65500
  bgp router-id {{tunnel_address}}
@@ -67,22 +64,18 @@ router bgp 65500
  neighbor DMVPNSPOKES peer-group
  neighbor DMVPNSPOKES remote-as 65500
  neighbor DMVPNSPOKES update-source Tunnel1
- neighbor 10.254.1.2 remote-as 65500
- neighbor 10.254.1.2 update-source Tunnel1
- neighbor 10.254.2.1 remote-as 65500
- neighbor 10.254.2.1 update-source Tunnel1
- neighbor 10.254.2.2 remote-as 65500
- neighbor 10.254.2.2 update-source Tunnel1
- !
+{% for address in dmvpn_addresses[dmvpn_tunnel] %}
+ neighbor {{address.dmvpn_address}} remote-as 65500
+ neighbor {{address.dmvpn_address}} update-source Tunnel1
+{% endfor %}
+
  address-family ipv4
-  network 10.0.1.16 mask 255.255.255.240
-  network 10.100.1.0 mask 255.255.255.252
   neighbor DMVPNSPOKES activate
   neighbor DMVPNSPOKES route-reflector-client
-  neighbor 10.254.1.2 activate
-  neighbor 10.254.2.1 activate
-  neighbor 10.254.2.2 activate
-  exit-address-family
+{% for address in dmvpn_addresses[dmvpn_tunnel] %}
+  neighbor {{address.dmvpn_address}} activate
+{% endfor %}
+ exit-address-family
 
 ip route vrf internet-vrf 0.0.0.0 0.0.0.0 10.0.1.1
 
