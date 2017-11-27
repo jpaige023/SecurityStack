@@ -20,6 +20,11 @@ def main():
     dmvpn_role = "spoke_a"
     dmvpn_tunnel = "1"
 
+    path_var = os.environ["PATH"]
+    path_var_plus = path_var + ":" + "/home/vagrant"
+    os.environ["PATH"] = path_var_plus
+    print(os.environ["PATH"])
+
     settings_dictionary = load_settings()
     licenseidtoken = settings_dictionary['smart_license']['licenseidtoken']
     email = settings_dictionary['smart_license']['email']
@@ -30,8 +35,8 @@ def main():
     python_modules.terraform.terraform_tfvars_createfile(cloud_provider, vpc_number, settings_dictionary, region)
     python_modules.vdss_ip_generation.main(cidr_block, region, availability_zone, vpc_number, licenseidtoken, email, dmvpn_tunnel, dmvpn_key)
     python_modules.terraform.vdss_create_definition_files(vpc_number)
-    python_modules.terraform.init_terraform(vpc_number)
-    python_modules.terraform.apply_terraform(vpc_number)
+    # python_modules.terraform.init_terraform(vpc_number)
+    # python_modules.terraform.apply_terraform(vpc_number)
 
 
 def load_settings():

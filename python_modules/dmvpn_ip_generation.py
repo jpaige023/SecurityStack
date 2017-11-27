@@ -42,6 +42,7 @@ def main(cidr_block, user_subnet_masks, region, csr1000v_instance_type, availabi
         json.dump(dictionary_tfvars, outfile, sort_keys=True, indent=4,
                   ensure_ascii=False)
 
+    return dictionary_tfvars
 
 
 

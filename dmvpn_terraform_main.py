@@ -7,6 +7,7 @@ import python_modules.dmvpn_ip_generation
 
 
 def main():
+    # Receive or input variables
     cidr_block = "10.0.0.0/21"
     cloud_provider = "aws"
     region = "us-west-1"
@@ -18,27 +19,44 @@ def main():
     csr1000v_instance_type = "c4.large"
     dmvpn_tunnel = "1"
     dmvpn_role = "dmvpn_spoke"
+
+    # For Pycharm change PATH to find Terraform
     path_var = os.environ["PATH"]
     path_var_plus = path_var + ":" + "/home/vagrant"
     os.environ["PATH"] = path_var_plus
-    print(os.environ["PATH"])
 
+    # Gather Settings and Information
     settings_dictionary = load_settings()
     licenseidtoken = settings_dictionary['smart_license']['licenseidtoken']
     email = settings_dictionary['smart_license']['email']
     dmvpn_key = settings_dictionary['keys']['dmvpn'][dmvpn_tunnel]
     vpc_number = vpc_number_get()
+
+    # Create Cloud Directory
     subprocess.call(["mkdir", "VPCs/{}".format(vpc_number)])
-
     python_modules.terraform.terraform_tfvars_createfile(cloud_provider, vpc_number, settings_dictionary, region)
-    python_modules.dmvpn_ip_generation.main(cidr_block, user_subnet_masks, region, csr1000v_instance_type, availability_zone, vpc_number, vpc_template, availability_zone_ha, licenseidtoken, email, dmvpn_tunnel, dmvpn_key)
-    python_modules.terraform.dmvpn_create_definition_files(vpc_template, vpc_number, cloud_provider, dmvpn_role)
-    python_modules.terraform.init_terraform(vpc_number)
-#    python_modules.terraform.apply_terraform(vpc_number)
+    # Generate Variables
 
-    #get EIP from tfstate
-    #get RTB from tfstate
-    #get ENI from tfstate
+    dictionary_tfvars = python_modules.dmvpn_ip_generation.main(cidr_block, user_subnet_masks, region, csr1000v_instance_type, availability_zone, vpc_number, vpc_template, availability_zone_ha, licenseidtoken, email, dmvpn_tunnel, dmvpn_key)
+    python_modules.terraform.dmvpn_create_definition_files(vpc_template, vpc_number, cloud_provider, dmvpn_role)
+
+    # Deploy Cloud Definitions
+    python_modules.terraform.init_terraform(vpc_number)
+    python_modules.terraform.apply_terraform(vpc_number)
+
+    # Create Anisble host_vars files
+    python_modules.ansible_hosts.main(cloud_provider, region, vpc_template, vpc_number, dictionary_tfvars)
+
+
+# tfstate_dictionary = {'eni_a_var': 'eni-6fec2f44', 'route_table_var': 'rtb-3d05a45b', 'ip_b': None, 'eni_b_var': 'eni-98fdd194', 'ip_a': '54.71.148.172'}
+# for key in tfstate_dictionary:
+#     if tfstate_dictionary[key]:
+#         print tfstate_dictionary[key]
+#
+#         print tfstate_dictionary["ip_a"]
+# if tfstate_dictionary["ip_b"]:
+#     print tfstate_dictionary["ip_b"]
+
     #add RTB and ENI to tfvars.json and save in host_vars as {{host}}.json
 
 
