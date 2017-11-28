@@ -10,14 +10,14 @@ import python_modules.dmvpn_hub_create
 
 def main():
     # Receive or input variables
-    cidr_block = "10.0.0.0/21"
+    cidr_block = "10.1.1.0/24"
     cloud_provider = "aws"
     region = "us-west-1"
     availability_zone = "us-west-1a"
     availability_zone_ha = "us-west-1c"
     # vpc_template = dev, standard, high_availability
     vpc_template = 'dev'
-    user_subnet_masks = 27
+    user_subnet_masks = 28
     csr1000v_instance_type = "c4.large"
     dmvpn_tunnel = "1"
     # dmvpn_role = "dmvpn_spoke"

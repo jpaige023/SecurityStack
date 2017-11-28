@@ -1,0 +1,5 @@
+---
+- name: Generate Configuration and Install
+  ios_config:
+    provider: "{{cli}}"
+    src:      "hub_a.j2"
