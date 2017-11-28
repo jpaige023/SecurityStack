@@ -1,0 +1,11 @@
+---
+- hosts: ios
+  tasks:
+  - name: "Is CSR1000v Registered?"
+    ios_command:
+      provider: "{{cli}}"
+      commands: show license status
+    register: command_result
+    retries: 5
+    delay: 10
+    until: command_result | success

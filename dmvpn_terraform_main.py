@@ -10,7 +10,7 @@ import python_modules.dmvpn_hub_create
 
 def main():
     # Receive or input variables
-    cidr_block = "10.1.1.0/24"
+    cidr_block = "10.2.2.0/24"
     cloud_provider = "aws"
     region = "us-west-1"
     availability_zone = "us-west-1a"
@@ -53,6 +53,9 @@ def main():
     # If create hub site
     if dmvpn_role == "dmvpn_hub":
         python_modules.dmvpn_hub_create.main(tfstate_dictionary)
+        w = subprocess.Popen(['ansible-playbook', 'create_csr1000v_hub_a,yml', '--extra-vars', '"target={}"'.format(tfstate_dictionary["ip_a"])],
+                             cwd="VPCs/{}/{}".format(vpc_number, directory_router))
+        w.wait()
 
 
 

@@ -1,0 +1,33 @@
+interface Tunnel500
+ ip address 172.17.1.2 255.255.255.252
+ ip mtu 1400
+ ip tcp adjust-mss 1360
+ bfd interval 500 min_rx 500 multiplier 3
+ tunnel source GigabitEthernet1
+ tunnel destination {{router_a_address_g1}}
+ tunnel key 500
+ tunnel vrf internet-vrf
+!
+router eigrp 1
+ bfd interface Tunnel500
+ network 172.17.0.0
+ passive-interface default
+ no passive-interface Tunnel500
+
+crypto isakmp policy 30
+ hash md5
+ authentication pre-share
+!
+crypto isakmp key {{dmvpn_key}} address {{router_a_address_g1}}
+!
+crypto ipsec transform-set easy esp-des esp-md5-hmac
+!
+access-list 110 permit GRE {{router_b_address_g1}} 0.0.0.0 {{router_a_address_g1}} 0.0.0.0
+!
+crypto map mymap 10 ipsec-isakmp
+ set peer {{router_a_address_g1}}
+ set transform-set easy
+ match address 110
+!
+interface GigabitEthernet1
+ crypto map mymap

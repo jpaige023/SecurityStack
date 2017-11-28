@@ -1,0 +1,26 @@
+interface Tunnel{{dmvpn_tunnel}}
+{% for address in dmvpn_addresses[dmvpn_tunnel] %}
+{% if address.private != hostvars[inventory_hostname]['router_a_address_g1'] %}
+ ip nhrp nhs {{address.private}} nbma {{address.public}} multicast
+{% endif %}
+{% endfor %}
+
+!
+router bgp 65500
+{% for address in dmvpn_addresses[dmvpn_tunnel] %}
+{% if address.private != hostvars[inventory_hostname]['router_a_address_g1'] %}
+ neighbor {{address.dmvpn_address}} remote-as 65500
+ neighbor {{address.dmvpn_address}} update-source Tunnel1
+{% endif %}
+{% endfor %}
+ !
+ address-family ipv4
+{% for address in dmvpn_addresses[dmvpn_tunnel] %}
+{% if address.private != hostvars[inventory_hostname]['router_a_address_g1'] %}
+{% if address.dmvpn_address != hostvars[inventory_hostname]['tunnel_address'] %}
+  neighbor {{address.dmvpn_address}} next-hop-self
+{% endif %}
+  neighbor {{address.dmvpn_address}} activate
+{% endif %}
+{% endfor %}
+ exit-address-family
