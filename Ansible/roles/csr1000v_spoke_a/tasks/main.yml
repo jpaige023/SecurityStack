@@ -2,4 +2,4 @@
 - name: Generate Configuration and Install
   ios_config:
     provider: "{{cli}}"
-    src:      "AWS_A.j2"
+    src:      "spoke_a.j2"

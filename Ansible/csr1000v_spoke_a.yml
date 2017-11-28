@@ -1,7 +1,7 @@
 ---
 - name: Configure Cloud Router
-  hosts: csr1000v_aws
+  hosts: csr1000v_spoke_a
   vars_files:
       - "~/PycharmProjects/ThinSecurityStack/DB/dmvpn_tunnel_nhs_addresses.yml"
   roles:
-    - "csr1000v_hub_a"
+    - "csr1000v_spoke_a"

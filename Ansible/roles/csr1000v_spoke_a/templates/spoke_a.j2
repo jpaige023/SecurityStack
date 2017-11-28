@@ -30,23 +30,27 @@ crypto ipsec profile ipsec-prof
  set transform-set xform 
  set isakmp-profile isakmp-prof
 !
-interface Tunnel1
+interface Tunnel{{dmvpn_tunnel}}
  description DMVPN
  ip address {{tunnel_address}} 255.255.0.0
  no ip redirects
  ip mtu 1400
- ip nhrp network-id 100
- ip nhrp nhs 10.254.1.1 nbma 34.225.25.54 multicast
- ip nhrp nhs 10.254.2.1 nbma 52.40.21.159 multicast
- ip nhrp nhs 10.254.1.2 nbma 34.226.68.69 multicast
- ip nhrp nhs 10.254.2.2 nbma 52.40.115.65 multicast
+ ip nhrp network-id {{dmvpn_tunnel}}
+{% for address in dmvpn_addresses[dmvpn_tunnel] %}
+ ip nhrp nhs {{address.private}} nbma {{address.public}} multicast
+{% endfor %}
  ip nhrp shortcut
  ip tcp adjust-mss 1360
  tunnel source GigabitEthernet1
  tunnel mode gre multipoint
- tunnel key 1
+ tunnel key {{dmvpn_tunnel}}
  tunnel vrf internet-vrf
  tunnel protection ipsec profile ipsec-prof
+!
+interface GigabitEthernet2
+ ip address {{router_a_address_g2}} {{router_a_subnet_mask_g2}}
+ ip access-group cloudWhiteListPolicy in
+ ip access-group cloudWhiteListPolicy out
 !
 router bgp 65500
  bgp router-id {{tunnel_address}}
@@ -91,5 +95,5 @@ event manager applet fvrf
  action 1.2 cli command "ip route vrf internet-vrf 0.0.0.0 0.0.0.0 {{router_a_addressg1NH}}"
  action 1.3 cli command "interface gig1"
  action 1.4 cli command "vrf forwarding internet-vrf"
- action 1.5 cli command "ip address {{router_a_address_g1}} 255.255.255.240"
+ action 1.5 cli command "ip address {{router_a_address_g1}} {{router_a_subnet_mask_g1}}"
  action 2.0 cli command "end"

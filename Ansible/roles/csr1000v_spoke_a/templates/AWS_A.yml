@@ -1,8 +1,0 @@
----
-- name: Configure Cloud Router
-  hosts: ios
-  tasks:
-  - name: Generate Configuration and Install
-    ios_config: 
-      provider: "{{cli}}"
-      src:      "AWS_A.j2"

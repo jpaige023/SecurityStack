@@ -113,6 +113,10 @@ def address_generation_dev(cidr_block, user_subnet_masks):
     router_a_address_g1 = ips_router_a_g1[4]
     router_a_address_g1 = str(router_a_address_g1)
     ip_addresses_dictionary['router_a_address_g1'] = router_a_address_g1
+    ip_subnet_mask_g1 = IPNetwork(router_a_subnet_g1)
+    router_a_subnet_mask_g1 = ip_subnet_mask_g1.netmask
+    router_a_subnet_mask_g1 = str(router_a_subnet_mask_g1)
+    ip_addresses_dictionary['router_a_subnet_mask_g1'] = router_a_subnet_mask_g1
     router_a_addressg1NH = ips_router_a_g1[1]
     router_a_addressg1NH = str(router_a_addressg1NH)
     ip_addresses_dictionary['router_a_addressg1NH'] = router_a_addressg1NH
@@ -156,6 +160,10 @@ def address_generation_standard(cidr_block, user_subnet_masks):
     router_a_address_g1 = ips_router_a_g1[4]
     router_a_address_g1 = str(router_a_address_g1)
     ip_addresses_dictionary['router_a_address_g1'] = router_a_address_g1
+    ip_subnet_mask_g1 = IPNetwork(router_a_subnet_g1)
+    router_a_subnet_mask_g1 = ip_subnet_mask_g1.netmask
+    router_a_subnet_mask_g1 = str(router_a_subnet_mask_g1)
+    ip_addresses_dictionary['router_a_subnet_mask_g1'] = router_a_subnet_mask_g1
     router_a_addressg1NH = ips_router_a_g1[1]
     router_a_addressg1NH = str(router_a_addressg1NH)
     ip_addresses_dictionary['router_a_addressg1NH'] = router_a_addressg1NH
@@ -224,6 +232,10 @@ def address_generation_high_availability(cidr_block, user_subnet_masks):
     router_a_address_g1 = ips_router_a_g1[4]
     router_a_address_g1 = str(router_a_address_g1)
     ip_addresses_dictionary['router_a_address_g1'] = router_a_address_g1
+    ip_subnet_mask_g1 = IPNetwork(router_a_subnet_g1)
+    router_a_subnet_mask_g1 = ip_subnet_mask_g1.netmask
+    router_a_subnet_mask_g1 = str(router_a_subnet_mask_g1)
+    ip_addresses_dictionary['router_a_subnet_mask_g1'] = router_a_subnet_mask_g1
     router_a_addressg1NH = ips_router_a_g1[1]
     router_a_addressg1NH = str(router_a_addressg1NH)
     ip_addresses_dictionary['router_a_addressg1NH'] = router_a_addressg1NH
@@ -248,6 +260,10 @@ def address_generation_high_availability(cidr_block, user_subnet_masks):
     router_b_address_g1 = ips_router_b_g1[4]
     router_b_address_g1 = str(router_b_address_g1)
     ip_addresses_dictionary['router_b_address_g1'] = router_b_address_g1
+    ip_subnet_mask_rb_g1 = IPNetwork(router_b_subnet_g1)
+    router_b_subnet_mask_g1 = ip_subnet_mask_rb_g1.netmask
+    router_b_subnet_mask_g1 = str(router_b_subnet_mask_g1)
+    ip_addresses_dictionary['router_b_subnet_mask_g1'] = router_b_subnet_mask_g1
     router_b_addressg1NH = ips_router_b_g1[1]
     router_b_addressg1NH = str(router_b_addressg1NH)
     ip_addresses_dictionary['router_b_addressg1NH'] = router_b_addressg1NH

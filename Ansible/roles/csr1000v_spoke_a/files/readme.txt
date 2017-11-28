@@ -1,1 +1,0 @@
-This folder would contain files I want to have copied over to host. Cloud be a shell script or any other file really.

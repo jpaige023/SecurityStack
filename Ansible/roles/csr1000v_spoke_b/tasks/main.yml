@@ -1,0 +1,5 @@
+---
+- name: Generate Configuration and Install
+  ios_config:
+    provider: "{{cli}}"
+    src:      "spoke_b.j2"
