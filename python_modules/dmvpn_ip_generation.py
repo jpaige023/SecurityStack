@@ -36,7 +36,7 @@ def main(cidr_block, user_subnet_masks, region, csr1000v_instance_type, availabi
     # dmvpn_addresses = address_generation_DMVPN(vpc_number)
     # dictionary_tfvars.update(dmvpn_addresses)
 
-    tunnel_address = new_dmvpn_interface_address_assign(dmpvn_tunnel, vpc_number)
+    tunnel_address = new_dmvpn_interface_address_assign(dmvpn_tunnel, vpc_number)
     tunnel_b_address = None
     if vpc_template == 'high_availability':
         tunnel_b_address = new_dmvpn_interface_address_assign(dmpvn_tunnel, vpc_number)
