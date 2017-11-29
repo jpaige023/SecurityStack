@@ -1,7 +1,7 @@
 ---
 - name: Configure Cloud Router
-  hosts: {{ target }}
+  hosts: "{{ target }}"
   vars_files:
       - "~/PycharmProjects/ThinSecurityStack/DB/dmvpn_tunnel_nhs_addresses.yml"
   roles:
-    - "update_dmvpn_nhs_bgp_addresses"
+    - "create_csr1000v_hub_a"

@@ -1,5 +1,5 @@
 ---
-- name: "Test Show Running Configuration"
+- name: "Test connectivity"
   ios_command:
     provider: "{{cli}}"
     commands: show running-config
@@ -16,6 +16,14 @@
     provider: "{{cli}}"
     commands: event manager run fvrf
   ignore_errors: true
+- name: "Test connectivity"
+  ios_command:
+    provider: "{{cli}}"
+    commands: show running-config
+  register: command_result
+  retries: 60
+  delay: 10
+  until: command_result | success
 - name: "Remove now moot due to VRF default static route"
   ios_config:
     provider: "{{cli}}"

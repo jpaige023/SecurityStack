@@ -4,4 +4,4 @@
   vars_files:
       - "~/PycharmProjects/ThinSecurityStack/DB/dmvpn_tunnel_nhs_addresses.yml"
   roles:
-    - "create_csr1000v_hub_a"
+    - "update_dmvpn_nhs_bgp_addresses"

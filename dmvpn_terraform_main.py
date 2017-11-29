@@ -50,11 +50,19 @@ def main():
     # Create Ansible host_vars files
     tfstate_dictionary = python_modules.ansible_hosts.main(cloud_provider, vpc_template, vpc_number, dictionary_tfvars)
 
-    # If create hub site
+    # Configure DMVPN Hub
     if dmvpn_role == "dmvpn_hub":
+        with open('Ansible/hosts') as f:
+            lines = f.readlines()
+        newline = tfstate_dictionary["ip_a"] + "\n"
+        lines.append(newline)
+        print(lines)
+        with open('Ansible/hosts', 'w') as f_out:
+            for line in lines:
+                f_out.write(line)
         python_modules.dmvpn_hub_create.main(tfstate_dictionary)
-        w = subprocess.Popen(['ansible-playbook', 'create_csr1000v_hub_a,yml', '--extra-vars', '"target={}"'.format(tfstate_dictionary["ip_a"])],
-                             cwd="VPCs/{}/{}".format(vpc_number, directory_router))
+        w = subprocess.Popen(['ansible-playbook', 'create_csr1000v_hub_a.yml', '--extra-vars', 'target={}'.format(tfstate_dictionary["ip_a"]), '-vvvv'],
+                             cwd="Ansible")
         w.wait()
 
 
