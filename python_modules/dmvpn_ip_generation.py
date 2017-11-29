@@ -314,33 +314,47 @@ def address_generation_high_availability(cidr_block, user_subnet_masks):
 
 
 def cloud_address_space_get():
-    f = open("Settings/cloud_address_space", "r")
-    cloud_address_space = f.readlines()
-    f.close()
-    cloud_address_space_clean = []
-    for item in cloud_address_space:
-        item_striped = item.rstrip("\n")
-        cloud_address_space_clean.append(item_striped)
-    return cloud_address_space_clean
+    # import simplejson as json
+    with open('DB/cloud_space.json') as json_data:
+        dictionary = json.load(json_data)
+    cloud_address_space_list = dictionary['cloud_space']
+    return cloud_address_space_list
+
+
+def dmvpn_interface_address_space_get():
+    # import simplejson as json
+    with open('DB/dmvpn_interface_address_space.json') as json_data:
+        dictionary = json.load(json_data)
+        dmvpn_interface_address_space = dictionary['dmvpn_tunnel_address_space']
+    dmvpn_interface_address_space_list = []
+    for item in dmvpn_interface_address_space:
+        print item.values()
+        dmvpn_interface_address_space_list.extend(item.values())
+    return dmvpn_interface_address_space_list
 
 
 def vpc_address_space_in_use_get():
-#    import simplejson as json
-    with open('SecurityPolicies/VPCandCIDRdictionary.json') as json_data:
+    # import simplejson as json
+    with open('DB/vpc_cidr.json') as json_data:
         dictionary = json.load(json_data)
-    vpc_address_space_in_use = dictionary.values()
-    return vpc_address_space_in_use
+    vpc_address_space_in_use_list = dictionary.values()
+    return vpc_address_space_in_use_list
 
 
-def space_available(cloud_address_space, vpc_address_space_in_use, subnet_mask_proposed):
-#    from netaddr import *
-#    cloud_address_space = ['10.0.0.0/8']
-#    subnet_mask_proposed = 24
-#    vpc_address_space_in_use = []
-    cloud_address_space_set = IPSet(cloud_address_space)
-    address_space_unavailable = ['10.254.0.0/16']
+def find_space_available(cloud_address_space_list, vpc_address_space_in_use_list, dmvpn_interface_address_space_list, subnet_mask_proposed):
+    # from netaddr import *
+    # from copy import deepcopy
+    # cloud_address_space_list = ['10.0.0.0/24']
+    # subnet_mask_proposed = 27
+    # vpc_address_space_in_use_list = ['10.0.0.0/28', '10.0.0.64/27']
+    # dmvpn_interface_address_space_list = ['10.0.0.224/27', '10.1.1.224/27']
+
+    cloud_address_space_list_temp = deepcopy(cloud_address_space_list)
+    cloud_address_space_list_temp.extend(dmvpn_interface_address_space_list)
+    cloud_address_space_set = IPSet(cloud_address_space_list_temp)
+    address_space_unavailable = dmvpn_interface_address_space_list
     address_space_unavailable_set = IPSet(address_space_unavailable)
-    vpc_address_space_in_use_set = IPSet(vpc_address_space_in_use)
+    vpc_address_space_in_use_set = IPSet(vpc_address_space_in_use_list)
     unavailable = address_space_unavailable_set | vpc_address_space_in_use_set
     available = cloud_address_space_set ^ unavailable
     available_list = str(available)
@@ -363,17 +377,19 @@ def space_available(cloud_address_space, vpc_address_space_in_use, subnet_mask_p
     print full_subnets_available_list
 
 
-def vpc_cidr_candidate_availability_check(network_new_candidate, vpc_address_space_in_use):
-#    from copy import deepcopy
-#    from netaddr import *
-#    network_new_candidate = '10.1.128.0/28'
-#    vpc_address_space_in_use = ['10.1.129.0/30', '10.1.128.0/24']
-#    print vpc_address_space_in_use
-    network_new_candidate_list_temp = [network_new_candidate]
-    address_space_unavailable = deepcopy(vpc_address_space_in_use)
-    address_space_unavailable.append('10.254.0.0/16')
+def vpc_cidr_candidate_availability_check(cidr_block, vpc_address_space_in_use_list, dmvpn_interface_address_space_list):
+    # from copy import deepcopy
+    # from netaddr import *
+    # cidr_block = '10.0.0.96/27'
+    # cloud_address_space_list = ['10.0.0.0/24']
+    # vpc_address_space_in_use_list = ['10.0.0.0/28', '10.0.0.64/26']
+    # dmvpn_interface_address_space_list = ['10.0.0.224/27', '10.1.1.224/27']
+
+    cidr_block_list_temp = [cidr_block]
+    address_space_unavailable = deepcopy(vpc_address_space_in_use_list)
+    address_space_unavailable.extend(dmvpn_interface_address_space_list)
     cidr_block_values_set = IPSet(address_space_unavailable)
-    network_candidate_set = IPSet(network_new_candidate_list_temp)
+    network_candidate_set = IPSet(cidr_block_list_temp)
     result1 = network_candidate_set.issubset(cidr_block_values_set)
     result2 = False
     for block in address_space_unavailable:
@@ -382,12 +398,12 @@ def vpc_cidr_candidate_availability_check(network_new_candidate, vpc_address_spa
         result2 = network_candidate_set.issuperset(block_temp_set)
         if result2 == True:
             break
-    if network_new_candidate in address_space_unavailable:
-        result = ['not available', '{} is already in use'.format(network_new_candidate)]
+    if cidr_block in address_space_unavailable:
+        result = ['not available', '{} is already in use'.format(cidr_block)]
     elif result1:
-        result = ['not available', '{} is a subset of a used CIDR block'.format(network_new_candidate)]
+        result = ['not available', '{} is a subset of a used CIDR block'.format(cidr_block)]
     elif result2:
-        result = ['not available', '{} is a superset containing a used CIDR block'.format(network_new_candidate)]
+        result = ['not available', '{} is a superset containing a used CIDR block'.format(cidr_block)]
     else:
         result = ['available']
     return result

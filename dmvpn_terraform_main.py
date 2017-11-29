@@ -10,7 +10,7 @@ import python_modules.dmvpn_hub_create
 
 def main():
     # Receive or input variables
-    cidr_block = "10.2.2.0/24"
+    cidr_block = "10.0.0.0/24"
     cloud_provider = "aws"
     region = "us-west-1"
     availability_zone = "us-west-1a"
@@ -27,6 +27,11 @@ def main():
     path_var = os.environ["PATH"]
     path_var_plus = path_var + ":" + "/home/vagrant"
     os.environ["PATH"] = path_var_plus
+
+    # Is cidr_block in available_space?
+
+    # Is cidr_block already in use? If not add entry to vpc_cidr.json
+
 
     # Gather Settings and Information
     settings_dictionary = load_settings()

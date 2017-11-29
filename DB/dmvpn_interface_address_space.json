@@ -1,0 +1,5 @@
+{
+    "dmvpn_tunnel_address_space": [
+      {"1": "10.254.0.0/16"}
+    ]
+}
