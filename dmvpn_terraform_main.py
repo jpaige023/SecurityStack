@@ -10,11 +10,11 @@ import python_modules.dmvpn_hub_create
 
 def main():
     # Receive or input variables
-    cidr_block = "10.0.0.0/24"
+    cidr_block = "10.0.1.0/24"
     cloud_provider = "aws"
-    region = "us-west-1"
-    availability_zone = "us-west-1a"
-    availability_zone_ha = "us-west-1c"
+    region = "us-west-2"
+    availability_zone = "us-west-2a"
+    availability_zone_ha = "us-west-2c"
     # vpc_template = dev, standard, high_availability
     vpc_template = 'dev'
     user_subnet_masks = 28
@@ -70,8 +70,34 @@ def main():
                              cwd="Ansible")
         w.wait()
 
-
-
+    # Configure DMVPN Spoke
+    if dmvpn_role == "dmvpn_spoke":
+        with open('Ansible/hosts') as f:
+            lines = f.readlines()
+        newline = tfstate_dictionary["ip_a"] + "\n"
+        lines.append(newline)
+        if vpc_template == 'high_availability':
+            newline = tfstate_dictionary["ip_b"] + "\n"
+            lines.append(newline)
+        print(lines)
+        with open('Ansible/hosts', 'w') as f_out:
+            for line in lines:
+                f_out.write(line)
+        if vpc_template == 'dev':
+            w = subprocess.Popen(['ansible-playbook', 'create_csr1000v_spoke_a.yml', '--extra-vars', 'target={}'.format(tfstate_dictionary["ip_a"]), '-vvvv'],
+                                 cwd="Ansible")
+            w.wait()
+        if vpc_template == 'standard':
+            w = subprocess.Popen(['ansible-playbook', 'create_csr1000v_spoke_a.yml', '--extra-vars', 'target={}'.format(tfstate_dictionary["ip_a"]), '-vvvv'],
+                                 cwd="Ansible")
+            w.wait()
+        if vpc_template == 'high_availability':
+            w = subprocess.Popen(['ansible-playbook', 'create_csr1000v_spoke_a_ha.yml', '--extra-vars', 'target={}'.format(tfstate_dictionary["ip_a"]), '-vvvv'],
+                                 cwd="Ansible")
+            w.wait()
+            w = subprocess.Popen(['ansible-playbook', 'create_csr1000v_spoke_b_ha.yml', '--extra-vars', 'target={}'.format(tfstate_dictionary["ip_a"]), '-vvvv'],
+                                 cwd="Ansible")
+            w.wait()
 
 
 def load_settings():
