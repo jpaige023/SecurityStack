@@ -77,3 +77,4 @@
     provider: "{{cli}}"
     lines:
       - "platform hardware throughput level MB 1000"
+    save_when: modified

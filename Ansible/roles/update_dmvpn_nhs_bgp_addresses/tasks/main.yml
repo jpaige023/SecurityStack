@@ -3,3 +3,4 @@
   ios_config:
     provider: "{{cli}}"
     src:      "update_tunnel_nhs_bgp.j2"
+    save_when: modified

@@ -16,9 +16,17 @@
     provider: "{{cli}}"
     commands: event manager run fvrf
   ignore_errors: true
+- name: "Test connectivity"
+  ios_command:
+    provider: "{{cli}}"
+    commands: show running-config
+  register: command_result
+  retries: 60
+  delay: 10
+  until: command_result | success
 - name: "No shutdown interface GigabitEthernet2"
   ios_config:
-   provider: "{{cli}}"
+    provider: "{{cli}}"
     parents:
       - "interface GigabitEthernet2"
     lines:
@@ -76,3 +84,4 @@
     provider: "{{cli}}"
     lines:
       - "platform hardware throughput level MB 1000"
+    save_when: modified
