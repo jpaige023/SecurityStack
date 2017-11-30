@@ -77,7 +77,6 @@
     provider: "{{cli}}"
     lines:
       - "platform hardware throughput level MB 1000"
-#    save_when: modified
 - name: "copy run start"
   ios_command:
     provider: "{{cli}}"
