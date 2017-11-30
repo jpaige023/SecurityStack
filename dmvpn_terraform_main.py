@@ -10,7 +10,7 @@ import python_modules.dmvpn_hub_create
 
 def main():
     # Receive or input variables
-    cidr_block = "10.0.2.0/24"
+    cidr_block = "10.0.0.0/24"
     cloud_provider = "aws"
     region = "us-west-1"
     availability_zone = "us-west-1a"
@@ -20,8 +20,8 @@ def main():
     user_subnet_masks = 28
     csr1000v_instance_type = "c4.large"
     dmvpn_tunnel = "1"
-    dmvpn_role = "dmvpn_spoke"
-    # dmvpn_role = "dmvpn_hub"
+    # dmvpn_role = "dmvpn_spoke"
+    dmvpn_role = "dmvpn_hub"
 
     # For Pycharm change PATH to find Terraform
     path_var = os.environ["PATH"]
@@ -69,7 +69,7 @@ def main():
         w = subprocess.Popen(['ansible-playbook', 'create_csr1000v_hub_a.yml', '--extra-vars', 'target={}'.format(tfstate_dictionary["ip_a"]), '-vvvv'],
                              cwd="Ansible")
         w.wait()
-        w = subprocess.Popen(['ansible-playbook', 'update_tunnel_nhs.yml', '--extra-vars', 'target=csr1000v_aws', '-vvvv'],
+        w = subprocess.Popen(['ansible-playbook', 'update_dmvpn_nhs_bgp_addresses.yml', '--extra-vars', 'target=csr1000v_aws', '-vvvv'],
                              cwd="Ansible")
         w.wait()
 
