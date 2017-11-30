@@ -20,8 +20,8 @@ def main():
     user_subnet_masks = 28
     csr1000v_instance_type = "c4.large"
     dmvpn_tunnel = "1"
+    # dmvpn_role = "dmvpn_spoke" or "dmvpn_hub"
     dmvpn_role = "dmvpn_spoke"
-    # dmvpn_role = "dmvpn_hub"
 
     # For Pycharm change PATH to find Terraform
     path_var = os.environ["PATH"]

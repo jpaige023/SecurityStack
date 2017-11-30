@@ -57,7 +57,7 @@ interface GigabitEthernet2
 router bgp 65500
  bgp router-id {{tunnel_address}}
  bgp log-neighbor-changes
- bgp listen range 10.254.0.0/16 peer-group DMVPNSPOKES
+ bgp listen range {{tunnel_cidr}} peer-group DMVPNSPOKES
  bgp listen limit 1000
  neighbor DMVPNSPOKES peer-group
  neighbor DMVPNSPOKES remote-as 65500
