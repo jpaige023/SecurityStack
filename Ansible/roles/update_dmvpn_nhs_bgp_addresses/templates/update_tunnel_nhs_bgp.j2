@@ -1,7 +1,7 @@
 interface Tunnel{{dmvpn_tunnel}}
 {% for address in dmvpn_addresses[dmvpn_tunnel] %}
 {% if address.private != hostvars[inventory_hostname]['router_a_address_g1'] %}
- ip nhrp nhs {{address.private}} nbma {{address.public}} multicast
+ ip nhrp nhs {{address.dmvpn_address}} nbma {{address.public}} multicast
 {% endif %}
 {% endfor %}
 

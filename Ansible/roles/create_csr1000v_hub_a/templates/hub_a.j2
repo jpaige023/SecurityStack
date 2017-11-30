@@ -30,14 +30,14 @@ crypto ipsec profile ipsec-prof
 
 interface Tunnel{{dmvpn_tunnel}}
  description DMVPN
- ip address {{tunnel_address}} 255.255.0.0
+ ip address {{tunnel_address}} {{tunnel_netmask}}
  no ip redirects
  ip mtu 1400
  ip pim sparse-mode
  ip nhrp network-id {{dmvpn_tunnel}}
 {% for address in dmvpn_addresses[dmvpn_tunnel] %}
 {% if address.private != hostvars[inventory_hostname]['router_a_address_g1'] %}
- ip nhrp nhs {{address.private}} nbma {{address.public}} multicast
+ ip nhrp nhs {{address.dmvpn_address}} nbma {{address.public}} multicast
 {% endif %}
 {% endfor %}
  ip nhrp redirect
