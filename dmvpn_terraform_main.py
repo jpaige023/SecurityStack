@@ -10,7 +10,7 @@ import python_modules.dmvpn_hub_create
 
 def main():
     # Receive or input variables
-    cidr_block = "10.0.5.0/24"
+    cidr_block = "10.0.6.0/24"
     cloud_provider = "aws"
     region = "us-west-1"
     availability_zone = "us-west-1a"
@@ -69,7 +69,7 @@ def main():
         w = subprocess.Popen(['ansible-playbook', 'create_csr1000v_hub_a.yml', '--extra-vars', 'target={}'.format(tfstate_dictionary["ip_a"]), '-vvvv'],
                              cwd="Ansible")
         w.wait()
-        w = subprocess.Popen(['ansible-playbook', 'update_dmvpn_nhs_bgp_addresses.yml', '--extra-vars', 'target=csr1000v_aws', '-vvvv'],
+        w = subprocess.Popen(['ansible-playbook', 'add_hub_update_dmvpn_nhs_bgp_addresses.yml', '--extra-vars', 'target=csr1000v_aws', '-vvvv'],
                              cwd="Ansible")
         w.wait()
 
