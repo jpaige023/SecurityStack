@@ -140,11 +140,29 @@ resource "azurerm_subnet" "SubnetPrivate" {
   route_table_id       = "${azurerm_route_table.RTPrivate.id}"
 }
 
+resource "azurerm_subnet" "SubnetPrivateUsers1" {
+  name                 = "SubnetPrivateUsers1"
+  resource_group_name  = "${azurerm_resource_group.RGInfrastructure.name}"
+  virtual_network_name = "${azurerm_virtual_network.VNVPC.name}"
+  address_prefix       = "${var.users_subnet_a}"
+  route_table_id       = "${azurerm_route_table.RTPrivate.id}"
+}
+
 resource "azurerm_public_ip" "PIP1" {
   name                         = "PIP1"
   location                     = "${var.region}"
   resource_group_name          = "${azurerm_resource_group.RGInfrastructure.name}"
   public_ip_address_allocation = "static"
+
+  tags {
+    environment = "Production"
+  }
+}
+
+resource "azurerm_availability_set" "ASInfrastructure" {
+  name                = "ASInfrastructure"
+  location            = "${var.region}"
+  resource_group_name = "${azurerm_resource_group.RGInfrastructure.name}"
 
   tags {
     environment = "Production"
@@ -193,7 +211,8 @@ resource "azurerm_virtual_machine" "CSR1000vA" {
     publisher = "cisco"
   }
 
-  vm_size = "${var.CSR1000v_instance_type}"
+  availability_set_id = "${azurerm_availability_set.ASInfrastructure.id}"
+  vm_size             = "${var.CSR1000v_instance_type}"
 
   storage_image_reference {
     publisher = "cisco"
@@ -225,6 +244,8 @@ resource "azurerm_virtual_machine" "CSR1000vA" {
   primary_network_interface_id = "${azurerm_network_interface.NICPublic.id}"
 
   tags {
-    environment = "Production"
+    Name         = "${var.router_a_address_g1}"
+    DMVPN_Role   = "$spoke_a"
+    DMVPN_Tunnel = "${var.dmvpn_tunnel}"
   }
 }

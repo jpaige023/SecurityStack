@@ -1,6 +1,6 @@
 resource "azurerm_public_ip" "PIP2" {
   name                         = "PIP2"
-  location                     = "${var.azure_region}"
+  location                     = "${var.region}"
   resource_group_name          = "${azurerm_resource_group.RGInfrastructure.name}"
   public_ip_address_allocation = "static"
 
@@ -13,7 +13,7 @@ resource "azurerm_subnet" "SubnetPublicB" {
   name                 = "SubnetPublicB"
   resource_group_name  = "${azurerm_resource_group.RGInfrastructure.name}"
   virtual_network_name = "${azurerm_virtual_network.VNVPC.name}"
-  address_prefix       = "${var.SubnetPublicB}"
+  address_prefix       = "${var.router_b_subnet_g1}"
   route_table_id       = "${azurerm_route_table.RTPublic.id}"
 }
 
@@ -21,7 +21,7 @@ resource "azurerm_subnet" "SubnetPrivateB" {
   name                 = "SubnetPrivateB"
   resource_group_name  = "${azurerm_resource_group.RGInfrastructure.name}"
   virtual_network_name = "${azurerm_virtual_network.VNVPC.name}"
-  address_prefix       = "${var.SubnetPrivateB}"
+  address_prefix       = "${var.router_b_subnet_g2}"
   route_table_id       = "${azurerm_route_table.RTPrivate.id}"
 }
 
@@ -29,13 +29,13 @@ resource "azurerm_subnet" "SubnetPrivateUsers2" {
   name                 = "SubnetPrivateUsers2"
   resource_group_name  = "${azurerm_resource_group.RGInfrastructure.name}"
   virtual_network_name = "${azurerm_virtual_network.VNVPC.name}"
-  address_prefix       = "${var.SubnetPrivateUsers2}"
+  address_prefix       = "${var.users_subnet_b}"
   route_table_id       = "${azurerm_route_table.RTPrivate.id}"
 }
 
 resource "azurerm_network_interface" "NICPublicB" {
   name                      = "NICPublicB"
-  location                  = "${var.azure_region}"
+  location                  = "${var.region}"
   resource_group_name       = "${azurerm_resource_group.RGInfrastructure.name}"
   network_security_group_id = "${azurerm_network_security_group.SGInfrastructure.id}"
   enable_ip_forwarding      = true
@@ -44,14 +44,14 @@ resource "azurerm_network_interface" "NICPublicB" {
     name                          = "NICPublicB"
     subnet_id                     = "${azurerm_subnet.SubnetPublicB.id}"
     private_ip_address_allocation = "static"
-    private_ip_address            = "${var.G1_static_private_ipB}"
+    private_ip_address            = "${var.router_b_address_g1}"
     public_ip_address_id          = "${azurerm_public_ip.PIP2.id}"
   }
 }
 
 resource "azurerm_network_interface" "NICPrivateB" {
   name                      = "NICPrivateB"
-  location                  = "${var.azure_region}"
+  location                  = "${var.region}"
   resource_group_name       = "${azurerm_resource_group.RGInfrastructure.name}"
   network_security_group_id = "${azurerm_network_security_group.SGInfrastructureG2.id}"
   enable_ip_forwarding      = true
@@ -60,13 +60,13 @@ resource "azurerm_network_interface" "NICPrivateB" {
     name                          = "NICPrivateB"
     subnet_id                     = "${azurerm_subnet.SubnetPrivateB.id}"
     private_ip_address_allocation = "static"
-    private_ip_address            = "${var.G2_static_private_ipB}"
+    private_ip_address            = "${var.router_b_address_g2}"
   }
 }
 
 resource "azurerm_virtual_machine" "CSR1000vB" {
   name                = "CSR1000vB"
-  location            = "${var.azure_region}"
+  location            = "${var.region}"
   resource_group_name = "${azurerm_resource_group.RGInfrastructure.name}"
 
   plan {
