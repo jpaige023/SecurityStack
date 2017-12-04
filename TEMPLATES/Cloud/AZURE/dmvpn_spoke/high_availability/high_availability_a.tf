@@ -164,7 +164,7 @@ resource "azurerm_route_table" "RTPrivate" {
     name                   = "DefaulttoRouter"
     address_prefix         = "0.0.0.0/0"
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "${var.router_a_subnet_g2}"
+    next_hop_in_ip_address = "${var.router_a_address_g2}"
   }
 
   tags {
