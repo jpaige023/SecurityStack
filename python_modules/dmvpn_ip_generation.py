@@ -51,7 +51,7 @@ def main(cloud_provider, cidr_block, user_subnet_masks, region, csr1000v_instanc
     tunnel_address, tunnel_netmask, tunnel_cidr = new_dmvpn_interface_address_assign(dmvpn_tunnel, vpc_number)
     tunnel_b_address = None
     if vpc_template == 'high_availability':
-        tunnel_b_address = new_dmvpn_interface_address_assign(dmvpn_tunnel, vpc_number)
+        tunnel_b_address, tunnel_netmask, tunnel_cidr = new_dmvpn_interface_address_assign(dmvpn_tunnel, vpc_number)
     dictionary_tfvars['tunnel_address'] = tunnel_address
     dictionary_tfvars['tunnel_b_address'] = tunnel_b_address
     dictionary_tfvars['tunnel_netmask'] = tunnel_netmask

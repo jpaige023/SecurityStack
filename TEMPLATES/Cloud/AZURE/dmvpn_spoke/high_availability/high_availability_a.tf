@@ -81,19 +81,7 @@ resource "azurerm_network_security_group" "SGInfrastructure" {
   }
 
   security_rule {
-    name                       = "AllowESP"
-    priority                   = 105
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "*"
-    source_port_range          = "*"
-    destination_port_range     = "*"
-    source_address_prefix      = "${var.router_a_subnet_g1}"
-    destination_address_prefix = "${var.router_b_subnet_g1}"
-  }
-
-  security_rule {
-    name                       = "AllowESP"
+    name                       = "AllowESPA"
     priority                   = 106
     direction                  = "Inbound"
     access                     = "Allow"
@@ -102,6 +90,18 @@ resource "azurerm_network_security_group" "SGInfrastructure" {
     destination_port_range     = "*"
     source_address_prefix      = "${var.router_b_subnet_g1}"
     destination_address_prefix = "${var.router_a_subnet_g1}"
+  }
+
+  security_rule {
+    name                       = "AllowESPB"
+    priority                   = 105
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "*"
+    source_port_range          = "*"
+    destination_port_range     = "*"
+    source_address_prefix      = "${var.router_a_subnet_g1}"
+    destination_address_prefix = "${var.router_b_subnet_g1}"
   }
 
   tags {
