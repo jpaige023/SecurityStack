@@ -5,6 +5,5 @@
     src:      "update_tunnel_nhs_bgp.j2"
 - name: "copy run start"
   ios_command:
-    timeout: 60
     provider: "{{cli}}"
-    commands: wr
+    commands: wr mem

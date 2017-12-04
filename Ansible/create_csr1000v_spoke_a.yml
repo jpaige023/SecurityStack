@@ -3,5 +3,6 @@
   hosts: "{{ target }}"
   vars_files:
       - "~/PycharmProjects/ThinSecurityStack/DB/dmvpn_tunnel_nhs_addresses.yml"
+      - "provider_vars/{{ cloud_provider }}.yml"
   roles:
     - "create_csr1000v_spoke_a"

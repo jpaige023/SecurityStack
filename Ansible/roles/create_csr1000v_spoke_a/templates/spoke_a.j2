@@ -76,7 +76,9 @@ ip http secure-server
 line con 0
  stopbits 1
 line vty 0 4
+{% if hostvars[inventory_hostname]['cloud_provider'] == 'aws' %}
  login local
+{% endif %}
  transport input ssh
 !
 ntp server pool.ntp.org

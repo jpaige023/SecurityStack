@@ -109,7 +109,7 @@ resource "azurerm_virtual_machine" "CSR1000vB" {
 
   tags {
     Name         = "${var.router_b_address_g1}"
-    DMVPN_Role   = "$spoke_b"
+    DMVPN_Role   = "spoke_b"
     DMVPN_Tunnel = "${var.dmvpn_tunnel}"
   }
 }

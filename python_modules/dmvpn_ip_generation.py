@@ -3,7 +3,7 @@ from netaddr import *
 from copy import deepcopy
 
 
-def main(cloud_provider, cidr_block, user_subnet_masks, region, csr1000v_instance_type, availability_zone, vpc_number, vpc_template, availability_zone_ha, licenseidtoken, email, dmvpn_tunnel, dmvpn_key):
+def main(cloud_provider, cidr_block, user_subnet_masks, region, csr1000v_instance_type, availability_zone, vpc_number, vpc_template, availability_zone_ha, licenseidtoken, email, dmvpn_tunnel, dmvpn_key, default_user, default_password,subscription_id, api_client_id, api_client_secret, tenant_id, network_contributor_role_id, router_app_object_id, router_app_principal_id, router_app_key):
 #    import simplejson as json
 #    from netaddr import *
 #    from copy import deepcopy
@@ -33,6 +33,17 @@ def main(cloud_provider, cidr_block, user_subnet_masks, region, csr1000v_instanc
     dictionary_tfvars['email'] = email
     dictionary_tfvars['dmvpn_tunnel'] = dmvpn_tunnel
     dictionary_tfvars['dmvpn_key'] = dmvpn_key
+    dictionary_tfvars['default_user'] = default_user
+    dictionary_tfvars['default_password'] = default_password
+    dictionary_tfvars['subscription_id'] = subscription_id
+    dictionary_tfvars['api_client_id'] = api_client_id
+    dictionary_tfvars['api_client_secret'] = api_client_secret
+    dictionary_tfvars['tenant_id'] = tenant_id
+    dictionary_tfvars['network_contributor_role_id'] = network_contributor_role_id
+    dictionary_tfvars['router_app_object_id'] = router_app_object_id
+    dictionary_tfvars['router_app_principal_id'] = router_app_principal_id
+    dictionary_tfvars['router_app_key'] = router_app_key
+
 
     # dmvpn_addresses = address_generation_DMVPN(vpc_number)
     # dictionary_tfvars.update(dmvpn_addresses)

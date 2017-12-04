@@ -1,8 +1,0 @@
----
-cli:
-  username: ec2-user
-  host:      "{{ inventory_hostname }}"
-  ssh_keyfile: "/home/vagrant/PycharmProjects/ThinSecurityStack/Settings/keys/{{ region }}"
-# ansible_ssh_common_args: '-o ProxyCommand="ssh -i /home/vagrant/PycharmProjects/SecurityStack/Settings/keys/CSR_200 ec2-user@34.208.198.130 nc {{inventory_hostname}} 22"'
-Eaddress: "{{ email }}"
-CSLtoken: "{{ licenseidtoken }}"

@@ -86,6 +86,5 @@
       - "platform hardware throughput level MB 1000"
 - name: "copy run start"
   ios_command:
-    timeout: 60
     provider: "{{cli}}"
-    commands: wr
+    commands: wr mem

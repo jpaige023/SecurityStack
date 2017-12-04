@@ -10,7 +10,7 @@
 - name: Generate Configuration and Install
   ios_config:
     provider: "{{cli}}"
-    src:      "spoke_b.j2"
+    src:      "spoke_b_ha.j2"
 - name: "Run EEM Script(NOTE - This will Report as Failed as VRF assignment will temporarily cause loss of IP connectivity)"
   ios_command:
     provider: "{{cli}}"
@@ -86,6 +86,5 @@
       - "platform hardware throughput level MB 1000"
 - name: "copy run start"
   ios_command:
-    timeout: 60
     provider: "{{cli}}"
-    commands: wr
+    commands: wr mem
