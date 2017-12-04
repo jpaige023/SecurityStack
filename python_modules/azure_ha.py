@@ -8,8 +8,19 @@ import paramiko
 
 def main(vpc_number, ip_a, ip_b, settings_dictionary):
     # bearer_token_get
-    url = 'https://login.microsoftonline.com/{}/oauth2/token'.format(settings_dictionary['tenant_id'])
-    data = {'grant_type': 'client_credentials', 'client_id': settings_dictionary['api_client_id'], 'client_secret': settings_dictionary['api_client_secret'], 'resource': 'https://management.azure.com/'}
+    default_user = settings_dictionary['keys']['cloud']['azure']['default_user']
+    default_password = settings_dictionary['keys']['cloud']['azure']['default_password']
+    subscription_id = settings_dictionary['keys']['cloud']['azure']['subscription_id']
+    api_client_id = settings_dictionary['keys']['cloud']['azure']['api_client_id']
+    api_client_secret = settings_dictionary['keys']['cloud']['azure']['api_client_secret']
+    tenant_id = settings_dictionary['keys']['cloud']['azure']['tenant_id']
+    network_contributor_role_id = settings_dictionary['keys']['cloud']['azure']['network_contributor_role_id']
+    router_app_object_id = settings_dictionary['keys']['cloud']['azure']['router_app_object_id']
+    router_app_principal_id = settings_dictionary['keys']['cloud']['azure']['router_app_principal_id']
+    router_app_key = settings_dictionary['keys']['cloud']['azure']['router_app_key']
+
+    url = 'https://login.microsoftonline.com/{}/oauth2/token'.format(tenant_id)
+    data = {'grant_type': 'client_credentials', 'client_id': api_client_id, 'client_secret': api_client_secret, 'resource': 'https://management.azure.com/'}
     r = requests.post(url, data=data)
     body = r.json()
     print body
@@ -19,11 +30,11 @@ def main(vpc_number, ip_a, ip_b, settings_dictionary):
     random_id_1 = random.randrange(10000000, 100000000)
     random_id_2 = random.randrange(100000000000, 1000000000000)
     url = 'https://management.azure.com/subscriptions/{}/resourceGroups/{}/providers/Microsoft.Network/routeTables/RTPrivate/providers/Microsoft.Authorization/roleAssignments/{}-1234-5665-4321-{}?api-version=2015-07-01'.format(
-        settings_dictionary['subscription_id'], vpc_number, random_id_1, random_id_2)
+        subscription_id, vpc_number, random_id_1, random_id_2)
     headers = {'Authorization': 'Bearer {}'.format(bearer_token), 'Content-Type': 'application/json'}
     data = {"properties": {
         "roleDefinitionId": "/subscriptions/{}/resourceGroups/{}/providers/Microsoft.Network/routeTables/RTPrivate/providers/Microsoft.Authorization/roleDefinitions/{}".format(
-            settings_dictionary['subscription_id'], vpc_number, settings_dictionary['network_contributor_role_id']), "principalId": "{}".format(settings_dictionary['router_app_principal_id'])}}
+            subscription_id, vpc_number, network_contributor_role_id), "principalId": "{}".format(router_app_principal_id)}}
     r = requests.put(url, headers=headers, data=json.dumps(data))
     body = r.json()
     print "Private Route Table access control update complete!"
@@ -31,8 +42,8 @@ def main(vpc_number, ip_a, ip_b, settings_dictionary):
 
     # azure_create_trustpoint
     """ needs paramiko and time"""
-    username = settings_dictionary['default_user']
-    password = settings_dictionary['default_password']
+    username = default_user
+    password = default_password
     ip_list = [ip_a, ip_b]
 
     for ip in ip_list:
