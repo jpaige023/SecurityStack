@@ -108,6 +108,8 @@ resource "azurerm_virtual_machine" "CSR1000vB" {
   primary_network_interface_id = "${azurerm_network_interface.NICPublicB.id}"
 
   tags {
-    environment = "Production"
+    Name         = "${var.router_b_address_g1}"
+    DMVPN_Role   = "$spoke_b"
+    DMVPN_Tunnel = "${var.dmvpn_tunnel}"
   }
 }

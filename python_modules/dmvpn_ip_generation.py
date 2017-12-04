@@ -3,7 +3,7 @@ from netaddr import *
 from copy import deepcopy
 
 
-def main(cidr_block, user_subnet_masks, region, csr1000v_instance_type, availability_zone, vpc_number, vpc_template, availability_zone_ha, licenseidtoken, email, dmvpn_tunnel, dmvpn_key):
+def main(cloud_provider, cidr_block, user_subnet_masks, region, csr1000v_instance_type, availability_zone, vpc_number, vpc_template, availability_zone_ha, licenseidtoken, email, dmvpn_tunnel, dmvpn_key):
 #    import simplejson as json
 #    from netaddr import *
 #    from copy import deepcopy
@@ -22,6 +22,7 @@ def main(cidr_block, user_subnet_masks, region, csr1000v_instance_type, availabi
     else:
         dictionary_tfvars = address_generation_high_availability(cidr_block, user_subnet_masks)
 
+    dictionary_tfvars['cloud_provider'] = cloud_provider
     dictionary_tfvars['region'] = region
     dictionary_tfvars['availability_zone'] = availability_zone
     dictionary_tfvars['cidr_block'] = cidr_block
@@ -39,7 +40,7 @@ def main(cidr_block, user_subnet_masks, region, csr1000v_instance_type, availabi
     tunnel_address, tunnel_netmask, tunnel_cidr = new_dmvpn_interface_address_assign(dmvpn_tunnel, vpc_number)
     tunnel_b_address = None
     if vpc_template == 'high_availability':
-        tunnel_b_address = new_dmvpn_interface_address_assign(dmpvn_tunnel, vpc_number)
+        tunnel_b_address = new_dmvpn_interface_address_assign(dmvpn_tunnel, vpc_number)
     dictionary_tfvars['tunnel_address'] = tunnel_address
     dictionary_tfvars['tunnel_b_address'] = tunnel_b_address
     dictionary_tfvars['tunnel_netmask'] = tunnel_netmask

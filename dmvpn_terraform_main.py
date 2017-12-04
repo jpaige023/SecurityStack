@@ -43,9 +43,9 @@ def main():
     # Create Cloud Directory
     subprocess.call(["mkdir", "VPCs/{}".format(vpc_number)])
     python_modules.terraform.terraform_tfvars_createfile(cloud_provider, vpc_number, settings_dictionary, region)
-    # Generate Variables
 
-    dictionary_tfvars = python_modules.dmvpn_ip_generation.main(cidr_block, user_subnet_masks, region, csr1000v_instance_type, availability_zone, vpc_number, vpc_template, availability_zone_ha, licenseidtoken, email, dmvpn_tunnel, dmvpn_key)
+    # Generate Variables
+    dictionary_tfvars = python_modules.dmvpn_ip_generation.main(cloud_provider, cidr_block, user_subnet_masks, region, csr1000v_instance_type, availability_zone, vpc_number, vpc_template, availability_zone_ha, licenseidtoken, email, dmvpn_tunnel, dmvpn_key)
     python_modules.terraform.dmvpn_create_definition_files(vpc_template, vpc_number, cloud_provider, dmvpn_role)
 
     # Deploy Cloud Definitions
