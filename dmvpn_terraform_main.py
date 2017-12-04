@@ -10,18 +10,24 @@ import python_modules.dmvpn_hub_create
 
 def main():
     # Receive or input variables
-    cidr_block = "10.0.6.0/24"
-    cloud_provider = "aws"
-    region = "us-west-1"
-    availability_zone = "us-west-1a"
-    availability_zone_ha = "us-west-1c"
+    cidr_block = "10.0.151.0/24"
+    # aws or azure
+    cloud_provider = "azure"
+    # us-east-1, us-east_2, us_west_1, us_west_2
+    # East US, West US
+    region = "East US"
+    # for aws only
+    availability_zone = "us-west-2a"
+    availability_zone_ha = "us-west-2c"
     # vpc_template = dev, standard, high_availability
     vpc_template = 'dev'
     user_subnet_masks = 28
-    csr1000v_instance_type = "c4.large"
+    # c4.large
+    # standard_d2_v2
+    csr1000v_instance_type = "standard_d2_v2"
     dmvpn_tunnel = "1"
     # dmvpn_role = "dmvpn_spoke" or "dmvpn_hub"
-    dmvpn_role = "dmvpn_hub"
+    dmvpn_role = "dmvpn_spoke"
 
     # For Pycharm change PATH to find Terraform
     path_var = os.environ["PATH"]

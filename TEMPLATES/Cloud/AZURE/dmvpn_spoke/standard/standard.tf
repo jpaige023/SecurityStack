@@ -212,7 +212,7 @@ resource "azurerm_virtual_machine" "CSR1000vA" {
   }
 
   availability_set_id = "${azurerm_availability_set.ASInfrastructure.id}"
-  vm_size             = "${var.CSR1000v_instance_type}"
+  vm_size             = "${var.csr1000v_instance_type}"
 
   storage_image_reference {
     publisher = "cisco"

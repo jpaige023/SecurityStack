@@ -193,7 +193,7 @@ resource "azurerm_virtual_machine" "CSR1000vA" {
     publisher = "cisco"
   }
 
-  vm_size = "${var.CSR1000v_instance_type}"
+  vm_size = "${var.csr1000v_instance_type}"
 
   storage_image_reference {
     publisher = "cisco"

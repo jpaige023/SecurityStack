@@ -5,7 +5,7 @@ variable "tenant_id" {}
 variable "default_user" {}
 variable "default_password" {}
 
-variable "CSR1000v_instance_type" {}
+variable "csr1000v_instance_type" {}
 variable "vpc_number" {}
 variable "region" {}
 variable "cidr_block" {}
