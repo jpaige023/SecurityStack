@@ -11,7 +11,7 @@ import python_modules.azure_ha
 
 def main():
     # Receive or input variables
-    cidr_block = "10.0.154.0/24"
+    cidr_block = "10.0.160.0/24"
     # aws or azure
     cloud_provider = "azure"
     # us-east-1, us-east_2, us_west_1, us_west_2
@@ -124,7 +124,15 @@ def main():
             w.wait()
         if vpc_template == 'high_availability':
             if cloud_provider == 'azure':
-                python_modules.azure_ha.main(vpc_number, tfstate_dictionary["ip_a"], tfstate_dictionary["ip_b"], settings_dictionary)
+                w = subprocess.Popen(['ansible-playbook', 'showrun.yml', '--extra-vars', 'target={}'.format(tfstate_dictionary["ip_a"]), '-vvvv'],
+                                     cwd="Ansible")
+                w.wait()
+                w = subprocess.Popen(['ansible-playbook', 'showrun.yml', '--extra-vars', 'target={}'.format(tfstate_dictionary["ip_b"]), '-vvvv'],
+                                     cwd="Ansible")
+                w.wait()
+                python_modules.azure_ha.main(vpc_number, tfstate_dictionary["ip_a"], tfstate_dictionary["ip_b"],
+                                             settings_dictionary)
+
             w = subprocess.Popen(['ansible-playbook', 'create_csr1000v_spoke_a_ha.yml', '--extra-vars', 'target={}'.format(tfstate_dictionary["ip_a"]), '-vvvv'],
                                  cwd="Ansible")
             w.wait()

@@ -1,0 +1,13 @@
+---
+- hosts: "{{ target }}"
+  vars_files:
+    - "provider_vars/{{ cloud_provider }}.yml"
+  tasks:
+  - name: "Test Show Running Configuration"
+    ios_command:
+      provider: "{{cli}}"
+      commands: show running-config
+    register: command_result
+    retries: 60
+    delay: 10
+    until: command_result | success

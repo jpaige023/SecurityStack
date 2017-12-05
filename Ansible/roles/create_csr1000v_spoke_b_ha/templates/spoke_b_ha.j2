@@ -13,6 +13,18 @@ redundancy
   eni {{eni_b_var}}
   region {{region}}
 {% endif %}
+{% if hostvars[inventory_hostname]['cloud_provider'] == 'azure' %}
+redundancy
+ cloud provider azure 1
+  bfd peer 172.17.1.1
+  default-gateway ip {{router_b_address_g2}}
+  route-table RTPrivate
+  resource-group {{vpc_number}}
+  subscription-id {{subscription_id}}
+  tenant-id {{tenant_id}}
+  app-id {{router_app_principal_id}}
+  app-key {{router_app_key}}
+{% endif %}
 ! 
 crypto keyring internet-key vrf internet-vrf 
   pre-shared-key address 0.0.0.0 0.0.0.0 key {{dmvpn_key}}
@@ -84,7 +96,7 @@ interface GigabitEthernet2
  ip access-group cloudWhiteListPolicy out
 !
 router bgp 65500
- bgp router-id {{R2Tunnel.1.IP}}
+ bgp router-id {{tunnel_b_address}}
  bgp log-neighbor-changes
 {% for address in dmvpn_addresses[dmvpn_tunnel] %}
  neighbor {{address.dmvpn_address}} remote-as 65500

@@ -39,12 +39,21 @@ def main(vpc_number, ip_a, ip_b, settings_dictionary):
     body = r.json()
     print "Private Route Table access control update complete!"
 
-
     # azure_create_trustpoint
     """ needs paramiko and time"""
     username = default_user
     password = default_password
     ip_list = [ip_a, ip_b]
+
+    # import simplejson as json
+    # import time
+    # import requests
+    # import random
+    # import paramiko
+    # ip_list = ['104.42.26.101', '40.112.216.155']
+    # username = 'azureCSRuser'
+    # password = 'HardPassword2Guess'
+
 
     for ip in ip_list:
         remote_conn_pre = paramiko.SSHClient()
@@ -158,20 +167,25 @@ def main(vpc_number, ip_a, ip_b, settings_dictionary):
         time.sleep(.5)
         remote_conn.send('e0t+fCut38NMkTl8F0arflspaqUVVUov\n\n')
         time.sleep(.5)
-        remote_conn.send('quit\n')
-        time.sleep(.5)
-        output = remote_conn.recv(65535)
-        print output
-
-        remote_conn.send('yes\n')
-        time.sleep(.5)
-        output = remote_conn.recv(65535)
-        print output
+        # remote_conn.send('quit\n')
+        # time.sleep(.5)
+        # output = remote_conn.recv(65535)
+        # print output
+        #
+        # remote_conn.send('yes\n')
+        # time.sleep(.5)
+        # output = remote_conn.recv(65535)
+        # print output
 
         remote_conn.send('end\n')
         time.sleep(.5)
         output = remote_conn.recv(65535)
         print output
+
+        remote_conn.close()
+        remote_conn_pre.close()
+
+    return
 
 
 if __name__ == "__main__":
