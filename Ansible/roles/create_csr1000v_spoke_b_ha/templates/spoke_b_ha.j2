@@ -34,18 +34,24 @@ crypto isakmp policy 10
  encr aes 256
  hash sha256
  authentication pre-share
+{% if hostvars[inventory_hostname]['cloud_provider'] == 'aws' %}
 crypto isakmp policy 30
  hash md5
  authentication pre-share
+{% endif %}
 crypto isakmp keepalive 10 10
+{% if hostvars[inventory_hostname]['cloud_provider'] == 'aws' %}
 crypto isakmp key {{dmvpn_key}} address {{router_a_address_g1}}
+{% endif %}
 crypto isakmp profile isakmp-prof
    keyring internet-key
    match identity address 0.0.0.0 internet-vrf
 !
 crypto ipsec security-association replay window-size 128
 !
+{% if hostvars[inventory_hostname]['cloud_provider'] == 'aws' %}
 crypto ipsec transform-set easy esp-des esp-md5-hmac
+{% endif %}
 crypto ipsec transform-set xform esp-aes 256 esp-sha256-hmac 
  mode transport
 crypto ipsec df-bit clear
@@ -55,10 +61,12 @@ crypto ipsec profile ipsec-prof
  set transform-set xform 
  set isakmp-profile isakmp-prof
 !
+{% if hostvars[inventory_hostname]['cloud_provider'] == 'aws' %}
 crypto map mymap 10 ipsec-isakmp
  set peer {{router_a_address_g1}}
  set transform-set easy
  match address 110
+{% endif %}
 !
 interface Tunnel{{dmvpn_tunnel}}
  description DMVPN
@@ -79,16 +87,27 @@ interface Tunnel{{dmvpn_tunnel}}
 !
 interface Tunnel500
  ip address 172.17.1.2 255.255.255.252
+{% if hostvars[inventory_hostname]['cloud_provider'] == 'aws' %}
  ip mtu 1400
  ip tcp adjust-mss 1360
  bfd interval 500 min_rx 500 multiplier 3
  tunnel source GigabitEthernet1
  tunnel destination {{router_a_address_g1}}
  tunnel key 500
+{% endif %}
+{% if hostvars[inventory_hostname]['cloud_provider'] == 'azure' %}
+ bfd interval 100 min_rx 100 multiplier 3
+ tunnel source GigabitEthernet1
+ tunnel mode vxlan-gpe ipv4
+ tunnel destination {{router_a_address_g1}}
+ tunnel vxlan vni 10000
+{% endif %}
  tunnel vrf internet-vrf
 !
 interface GigabitEthernet1
+{% if hostvars[inventory_hostname]['cloud_provider'] == 'aws' %}
  crypto map mymap
+{% endif %}
 !
 interface GigabitEthernet2
  ip address {{router_b_address_g2}} {{router_b_subnet_mask_g2}}
@@ -119,7 +138,9 @@ router eigrp 1
 !
 ip route {{cidr_block_network_ID}} {{cidr_block_netmask}} {{router_b_addressg2NH}}
 !
+{% if hostvars[inventory_hostname]['cloud_provider'] == 'aws' %}
 access-list 110 permit GRE {{router_b_address_g1}} 0.0.0.0 {{router_a_address_g1}} 0.0.0.0
+{% endif %}
 !
 no ip http server
 ip http secure-server
