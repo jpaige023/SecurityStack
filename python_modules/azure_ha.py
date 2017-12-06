@@ -34,7 +34,7 @@ def main(vpc_number, ip_a, ip_b, settings_dictionary):
     headers = {'Authorization': 'Bearer {}'.format(bearer_token), 'Content-Type': 'application/json'}
     data = {"properties": {
         "roleDefinitionId": "/subscriptions/{}/resourceGroups/{}/providers/Microsoft.Network/routeTables/RTPrivate/providers/Microsoft.Authorization/roleDefinitions/{}".format(
-            subscription_id, vpc_number, network_contributor_role_id), "principalId": "{}".format(router_app_principal_id)}}
+            subscription_id, vpc_number, network_contributor_role_id), "principalId": "{}".format(router_app_object_id)}}
     r = requests.put(url, headers=headers, data=json.dumps(data))
     body = r.json()
     print "Private Route Table access control update complete!"
