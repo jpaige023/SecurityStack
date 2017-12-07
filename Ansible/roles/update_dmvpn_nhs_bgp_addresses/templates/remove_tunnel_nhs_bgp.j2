@@ -1,0 +1,9 @@
+interface Tunnel{{dmvpn_tunnel}}
+{% for address in nhs_bgp_addresses %}
+ no ip nhrp nhs {{address}}
+{% endfor %}
+!
+router bgp 65500
+{% for address in nhs_bgp_addresses %}
+ no neighbor {{address}} remote-as 65500
+{% endfor %}

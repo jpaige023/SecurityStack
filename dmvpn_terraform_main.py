@@ -13,19 +13,19 @@ def main():
     # Receive or input variables
     cidr_block = "10.0.162.0/24"
     # aws or azure
-    cloud_provider = "azure"
-    # us-east-1, us-east_2, us_west_1, us_west_2
+    cloud_provider = "aws"
+    # us-east-1, us-east-2, us-west-1, us-west-2
     # East US, West US
-    region = "West US"
+    region = "us-west-2"
     # for aws only
     availability_zone = "us-west-2a"
     availability_zone_ha = "us-west-2c"
     # vpc_template = dev, standard, high_availability
-    vpc_template = 'high_availability'
+    vpc_template = 'dev'
     user_subnet_masks = 28
     # c4.large
     # standard_d2_v2
-    csr1000v_instance_type = "standard_d2_v2"
+    csr1000v_instance_type = "c4.large"
     dmvpn_tunnel = "1"
     # dmvpn_role = "dmvpn_spoke" or "dmvpn_hub"
     dmvpn_role = "dmvpn_spoke"
@@ -97,7 +97,7 @@ def main():
         w = subprocess.Popen(['ansible-playbook', 'create_csr1000v_hub_a.yml', '--extra-vars', 'target={}'.format(tfstate_dictionary["ip_a"]), '-vvvv'],
                              cwd="Ansible")
         w.wait()
-        w = subprocess.Popen(['ansible-playbook', 'add_hub_update_dmvpn_nhs_bgp_addresses.yml', '--extra-vars', 'target=csr1000v_aws', '-vvvv'],
+        w = subprocess.Popen(['ansible-playbook', 'update_dmvpn_nhs_bgp_addresses.yml', '--extra-vars', 'target=csr1000v_aws', '-vvvv'],
                              cwd="Ansible")
         w.wait()
 

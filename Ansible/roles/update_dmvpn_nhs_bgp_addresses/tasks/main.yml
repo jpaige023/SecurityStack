@@ -3,6 +3,25 @@
   ios_config:
     provider: "{{cli}}"
     src:      "update_tunnel_nhs_bgp.j2"
+- name: "Get Cisco Running-Config"
+  ios_command:
+    provider: "{{cli}}"
+    commands: show running-config
+  register: result_config
+- name: "Find Configs to Remove"
+  find_configs_to_remove:
+    runconfig: "{{ result_config }}"
+    tunnel_number: "{{ dmvpn_tunnel }}"
+  register: addresses_to_remove
+- name: print the return
+  debug:
+    msg: "{{ addresses_to_remove }}"
+- name: "Remove "
+  vars:
+      nhs_bgp_addresses: "{{ addresses_to_remove.addresses_to_remove }}"
+  ios_config:
+    provider: "{{cli}}"
+    src:      "remove_tunnel_nhs_bgp.j2"
 - name: "copy run start"
   ios_command:
     provider: "{{cli}}"
