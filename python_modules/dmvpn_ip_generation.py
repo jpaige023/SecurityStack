@@ -43,6 +43,7 @@ def main(cloud_provider, cidr_block, user_subnet_masks, region, csr1000v_instanc
     dictionary_tfvars['router_app_object_id'] = router_app_object_id
     dictionary_tfvars['router_app_principal_id'] = router_app_principal_id
     dictionary_tfvars['router_app_key'] = router_app_key
+    dictionary_tfvars['vpc_template'] = vpc_template
 
 
     # dmvpn_addresses = address_generation_DMVPN(vpc_number)

@@ -11,7 +11,7 @@ import python_modules.azure_ha
 
 def main():
     # Receive or input variables
-    cidr_block = "10.0.162.0/24"
+    cidr_block = "10.0.170.0/24"
     # aws or azure
     cloud_provider = "aws"
     # us-east-1, us-east-2, us-west-1, us-west-2
@@ -28,7 +28,7 @@ def main():
     csr1000v_instance_type = "c4.large"
     dmvpn_tunnel = "1"
     # dmvpn_role = "dmvpn_spoke" or "dmvpn_hub"
-    dmvpn_role = "dmvpn_spoke"
+    dmvpn_role = "dmvpn_hub"
 
     # For Pycharm change PATH to find Terraform
     path_var = os.environ["PATH"]
