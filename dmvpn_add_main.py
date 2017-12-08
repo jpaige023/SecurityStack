@@ -11,7 +11,7 @@ import python_modules.azure_ha
 
 def main():
     # Receive or input variables
-    cidr_block = "10.0.170.0/24"
+    cidr_block = "10.0.1.0/24"
     # aws or azure
     cloud_provider = "aws"
     # us-east-1, us-east-2, us-west-1, us-west-2
@@ -73,7 +73,7 @@ def main():
     python_modules.terraform.terraform_tfvars_createfile(cloud_provider, vpc_number, settings_dictionary, region)
 
     # Generate Variables
-    dictionary_tfvars = python_modules.dmvpn_ip_generation.main(cloud_provider, cidr_block, user_subnet_masks, region, csr1000v_instance_type, availability_zone, vpc_number, vpc_template, availability_zone_ha, licenseidtoken, email, dmvpn_tunnel, dmvpn_key, default_user, default_password,subscription_id, api_client_id, api_client_secret, tenant_id, network_contributor_role_id, router_app_object_id, router_app_principal_id, router_app_key)
+    dictionary_tfvars = python_modules.dmvpn_ip_generation.main(dmvpn_role, cloud_provider, cidr_block, user_subnet_masks, region, csr1000v_instance_type, availability_zone, vpc_number, vpc_template, availability_zone_ha, licenseidtoken, email, dmvpn_tunnel, dmvpn_key, default_user, default_password,subscription_id, api_client_id, api_client_secret, tenant_id, network_contributor_role_id, router_app_object_id, router_app_principal_id, router_app_key)
     python_modules.terraform.dmvpn_create_definition_files(vpc_template, vpc_number, cloud_provider, dmvpn_role)
 
     # Deploy Cloud Definitions

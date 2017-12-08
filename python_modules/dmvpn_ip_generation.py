@@ -3,7 +3,7 @@ from netaddr import *
 from copy import deepcopy
 
 
-def main(cloud_provider, cidr_block, user_subnet_masks, region, csr1000v_instance_type, availability_zone, vpc_number, vpc_template, availability_zone_ha, licenseidtoken, email, dmvpn_tunnel, dmvpn_key, default_user, default_password,subscription_id, api_client_id, api_client_secret, tenant_id, network_contributor_role_id, router_app_object_id, router_app_principal_id, router_app_key):
+def main(dmvpn_role, cloud_provider, cidr_block, user_subnet_masks, region, csr1000v_instance_type, availability_zone, vpc_number, vpc_template, availability_zone_ha, licenseidtoken, email, dmvpn_tunnel, dmvpn_key, default_user, default_password,subscription_id, api_client_id, api_client_secret, tenant_id, network_contributor_role_id, router_app_object_id, router_app_principal_id, router_app_key):
 #    import simplejson as json
 #    from netaddr import *
 #    from copy import deepcopy
@@ -44,6 +44,7 @@ def main(cloud_provider, cidr_block, user_subnet_masks, region, csr1000v_instanc
     dictionary_tfvars['router_app_principal_id'] = router_app_principal_id
     dictionary_tfvars['router_app_key'] = router_app_key
     dictionary_tfvars['vpc_template'] = vpc_template
+    dictionary_tfvars['dmvpn_role'] = dmvpn_role
 
 
     # dmvpn_addresses = address_generation_DMVPN(vpc_number)

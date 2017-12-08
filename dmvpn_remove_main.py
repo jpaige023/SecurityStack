@@ -17,14 +17,12 @@ def main():
 
     # What routers are in this VPC?
     router_eips = router_eips_get(vpc_number)
+    print(router_eips)
 
     # iterate through router_EIPs list for ansible to de-register routers from smartlicensing
     for eip in router_eips:
-        w = subprocess.Popen(['ansible-playbook', 'cisco_smart_license_remove.yml', '--extra-vars',
-                              'target={}'.format(eip), '-vvvv'],
-                             cwd="Ansible")
+        w = subprocess.Popen(['ansible-playbook', 'cisco_smart_license_remove.yml', '--extra-vars', 'target={}'.format(eip), '-vvvv'], cwd="Ansible")
         w.wait()
-        subprocess.call("rm Ansible/host_vars/{}.json".format(eip), shell=True)
 
     # Remove EIPs from the host lists
     f = open("Ansible/hosts")
@@ -32,7 +30,8 @@ def main():
     f.close()
     f = open("Ansible/hosts", "w")
     for line in full_hosts:
-        if line in router_eips:
+        line_minus_new_line = line.rstrip("\n")
+        if line_minus_new_line in router_eips:
             continue
         else:
             f.write(line)
@@ -43,6 +42,7 @@ def main():
     with open('VPCs/{}/dmvpn_ip_addresses.auto.tfvars.json'.format(vpc_number)) as json_data:
         dictionary_tfvars = json.load(json_data)
     vpc_template = dictionary_tfvars['vpc_template']
+    dmvpn_role = dictionary_tfvars['dmvpn_role']
     tunnel_address = dictionary_tfvars['tunnel_address']
     dmvpn_tunnel = dictionary_tfvars['dmvpn_tunnel']
     dmvpn_list_to_remove_from_ipam.append(tunnel_address)
@@ -77,7 +77,7 @@ def main():
     # dmvpn_list_to_remove_from_ipam = ["10.255.0.4", "10.255.0.1"]
 
     reduced_tunnel_info_list = []
-    if vpc_template == "dmvpn_hub":
+    if dmvpn_role == "dmvpn_hub":
         with open("DB/dmvpn_tunnel_nhs_addresses.yml", 'r') as yml_data:
             dictionary_initial_read = yaml.load(yml_data)
         print(dictionary_initial_read)
@@ -94,9 +94,11 @@ def main():
         # Write the new dmvpn_tunnel_nhs_addresses file
         with io.open('DB/dmvpn_tunnel_nhs_addresses.yml', 'w', encoding='utf8') as outfile:
             yaml.dump(dictionary_initial_read, outfile, default_flow_style=False, allow_unicode=True)
-    w = subprocess.Popen(['ansible-playbook', 'update_dmvpn_nhs_bgp_addresses.yml', '--extra-vars', 'target=csr1000v_aws', '-vvvv'],
-                         cwd="Ansible")
+    w = subprocess.Popen(['ansible-playbook', 'update_dmvpn_nhs_bgp_addresses.yml', '--extra-vars', 'target=csr1000v_aws', '-vvvv'], cwd="Ansible")
     w.wait()
+
+    for eip in router_eips:
+        subprocess.call("rm Ansible/host_vars/{}.json".format(eip), shell=True)
     subprocess.call("rm -r VPCs/{}".format(vpc_number), shell=True)
 
 

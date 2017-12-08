@@ -1,5 +1,7 @@
 ---
-- hosts: ios
+- hosts: "{{ target }}"
+  vars_files:
+    - "provider_vars/{{ cloud_provider }}.yml"
   tasks:
   - name: "Disable Smart License"
     ios_config:
