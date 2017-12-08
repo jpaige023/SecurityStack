@@ -99,6 +99,8 @@ def main():
 
     for eip in router_eips:
         subprocess.call("rm Ansible/host_vars/{}.json".format(eip), shell=True)
+    w = subprocess.Popen(["terraform", "destroy"], cwd="VPCs/{}".format(vpc_number))
+    w.wait()
     subprocess.call("rm -r VPCs/{}".format(vpc_number), shell=True)
 
 
