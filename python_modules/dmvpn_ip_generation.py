@@ -68,51 +68,6 @@ def main(dmvpn_role, cloud_provider, cidr_block, user_subnet_masks, region, csr1
     return dictionary_tfvars
 
 
-# def address_generation_DMVPN(vpc_number):
-#     """Generates DMVPN tunnel address based on VPC number provided
-# First two octects are 10.254 12 bits for VPC number 4 bits for hosts
-# router A's hostid = 0001
-# router B's hostid = 0010
-# :param str vpc_number: contains VPC number
-# Returns
-# :tunnel_address str ip address
-# :tunnel_b_address str ip address
-#     """
-#     dmvpn_addresses = {}
-#     vpc_number_int = int(vpc_number)
-#     conversion = bin(vpc_number_int)
-#     conversion_striped = conversion.lstrip('0b')
-#     binary_length = len(conversion_striped)
-#     ip_address_hostid = '0001'
-#     ip_address_hostid_b = '0010'
-#     if binary_length < 12:
-#         binary_padding_number = 12 - binary_length
-#         padding = ''
-#         while binary_padding_number > 0:
-#             padding = padding + '0'
-#             binary_padding_number = binary_padding_number - 1
-#         binary_sixteen_bits = padding + conversion_striped + ip_address_hostid
-#         binary_sixteen_bits_b = padding + conversion_striped + ip_address_hostid_b
-#     else:
-#         binary_sixteen_bits = conversion_striped + ip_address_hostid
-#         binary_sixteen_bits_b = conversion_striped + ip_address_hostid_b
-#     octet_third = int(binary_sixteen_bits[0:8], 2)
-#     octet_third = str(octet_third)
-#     octet_fourth = int(binary_sixteen_bits[8:16], 2)
-#     octet_fourth = str(octet_fourth)
-#     octet_third_b = int(binary_sixteen_bits_b[0:8], 2)
-#     octet_third_b = str(octet_third_b)
-#     octet_fourth_b = int(binary_sixteen_bits_b[8:16], 2)
-#     octet_fourth_b = str(octet_fourth_b)
-#
-#     tunnel_address = '10.254.' + octet_third + '.' + octet_fourth
-#     dmvpn_addresses['tunnel_address'] = tunnel_address
-#     tunnel_b_address = '10.254.' + octet_third_b + '.' + octet_fourth_b
-#     dmvpn_addresses['tunnel_b_address'] = tunnel_b_address
-#
-#     return dmvpn_addresses
-
-
 def address_generation_dev(cidr_block, user_subnet_masks):
 #    from netaddr import *
 #    cidr_block = "10.0.0.0/24"
@@ -336,7 +291,7 @@ def address_generation_high_availability(cidr_block, user_subnet_masks):
 def cloud_address_space_get():
     # This returns a list of all cloud address space
     # import simplejson as json
-    with open('DB/cloud_space.json') as json_data:
+    with open('DB/ip_space_cloud.json') as json_data:
         dictionary = json.load(json_data)
     cloud_address_space_list = dictionary['cloud_space']
     return cloud_address_space_list
@@ -345,7 +300,7 @@ def cloud_address_space_get():
 def dmvpn_interface_address_space_get():
     # This returns list of tunnel space dictionaries
     # import simplejson as json
-    with open('DB/dmvpn_interface_address_space.json') as json_data:
+    with open('DB/dmvpn_mgre_address_space.json') as json_data:
         dictionary = json.load(json_data)
     dmvpn_interface_address_space = dictionary['dmvpn_tunnel_address_space']
     dmvpn_interface_address_space_list = []
@@ -362,7 +317,7 @@ def new_dmvpn_interface_address_assign(dmvpn_tunnel, vpc_number):
     # vpc_number = "100"
 
     # Get the IP range for dmvpn_tunnel
-    with open('DB/dmvpn_interface_address_space.json') as json_data:
+    with open('DB/dmvpn_mgre_address_space.json') as json_data:
         dictionary_dmvpn_interface_address_space = json.load(json_data)
     dmvpn_interface_address_space_list = dictionary_dmvpn_interface_address_space['dmvpn_tunnel_address_space']
     for item in dmvpn_interface_address_space_list:
@@ -372,7 +327,7 @@ def new_dmvpn_interface_address_assign(dmvpn_tunnel, vpc_number):
     # print tunnel_cidr
 
     # Get used addresses in IP range for dmvpn tunnel interface
-    with open('DB/dmvpn_tunnel_ipam.json') as json_data:
+    with open('DB/dmvpn_mgre_ipam.json') as json_data:
         dictionary_used_ip = json.load(json_data)
     addresses_used_list = dictionary_used_ip[dmvpn_tunnel]
     full_used_addresses_list = []
@@ -403,7 +358,7 @@ def new_dmvpn_interface_address_assign(dmvpn_tunnel, vpc_number):
     new_dmvpn_dict = {dmvpn_address: vpc_number}
     addresses_used_list.append(new_dmvpn_dict)
     dictionary_used_ip[dmvpn_tunnel] = addresses_used_list
-    with open('DB/dmvpn_tunnel_ipam.json', 'w') as outfile:
+    with open('DB/dmvpn_mgre_ipam.json', 'w') as outfile:
         json.dump(dictionary_used_ip, outfile, sort_keys=True, indent=4,
                   ensure_ascii=False)
     # print dmvpn_address, tunnel_netmask
@@ -413,7 +368,7 @@ def new_dmvpn_interface_address_assign(dmvpn_tunnel, vpc_number):
 def vpc_address_space_in_use_get():
     # This returns a list of all vpc address space being used
     # import simplejson as json
-    with open('DB/vpc_cidr.json') as json_data:
+    with open('DB/ip_space_per_vpc.json') as json_data:
         dictionary = json.load(json_data)
     vpc_address_space_in_use_list = dictionary.values()
     return vpc_address_space_in_use_list

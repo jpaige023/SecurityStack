@@ -17,7 +17,6 @@ def main():
     answer1 = answer.replace('"', "XXXX")
     answer2 = answer1.replace("'", '"')
     yanswer = yaml.load(answer2)
-
     # Find DMVPN Tunnel Interface and all NHRP sub-commands in running-config
     interface_commands_dictionary = {}
     data_relevant = []
@@ -47,7 +46,7 @@ def main():
             addresses_nhrp.append(new_ip)
 
     # Collect Current NHS/BGP addresses
-    with open("../DB/dmvpn_tunnel_nhs_addresses.yml", 'r') as yml_data:
+    with open("../DB/dmvpn_per_ mgre_nhs_bgp_rr_address_info.yml", 'r') as yml_data:
         dictionary_initial_read = yaml.load(yml_data)
     list_of_tunnel_dmvpn_addresses = []
     for item in dictionary_initial_read["dmvpn_addresses"][dmvpn_number]:
