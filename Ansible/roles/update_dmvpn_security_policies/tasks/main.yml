@@ -1,6 +1,14 @@
 ---
-- name: "Based on host_vars, generate network id and subnet masks from permitted vpc and enterprise CIDR blocks"
-  translate_vpc_id_to_host_id_and_netmask:
+- name: "Generate network ids and netmasks for cloud_ip_space"
+  translate_cloud_space_to_network_id_and_netmask:
+    host: "{{ansible_host}}"
+  register: vpc_networkid_subnet_mask_dict, enterprise_networkid_subnet_mask_dict
+- name: "Generate network ids and network masks from permitted vpc CIDR blocks"
+  translate_vpc_id_to_network_id_and_netmask:
+    host: "{{ansible_host}}"
+  register: vpc_networkid_subnet_mask_dict, enterprise_networkid_subnet_mask_dict
+- name: "Generate network ids and network masks enterprise CIDR blocks"
+  translate_vpc_id_to_network_id_and_netmask:
     host: "{{ansible_host}}"
   register: vpc_networkid_subnet_mask_dict, enterprise_networkid_subnet_mask_dict
 - name: print the return
