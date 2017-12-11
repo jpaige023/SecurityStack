@@ -29,6 +29,8 @@ def main():
     dmvpn_tunnel = "1"
     # dmvpn_role = "dmvpn_spoke" or "dmvpn_hub"
     dmvpn_role = "dmvpn_hub"
+    security_policy_vpc = None
+    security_policy_enterprise = None
 
     # For Pycharm change PATH to find Terraform
     path_var = os.environ["PATH"]
@@ -81,7 +83,7 @@ def main():
     python_modules.terraform.apply_terraform(vpc_number)
 
     # Create Ansible host_vars files
-    tfstate_dictionary = python_modules.ansible_hosts.main(cloud_provider, vpc_template, vpc_number, dictionary_tfvars)
+    tfstate_dictionary = python_modules.ansible_hosts.main(security_policy_enterprise, security_policy_vpc, vpc_template, vpc_number, dictionary_tfvars)
 
     # Configure DMVPN Hub
     if dmvpn_role == "dmvpn_hub":
