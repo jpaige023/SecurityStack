@@ -29,8 +29,8 @@ def main():
     dmvpn_tunnel = "1"
     # dmvpn_role = "dmvpn_spoke" or "dmvpn_hub"
     dmvpn_role = "dmvpn_hub"
-    security_policy_vpc = None
-    security_policy_enterprise = None
+    security_policy_vpc = []
+    security_policy_enterprise = []
 
     # For Pycharm change PATH to find Terraform
     path_var = os.environ["PATH"]

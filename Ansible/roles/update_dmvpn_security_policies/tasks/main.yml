@@ -1,0 +1,21 @@
+---
+- name: "Based on host_vars, generate network id and subnet masks from permitted vpc and enterprise CIDR blocks"
+  translate_vpc_id_to_host_id_and_netmask:
+    host: "{{ansible_host}}"
+  register: vpc_networkid_subnet_mask_dict, enterprise_networkid_subnet_mask_dict
+- name: print the return
+  debug:
+    msg: "{{ vpc_networkid_subnet_mask_dict }}, {{ enterprise_networkid_subnet_mask_dict }}"
+- name: "Update the ACLs"
+  vars:
+      vpc_addresses: "{{ vpc_networkid_subnet_mask_dict.vpc_networkid_subnet_mask_dict }}"
+      enterprise_addresses: "{{ enterprise_networkid_subnet_mask_dict.enterprise_networkid_subnet_mask_dict }}"
+  ios_config:
+    provider: "{{cli}}"
+    src:      "update_dmvpn_security_policies.j2"
+    before: "no ip access-list extended cloudWhiteListPolicy"
+    ignore_errors: true
+- name: "copy run start"
+  ios_command:
+    provider: "{{cli}}"
+    commands: wr mem

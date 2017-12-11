@@ -6,7 +6,7 @@ def main(security_policy_enterprise, security_policy_vpc, cloud_provider, vpc_te
     # vpc_template = "high_availability"
     # vpc_number = "12"
 
-    tfstate_dictionary = {"security_policy_enterprise": security_policy_enterprise, "security_policy_vpc": security_policy_vpc: "ip_a": None, "ip_b": None, "route_table_var": None, "eni_a_var": None, "eni_b_var": None}
+    tfstate_dictionary = {"security_policy_enterprise": security_policy_enterprise, "security_policy_vpc": security_policy_vpc, "ip_a": None, "ip_b": None, "route_table_var": None, "eni_a_var": None, "eni_b_var": None}
 
     if cloud_provider == "aws":
         with open("VPCs/{}/terraform.tfstate".format(vpc_number)) as json_data:

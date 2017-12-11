@@ -1,0 +1,7 @@
+---
+- name: Configure Cloud Router
+  hosts: "{{ target }}"
+  vars_files:
+      - "provider_vars/{{ cloud_provider }}.yml"
+  roles:
+    - "update_dmvpn_security_policies"
