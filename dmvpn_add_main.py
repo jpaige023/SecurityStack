@@ -11,24 +11,24 @@ import python_modules.azure_ha
 
 def main():
     # Receive or input variables
-    cidr_block = "10.0.1.0/24"
+    cidr_block = "10.0.102.0/24"
     # aws or azure
-    cloud_provider = "aws"
+    cloud_provider = "azure"
     # us-east-1, us-east-2, us-west-1, us-west-2
     # East US, West US
-    region = "us-west-2"
+    region = "East US"
     # for aws only
     availability_zone = "us-west-2a"
     availability_zone_ha = "us-west-2c"
     # vpc_template = dev, standard, high_availability
-    vpc_template = 'dev'
+    vpc_template = 'high_availability'
     user_subnet_masks = 28
     # c4.large
     # standard_d2_v2
-    csr1000v_instance_type = "c4.large"
+    csr1000v_instance_type = "standard_d2_v2"
     dmvpn_tunnel = "1"
     # dmvpn_role = "dmvpn_spoke" or "dmvpn_hub"
-    dmvpn_role = "dmvpn_hub"
+    dmvpn_role = "dmvpn_spoke"
     security_policy_vpc = []
     security_policy_enterprise = []
 
@@ -83,7 +83,7 @@ def main():
     python_modules.terraform.apply_terraform(vpc_number)
 
     # Create Ansible host_vars files
-    tfstate_dictionary = python_modules.ansible_hosts.main(security_policy_enterprise, security_policy_vpc, vpc_template, vpc_number, dictionary_tfvars)
+    tfstate_dictionary = python_modules.ansible_hosts.main(security_policy_enterprise, security_policy_vpc, cloud_provider, vpc_template, vpc_number, dictionary_tfvars)
 
     # Configure DMVPN Hub
     if dmvpn_role == "dmvpn_hub":
