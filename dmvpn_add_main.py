@@ -11,7 +11,7 @@ import python_modules.azure_ha
 
 def main():
     # Receive or input variables
-    cidr_block = "10.0.255.0/24"
+    cidr_block = "10.0.200.0/24"
     # aws or azure
     cloud_provider = "aws"
     # us-east-1, us-east-2, us-west-1, us-west-2
