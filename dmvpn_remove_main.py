@@ -55,7 +55,7 @@ def main():
     # dmvpn_list_to_remove_from_ipam = ["10.255.0.3", "10.255.0.4"]
     # dmvpn_tunnel = "1"
     # import simplejson as json
-    with open('DB/dmvpn_tunnel_ipam.json') as json_data:
+    with open('DB/dmvpn_mgre_ipam.json') as json_data:
         dictionary_used_ip = json.load(json_data)
     addresses_used_list = dictionary_used_ip[dmvpn_tunnel]
     # Remove stale IPs from IPAM
@@ -66,7 +66,7 @@ def main():
                 reduced_addresses_list.append(item)
     dictionary_used_ip[dmvpn_tunnel] = reduced_addresses_list
     # Write the updated IPAM file
-    with open('DB/dmvpn_tunnel_ipam.json', 'w') as outfile:
+    with open('DB/dmvpn_mgre_ipam.json', 'w') as outfile:
         json.dump(dictionary_used_ip, outfile, sort_keys=True, indent=4,
                   ensure_ascii=False)
 
@@ -78,7 +78,7 @@ def main():
 
     reduced_tunnel_info_list = []
     if dmvpn_role == "dmvpn_hub":
-        with open("DB/dmvpn_tunnel_nhs_addresses.yml", 'r') as yml_data:
+        with open("DB/dmvpn_per_mgre_nhs_bgp_rr_address_info.yml", 'r') as yml_data:
             dictionary_initial_read = yaml.load(yml_data)
         print(dictionary_initial_read)
         for item in dictionary_initial_read['dmvpn_addresses'][dmvpn_tunnel]:
@@ -92,7 +92,7 @@ def main():
         print(dictionary_initial_read)
 
         # Write the new dmvpn_tunnel_nhs_addresses file
-        with io.open('DB/dmvpn_tunnel_nhs_addresses.yml', 'w', encoding='utf8') as outfile:
+        with io.open('DB/dmvpn_per_mgre_nhs_bgp_rr_address_info.yml', 'w', encoding='utf8') as outfile:
             yaml.dump(dictionary_initial_read, outfile, default_flow_style=False, allow_unicode=True)
     w = subprocess.Popen(['ansible-playbook', 'update_dmvpn_nhs_bgp_addresses.yml', '--extra-vars', 'target=csr1000v_aws', '-vvvv'], cwd="Ansible")
     w.wait()

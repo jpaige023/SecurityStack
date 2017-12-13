@@ -140,7 +140,7 @@ router eigrp 1
 ip route {{cidr_block_network_ID}} {{cidr_block_netmask}} {{router_a_addressg2NH}}
 !
 {% if hostvars[inventory_hostname]['cloud_provider'] == 'aws' %}
-access-list 110 permit GRE {{router_a_subnet_g1}} 0.0.0.0 {{router_b_address_g1}} 0.0.0.0
+access-list 110 permit GRE {{router_a_address_g1}} 0.0.0.0 {{router_b_address_g1}} 0.0.0.0
 {% endif %}
 !
 no ip http server

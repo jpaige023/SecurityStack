@@ -2,6 +2,6 @@ dmvpn_addresses:
   '1':
   - dmvpn_address: 10.255.0.1
     private: 10.0.1.4
-    public: 34.213.208.47
+    public: 34.210.39.253
   x:
   - dmvpn_address: x.x.x.x
