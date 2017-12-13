@@ -11,12 +11,12 @@ import python_modules.azure_ha
 
 def main():
     # Receive or input variables
-    cidr_block = "10.0.201.0/24"
+    cidr_block = "10.0.251.0/24"
     # aws or azure
-    cloud_provider = "aws"
+    cloud_provider = "azure"
     # us-east-1, us-east-2, us-west-1, us-west-2
     # East US, West US
-    region = "us-west-2"
+    region = "East US"
     # for aws only
     availability_zone = "us-west-2a"
     availability_zone_ha = "us-west-2c"
@@ -25,7 +25,7 @@ def main():
     user_subnet_masks = 28
     # c4.large
     # standard_d2_v2
-    csr1000v_instance_type = "c4.large"
+    csr1000v_instance_type = "standard_d2_v2"
     dmvpn_tunnel = "1"
     # dmvpn_role = "dmvpn_spoke" or "dmvpn_hub"
     dmvpn_role = "dmvpn_spoke"
@@ -134,7 +134,11 @@ def main():
                 w.wait()
                 python_modules.azure_ha.main(vpc_number, tfstate_dictionary["ip_a"], tfstate_dictionary["ip_b"],
                                              settings_dictionary)
-
+            print(tfstate_dictionary)
+            # import simplejson as json
+            # import os
+            # import subprocess
+            # tfstate_dictionary = {"ip_a": "34.208.241.103", "ip_b": "52.40.180.126"}
             w = subprocess.Popen(['ansible-playbook', 'create_csr1000v_spoke_a_ha.yml', '--extra-vars', 'target={}'.format(tfstate_dictionary["ip_a"]), '-vvvv'],
                                  cwd="Ansible")
             w.wait()

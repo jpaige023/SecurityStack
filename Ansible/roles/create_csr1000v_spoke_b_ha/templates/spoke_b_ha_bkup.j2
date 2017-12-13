@@ -34,14 +34,25 @@ crypto isakmp policy 10
  encr aes 256
  hash sha256
  authentication pre-share
+{% if hostvars[inventory_hostname]['cloud_provider'] == 'aws' %}
+crypto isakmp policy 30
+ hash md5
+ authentication pre-share
+{% endif %}
 crypto isakmp keepalive 10 10
+{% if hostvars[inventory_hostname]['cloud_provider'] == 'aws' %}
+crypto isakmp key {{dmvpn_key}} address {{router_a_address_g1}}
+{% endif %}
 crypto isakmp profile isakmp-prof
    keyring internet-key
    match identity address 0.0.0.0 internet-vrf
 !
 crypto ipsec security-association replay window-size 128
 !
-crypto ipsec transform-set xform esp-aes 256 esp-sha256-hmac
+{% if hostvars[inventory_hostname]['cloud_provider'] == 'aws' %}
+crypto ipsec transform-set easy esp-des esp-md5-hmac
+{% endif %}
+crypto ipsec transform-set xform esp-aes 256 esp-sha256-hmac 
  mode transport
 crypto ipsec df-bit clear
 !
@@ -49,6 +60,13 @@ crypto ipsec df-bit clear
 crypto ipsec profile ipsec-prof
  set transform-set xform 
  set isakmp-profile isakmp-prof
+!
+{% if hostvars[inventory_hostname]['cloud_provider'] == 'aws' %}
+crypto map mymap 10 ipsec-isakmp
+ set peer {{router_a_address_g1}}
+ set transform-set easy
+ match address 110
+{% endif %}
 !
 interface Tunnel{{dmvpn_tunnel}}
  description DMVPN
@@ -104,6 +122,10 @@ router eigrp 1
  no passive-interface Tunnel500
 !
 ip route {{cidr_block_network_ID}} {{cidr_block_netmask}} {{router_b_addressg2NH}}
+!
+{% if hostvars[inventory_hostname]['cloud_provider'] == 'aws' %}
+access-list 110 permit GRE {{router_b_address_g1}} 0.0.0.0 {{router_a_address_g1}} 0.0.0.0
+{% endif %}
 !
 no ip http server
 ip http secure-server
