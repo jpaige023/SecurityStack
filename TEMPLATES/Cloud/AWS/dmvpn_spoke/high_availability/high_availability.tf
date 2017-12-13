@@ -106,13 +106,6 @@ resource "aws_security_group" "SG_SSH_IPSEC" {
   }
 
   ingress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "50"
-    cidr_blocks = ["${var.cidr_block}"]
-  }
-
-  ingress {
     from_port   = 500
     to_port     = 500
     protocol    = "udp"
@@ -131,6 +124,20 @@ resource "aws_security_group" "SG_SSH_IPSEC" {
     to_port     = -1
     protocol    = "icmp"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 0
+    to_port     = 4789
+    protocol    = "udp"
+    cidr_blocks = ["${var.cidr_block}"]
+  }
+
+  ingress {
+    from_port   = 0
+    to_port     = 4790
+    protocol    = "udp"
+    cidr_blocks = ["${var.cidr_block}"]
   }
 
   egress {

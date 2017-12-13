@@ -11,12 +11,12 @@ import python_modules.azure_ha
 
 def main():
     # Receive or input variables
-    cidr_block = "10.0.251.0/24"
+    cidr_block = "10.0.255.0/24"
     # aws or azure
-    cloud_provider = "azure"
+    cloud_provider = "aws"
     # us-east-1, us-east-2, us-west-1, us-west-2
     # East US, West US
-    region = "East US"
+    region = "us-west-2"
     # for aws only
     availability_zone = "us-west-2a"
     availability_zone_ha = "us-west-2c"
@@ -25,7 +25,7 @@ def main():
     user_subnet_masks = 28
     # c4.large
     # standard_d2_v2
-    csr1000v_instance_type = "standard_d2_v2"
+    csr1000v_instance_type = "c4.large"
     dmvpn_tunnel = "1"
     # dmvpn_role = "dmvpn_spoke" or "dmvpn_hub"
     dmvpn_role = "dmvpn_spoke"
